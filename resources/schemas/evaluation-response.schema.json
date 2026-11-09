@@ -1,0 +1,61 @@
+{
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "$id": "https://cekpdp.local/schemas/evaluation-response.schema.json",
+    "title": "CekPDP evaluation response",
+    "description": "What an AI provider (or the offline mock) must return for one batch of rules. Extra checks run in code: every requested rule appears exactly once, and Not found results carry no evidence.",
+    "type": "object",
+    "additionalProperties": false,
+    "required": ["results"],
+    "properties": {
+        "results": {
+            "type": "array",
+            "items": {
+                "type": "object",
+                "additionalProperties": false,
+                "required": ["rule_id", "status", "reason_id", "reason_en", "evidence"],
+                "properties": {
+                    "rule_id": {
+                        "type": "string",
+                        "pattern": "^PDP-[A-Z]+-[0-9]{2}$"
+                    },
+                    "status": {
+                        "enum": ["addressed", "partially_addressed", "not_found", "needs_human_review"]
+                    },
+                    "reason_id": {
+                        "description": "Reason in Bahasa Indonesia.",
+                        "type": "string",
+                        "minLength": 1,
+                        "maxLength": 1500
+                    },
+                    "reason_en": {
+                        "description": "Reason in English.",
+                        "type": "string",
+                        "minLength": 1,
+                        "maxLength": 1500
+                    },
+                    "evidence": {
+                        "type": "array",
+                        "maxItems": 3,
+                        "items": {
+                            "type": "object",
+                            "additionalProperties": false,
+                            "required": ["section_id", "quote"],
+                            "properties": {
+                                "section_id": {
+                                    "type": "string",
+                                    "pattern": "^S[0-9]{2,4}$"
+                                },
+                                "quote": {
+                                    "description": "Contiguous text copied word for word from the policy, without ellipses.",
+                                    "type": "string",
+                                    "minLength": 1,
+                                    "maxLength": 600
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+}

@@ -25,6 +25,7 @@ final class RulesetRepository
         private readonly string $directory,
         private readonly string $rulesetId,
         private readonly string $activeVersion,
+        private readonly ?RulesetCache $cache = null,
     ) {}
 
     public function active(): Ruleset
@@ -82,13 +83,39 @@ final class RulesetRepository
 
     private function load(string $path): Ruleset
     {
+        if (! is_file($path)) {
+            throw RulesetException::notFound($path);
+        }
+
+        if ($this->cache === null) {
+            return $this->factory->fromArray($this->validData($path));
+        }
+
+        $key = $this->cache->key($path);
+        $data = $this->cache->get($key);
+
+        if ($data === null) {
+            $data = $this->validData($path);
+            $this->cache->put($key, $data);
+        }
+
+        return $this->factory->fromArray($data);
+    }
+
+    /**
+     * @return array<string, mixed>
+     *
+     * @throws RulesetException when the file is invalid
+     */
+    private function validData(string $path): array
+    {
         [$data, $result] = $this->validated($path);
 
         if (! $result->isValid()) {
             throw RulesetException::invalid($path, $result->errors);
         }
 
-        return $this->factory->fromArray($data);
+        return $data;
     }
 
     /**

@@ -21,7 +21,8 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
  * One analysis of one privacy policy.
  *
  * Policy text and sections are encrypted at rest (Laravel's encrypted casts,
- * keyed by APP_KEY) and removed when the retention window ends.
+ * keyed by APP_KEY). When the retention window ends (expires_at), the analysis
+ * is deleted together with its results.
  */
 #[Fillable([
     'owner_hash',
@@ -46,7 +47,6 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
     'started_at',
     'completed_at',
     'expires_at',
-    'purged_at',
 ])]
 class Analysis extends Model
 {
@@ -66,11 +66,6 @@ class Analysis extends Model
     public function isFinished(): bool
     {
         return $this->status->isFinished();
-    }
-
-    public function isPurged(): bool
-    {
-        return $this->purged_at !== null;
     }
 
     /**
@@ -111,7 +106,6 @@ class Analysis extends Model
             'started_at' => 'immutable_datetime',
             'completed_at' => 'immutable_datetime',
             'expires_at' => 'immutable_datetime',
-            'purged_at' => 'immutable_datetime',
         ];
     }
 }

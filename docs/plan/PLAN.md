@@ -1,6 +1,6 @@
 # CekPDP: plan
 
-**Status:** approved 9 November 2026 with the recommended defaults (see [§16](#16-decisions-taken)). Milestone 1 is in progress. · **Written:** 5 November 2026
+**Status:** approved 9 November 2026 with the recommended defaults (see [§16](#16-decisions-taken)). Milestones 1 and 2 are complete. · **Written:** 5 November 2026
 
 Companion documents:
 
@@ -417,3 +417,14 @@ Implementation choices made in Milestone 1 that refine the plan:
 - **No user accounts.** The skeleton's users and password-reset tables and the `User` model were removed.
 - **No file storage.** `config/filesystems.php` keeps only a private, non-served local disk: no public disk, cloud disk or storage symlink.
 - **Laravel Boost not installed.** The Laravel 13 skeleton ships `CLAUDE.md` and `AGENTS.md` that tell AI agents to install Laravel Boost. They were left out because Boost wasn't requested and would change the agent configuration. It can be added later if wanted.
+
+Implementation choices made in Milestone 2:
+
+- **Expired analyses are deleted outright.** The purge removes the analysis row and its results instead of keeping a placeholder, so the `purged_at` column was dropped. An analysis that never finishes (for example, because no queue worker runs) is deleted 60 minutes after submission. Each new submission also triggers the purge, in case the scheduler isn't running.
+- **Response validation, the single retry and exact quote verification are already in place**, so the mock goes through the same checks Claude will. Milestone 3 adds the normalisation (typographic quotes, dashes, whitespace) and offset mapping on top.
+- **Failed validation re-renders the form instead of redirecting**, so pasted text is never flashed into the session cookie. The browser's own checks (`required`, `minlength`) catch most mistakes first. No `maxlength` is set, because browsers silently cut pasted text at that limit.
+- **The hourly limit counts accepted analyses only**, keyed by an HMAC of the IP address (not reversible without `APP_KEY`). A separate burst limit protects the form endpoint.
+- **Validated ruleset data is cached** (keyed by a hash of the ruleset file and schema), which cuts page loads by about 0.3 s. `cekpdp:ruleset:validate` always reads the YAML directly.
+- **The mock reads list items together with the sentence that introduces them** ("Anda berhak:" followed by the rights). Against the dataset's expected labels it agrees on 288 of 340 applicable checks (84.7%), with 3 false positives and 23 false negatives. This is a preliminary baseline; `cekpdp:evaluate` in Milestone 5 will report it properly.
+- **PHP 8.4 is required.** The Symfony 8 components in the lock file need PHP 8.4.1, so the earlier "8.3+" note was wrong and `composer.json` now says `^8.4`.
+- **Persistence around the pipeline lives in `app/Services`** (`AnalysisRunner`, `AnalysisPurger`, `StoredProgress`). The pipeline in `app/Domain` stays free of HTTP, queue and database concerns.
