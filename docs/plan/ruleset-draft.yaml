@@ -1,0 +1,2596 @@
+# =============================================================================
+# CekPDP ruleset: DRAFT FOR REVIEW (not active)
+# Instrument: UU No. 27 Tahun 2022 tentang Pelindungan Data Pribadi
+#
+# How to review
+#   1. `provisions` is a catalogue of every legal text the rules cite. Each entry
+#      was checked word for word against the page image of the official copy
+#      (see docs/legal/SOURCES.md). `pdf_page` is the PDF page number.
+#   2. Each rule has:
+#        requirement_type  legal | best_practice
+#        legal_mapping     direct | interpretive   (legal rules only)
+#        status            active | needs_review   (needs_review = excluded from
+#                                                   the active checklist until you
+#                                                   approve it)
+#   3. English text is an unofficial translation. Indonesian is authoritative.
+#   4. Mock-provider keyword signals are added in Milestone 1. They are left out
+#      here to keep the review readable.
+# =============================================================================
+
+schema_version: 1
+id: uu-pdp-27-2022
+version: 1.0.0-draft.1
+status: draft
+last_reviewed: 2026-11-05
+reviewed_by: null
+
+scope:
+  id: >-
+    Butir transparansi dan pengungkapan yang diharapkan dimuat dalam kebijakan
+    privasi (pemberitahuan privasi) berdasarkan UU No. 27 Tahun 2022. Ruleset ini
+    hanya menilai isi teks kebijakan, bukan praktik kepatuhan organisasi.
+  en: >-
+    Transparency and disclosure items a privacy policy (privacy notice) is
+    expected to cover under Law No. 27 of 2022. The ruleset assesses only what
+    the policy text says, not whether an organisation complies in practice.
+
+instrument:
+  key: UU-27-2022
+  title_id: Undang-Undang Republik Indonesia Nomor 27 Tahun 2022 tentang Pelindungan Data Pribadi
+  title_en: Law of the Republic of Indonesia Number 27 of 2022 on Personal Data Protection (unofficial translation)
+  enacted_on: 2022-10-17
+  promulgated_on: 2022-10-17
+  in_force_from: 2022-10-17          # Pasal 76, p. 33
+  transition_ended_on: 2024-10-17    # Pasal 74, p. 33: 2 years after promulgation
+  gazette: Lembaran Negara RI Tahun 2022 Nomor 196; Tambahan Lembaran Negara RI Nomor 6820
+  court_decisions:
+    - ref: Putusan Mahkamah Konstitusi Nomor 151/PUU-XXII/2024
+      pronounced_on: 2025-07-30
+      affects: p53-1
+      effect_id: >-
+        Kata "dan" dalam Pasal 53 ayat (1) huruf b bertentangan dengan UUD 1945 dan
+        tidak mempunyai kekuatan hukum mengikat secara bersyarat sepanjang tidak
+        dimaknai "dan/atau".
+      effect_en: >-
+        The word "dan" (and) in Article 53(1)(b) is conditionally unconstitutional
+        unless read as "dan/atau" (and/or), so the DPO criteria are alternative.
+      source: mk-151-2024
+      verified_on: 2026-11-05
+  implementing_regulations:
+    - ref: Peraturan Pemerintah Nomor 33 Tahun 2026
+      status: promulgated_not_in_force
+      note_en: >-
+        Reported as promulgated in July 2026 and entering into force about
+        January 2027. Official copy not yet obtained, so it is not used by this
+        ruleset. See docs/legal/SOURCES.md section 3.
+      checked_on: 2026-11-05
+    - ref: Peraturan Presiden tentang lembaga Pelindungan Data Pribadi (Pasal 58 ayat (5))
+      status: not_enacted
+      checked_on: 2026-11-05
+
+sources:
+  uu27-bpk:
+    kind: official
+    name: JDIH BPK RI. Salinan resmi Kementerian Sekretariat Negara (scan)
+    url: https://peraturan.bpk.go.id/Details/229798/uu-no-27-tahun-2022
+    document_url: https://peraturan.bpk.go.id/Download/224884/UU%20Nomor%2027%20Tahun%202022.pdf
+    sha256: ed952dea04b87d14ecf037f9f324a65d50b396ddd34fc28ddf9ff014391971f6
+  mk-151-2024:
+    kind: official
+    name: Putusan MK Nomor 151/PUU-XXII/2024 (copy linked from JDIH BPK)
+    url: https://peraturan.bpk.go.id/DownloadUjiMateri/218/putusan_mkri_151_PUU-XXII_2024.pdf
+    sha256: 6dbbdb8092625df850707a86592e240379c4edb7a28cb98b99ff8ac077815e47
+  pasal-id:
+    kind: secondary_reader      # convenience links only; never the basis of a rule
+    name: Pasal.id (third-party reader, unofficial)
+    url_template: https://pasal.id/peraturan/uu/uu-no-27-tahun-2022/pasal-{article}
+
+# Questions asked before analysis. "unsure" is treated like "yes" for applicability.
+contexts:
+  consent_basis:
+    question:
+      id: Apakah organisasi memproses Data Pribadi berdasarkan persetujuan untuk sebagian atau seluruh pemrosesannya?
+      en: Does the organisation rely on consent for any of its personal data processing?
+    help:
+      id: Pasal 21 berlaku untuk pemrosesan berdasarkan persetujuan (Pasal 20 ayat (2) huruf a).
+      en: Article 21 applies to processing based on consent (Article 20(2)(a)).
+    options: [yes, no, unsure]
+    default: unsure
+  specific_data:
+    question:
+      id: Apakah organisasi memproses Data Pribadi yang bersifat spesifik (kesehatan, biometrik, genetika, catatan kejahatan, data anak, atau data keuangan pribadi)?
+      en: Does the organisation process specific personal data (health, biometric, genetic, criminal records, children's data, or personal financial data)?
+    help:
+      id: Kategori menurut Pasal 4 ayat (2).
+      en: Categories listed in Article 4(2).
+    options: [yes, no, unsure]
+    default: unsure
+  children:
+    question:
+      id: Apakah organisasi memproses Data Pribadi anak?
+      en: Does the organisation process children's personal data?
+    options: [yes, no, unsure]
+    default: unsure
+  international_transfer:
+    question:
+      id: Apakah Data Pribadi ditransfer, disimpan, atau dapat diakses di luar Indonesia (termasuk melalui penyedia cloud atau layanan asing)?
+      en: Is personal data transferred, stored or accessible outside Indonesia (including via foreign cloud or service providers)?
+    options: [yes, no, unsure]
+    default: unsure
+  automated_decisions:
+    question:
+      id: Apakah organisasi mengambil keputusan yang hanya didasarkan pada pemrosesan otomatis, termasuk pemrofilan, yang berdampak hukum atau signifikan bagi seseorang?
+      en: Does the organisation make decisions based solely on automated processing, including profiling, that have legal or significant effects on people?
+    options: [yes, no, unsure]
+    default: unsure
+
+# Named requirement-type overrides, referenced by rules.
+overrides:
+  consent_not_relied_on:
+    when: { context: consent_basis, in: [no] }
+    requirement_type: best_practice
+    reason:
+      id: >-
+        Kewajiban ini bersumber dari Pasal 21, yang berlaku untuk pemrosesan
+        berdasarkan persetujuan. Karena organisasi menyatakan tidak menggunakan
+        persetujuan, butir ini ditampilkan sebagai praktik terbaik.
+      en: >-
+        This duty comes from Article 21, which applies to consent-based
+        processing. Because the organisation said it does not rely on consent,
+        this item is shown as a best practice.
+
+# =============================================================================
+# Provision catalogue. All entries verified against page images on 2026-11-05.
+# "[…]" marks omitted text. Curly quotes follow the official copy.
+# =============================================================================
+provisions:
+  p4-2:
+    citation_id: Pasal 4 ayat (2)
+    citation_en: Article 4(2)
+    article: 4
+    pdf_page: 5
+    text_id: >-
+      Data Pribadi yang bersifat spesifik sebagaimana dimaksud pada ayat (1) huruf a
+      meliputi: a. data dan informasi kesehatan; b. data biometrik; c. data genetika;
+      d. catatan kejahatan; e. data anak; f. data keuangan pribadi; dan/atau g. data
+      lainnya sesuai dengan ketentuan peraturan perundang-undangan.
+    text_en: >-
+      Specific Personal Data as referred to in paragraph (1) letter a includes:
+      a. health data and information; b. biometric data; c. genetic data;
+      d. criminal records; e. children's data; f. personal financial data; and/or
+      g. other data in accordance with statutory provisions.
+  pj-p4-3-f:
+    citation_id: Penjelasan Pasal 4 ayat (3) huruf f
+    citation_en: Elucidation of Article 4(3)(f)
+    article: 4
+    pdf_page: 39
+    text_id: >-
+      Yang dimaksud dengan “Data Pribadi yang dikombinasikan untuk mengidentifikasi
+      seseorang” antara lain nomor telepon seluler dan IP Address.
+    text_en: >-
+      "Personal Data combined to identify a person" includes, among others, mobile
+      phone numbers and IP Addresses.
+  p5:
+    citation_id: Pasal 5
+    citation_en: Article 5
+    article: 5
+    pdf_page: 5
+    text_id: >-
+      Subjek Data Pribadi berhak mendapatkan Informasi tentang kejelasan identitas,
+      dasar kepentingan hukum, tujuan permintaan dan penggunaan Data Pribadi, dan
+      akuntabilitas pihak yang meminta Data Pribadi.
+    text_en: >-
+      Personal Data Subjects have the right to obtain Information about the clarity
+      of identity, the legal-interest basis, the purpose of requesting and using the
+      Personal Data, and the accountability of the party requesting the Personal Data.
+  p6:
+    citation_id: Pasal 6
+    citation_en: Article 6
+    article: 6
+    pdf_page: 5
+    text_id: >-
+      Subjek Data Pribadi berhak melengkapi, memperbarui, dan/atau memperbaiki
+      kesalahan dan/atau ketidakakuratan Data Pribadi tentang dirinya sesuai dengan
+      tujuan pemrosesan Data Pribadi.
+    text_en: >-
+      Personal Data Subjects have the right to complete, update, and/or correct
+      errors and/or inaccuracies in Personal Data about themselves in accordance with
+      the purpose of the Personal Data processing.
+  p7:
+    citation_id: Pasal 7
+    citation_en: Article 7
+    article: 7
+    pdf_page: 6
+    text_id: >-
+      Subjek Data Pribadi berhak mendapatkan akses dan memperoleh salinan Data
+      Pribadi tentang dirinya sesuai dengan ketentuan peraturan perundang-undangan.
+    text_en: >-
+      Personal Data Subjects have the right to obtain access to and a copy of
+      Personal Data about themselves in accordance with statutory provisions.
+  pj-p7:
+    citation_id: Penjelasan Pasal 7
+    citation_en: Elucidation of Article 7
+    article: 7
+    pdf_page: 39
+    text_id: >-
+      Hak untuk memperoleh salinan Data Pribadi dilakukan secara gratis, kecuali
+      untuk kondisi tertentu yang memang membutuhkan biaya.
+    text_en: >-
+      The right to obtain a copy of Personal Data is exercised free of charge, except
+      in certain conditions that genuinely require a cost.
+  p8:
+    citation_id: Pasal 8
+    citation_en: Article 8
+    article: 8
+    pdf_page: 6
+    text_id: >-
+      Subjek Data Pribadi berhak untuk mengakhiri pemrosesan, menghapus, dan/atau
+      memusnahkan Data Pribadi tentang dirinya sesuai dengan ketentuan peraturan
+      perundang-undangan.
+    text_en: >-
+      Personal Data Subjects have the right to end the processing of, delete, and/or
+      destroy Personal Data about themselves in accordance with statutory provisions.
+  p9:
+    citation_id: Pasal 9
+    citation_en: Article 9
+    article: 9
+    pdf_page: 6
+    text_id: >-
+      Subjek Data Pribadi berhak menarik kembali persetujuan pemrosesan Data Pribadi
+      tentang dirinya yang telah diberikan kepada Pengendali Data Pribadi.
+    text_en: >-
+      Personal Data Subjects have the right to withdraw consent to the processing of
+      Personal Data about themselves that they have given to the Personal Data
+      Controller.
+  p10-1:
+    citation_id: Pasal 10 ayat (1)
+    citation_en: Article 10(1)
+    article: 10
+    pdf_page: 6
+    text_id: >-
+      Subjek Data Pribadi berhak untuk mengajukan keberatan atas tindakan pengambilan
+      keputusan yang hanya didasarkan pada pemrosesan secara otomatis, termasuk
+      pemrofilan, yang menimbulkan akibat hukum atau berdampak signifikan pada Subjek
+      Data Pribadi.
+    text_en: >-
+      Personal Data Subjects have the right to object to decision-making based solely
+      on automated processing, including profiling, that gives rise to legal
+      consequences or has a significant impact on the Personal Data Subject.
+  pj-p10-1:
+    citation_id: Penjelasan Pasal 10 ayat (1)
+    citation_en: Elucidation of Article 10(1)
+    article: 10
+    pdf_page: 40
+    text_id: >-
+      Yang dimaksud dengan “pemrofilan” adalah kegiatan mengidentifikasi seseorang
+      termasuk namun tidak terbatas pada riwayat pekerjaan, kondisi ekonomi,
+      kesehatan, preferensi pribadi, minat, keandalan, perilaku, lokasi, atau
+      pergerakan Subjek Data Pribadi secara elektronik.
+    text_en: >-
+      "Profiling" means identifying a person, including but not limited to by
+      employment history, economic condition, health, personal preferences,
+      interests, reliability, behaviour, location, or movements of the Personal Data
+      Subject, electronically.
+  p11:
+    citation_id: Pasal 11
+    citation_en: Article 11
+    article: 11
+    pdf_page: 6
+    text_id: >-
+      Subjek Data Pribadi berhak menunda atau membatasi pemrosesan Data Pribadi
+      secara proporsional sesuai dengan tujuan pemrosesan Data Pribadi.
+    text_en: >-
+      Personal Data Subjects have the right to delay or restrict the processing of
+      Personal Data proportionally, in accordance with the purpose of the processing.
+  p12-1:
+    citation_id: Pasal 12 ayat (1)
+    citation_en: Article 12(1)
+    article: 12
+    pdf_page: 6
+    text_id: >-
+      Subjek Data Pribadi berhak menggugat dan menerima ganti rugi atas pelanggaran
+      pemrosesan Data Pribadi tentang dirinya sesuai dengan ketentuan peraturan
+      perundang-undangan.
+    text_en: >-
+      Personal Data Subjects have the right to sue and receive compensation for
+      violations in the processing of Personal Data about themselves in accordance
+      with statutory provisions.
+  p13-1:
+    citation_id: Pasal 13 ayat (1)
+    citation_en: Article 13(1)
+    article: 13
+    pdf_page: 7
+    text_id: >-
+      Subjek Data Pribadi berhak mendapatkan dan/atau menggunakan Data Pribadi tentang
+      dirinya dari Pengendali Data Pribadi dalam bentuk yang sesuai dengan struktur
+      dan/atau format yang lazim digunakan atau dapat dibaca oleh sistem elektronik.
+    text_en: >-
+      Personal Data Subjects have the right to obtain and/or use Personal Data about
+      themselves from the Personal Data Controller in a form that follows a structure
+      and/or format that is commonly used or readable by an electronic system.
+  p13-2:
+    citation_id: Pasal 13 ayat (2)
+    citation_en: Article 13(2)
+    article: 13
+    pdf_page: 7
+    text_id: >-
+      Subjek Data Pribadi berhak menggunakan dan mengirimkan Data Pribadi tentang
+      dirinya ke Pengendali Data Pribadi lainnya, sepanjang sistem yang digunakan
+      dapat saling berkomunikasi secara aman sesuai dengan prinsip Pelindungan Data
+      Pribadi berdasarkan Undang-Undang ini.
+    text_en: >-
+      Personal Data Subjects have the right to use and send Personal Data about
+      themselves to another Personal Data Controller, provided the systems used can
+      communicate with each other securely in accordance with the principles of
+      Personal Data Protection under this Law.
+  p14:
+    citation_id: Pasal 14
+    citation_en: Article 14
+    article: 14
+    pdf_page: 7
+    text_id: >-
+      Pelaksanaan hak Subjek Data Pribadi sebagaimana dimaksud dalam Pasal 6 sampai
+      dengan Pasal 11 diajukan melalui permohonan tercatat yang disampaikan secara
+      elektronik atau nonelektronik kepada Pengendali Data Pribadi.
+    text_en: >-
+      The rights of Personal Data Subjects referred to in Article 6 to Article 11 are
+      exercised through a recorded request submitted electronically or
+      non-electronically to the Personal Data Controller.
+  p16-1:
+    citation_id: Pasal 16 ayat (1)
+    citation_en: Article 16(1)
+    article: 16
+    pdf_page: 8
+    text_id: >-
+      Pemrosesan Data Pribadi meliputi: a. pemerolehan dan pengumpulan; b. pengolahan
+      dan penganalisisan; c. penyimpanan; d. perbaikan dan pembaruan; e. penampilan,
+      pengumuman, transfer, penyebarluasan, atau pengungkapan; dan/atau
+      f. penghapusan atau pemusnahan.
+    text_en: >-
+      Personal Data processing includes: a. obtaining and collecting; b. processing
+      and analysing; c. storing; d. correcting and updating; e. displaying,
+      announcing, transferring, disseminating, or disclosing; and/or f. deleting or
+      destroying.
+  pj-p16-1-e:
+    citation_id: Penjelasan Pasal 16 ayat (1) huruf e
+    citation_en: Elucidation of Article 16(1)(e)
+    article: 16
+    pdf_page: 41
+    text_id: >-
+      […] Yang dimaksud dengan “transfer” adalah perpindahan, pengiriman, dan/atau
+      penggandaan Data Pribadi baik secara elektronik maupun nonelektronik dari
+      Pengendali Data Pribadi kepada pihak lain.
+    text_en: >-
+      […] "Transfer" means the movement, sending, and/or duplication of Personal
+      Data, electronically or non-electronically, from the Personal Data Controller
+      to another party.
+  p16-2:
+    citation_id: Pasal 16 ayat (2)
+    citation_en: Article 16(2)
+    article: 16
+    pdf_page: 8-9
+    text_id: >-
+      Pemrosesan Data Pribadi sebagaimana dimaksud pada ayat (1) dilakukan sesuai
+      dengan prinsip Pelindungan Data Pribadi meliputi: a. pengumpulan Data Pribadi
+      dilakukan secara terbatas dan spesifik, sah secara hukum, dan transparan; […]
+      e. pemrosesan Data Pribadi dilakukan dengan melindungi keamanan Data Pribadi
+      dari pengaksesan yang tidak sah, pengungkapan yang tidak sah, pengubahan yang
+      tidak sah, penyalahgunaan, perusakan, dan/atau penghilangan Data Pribadi;
+      f. pemrosesan Data Pribadi dilakukan dengan memberitahukan tujuan dan aktivitas
+      pemrosesan, serta kegagalan Pelindungan Data Pribadi; g. Data Pribadi
+      dimusnahkan dan/atau dihapus setelah masa retensi berakhir atau berdasarkan
+      permintaan Subjek Data Pribadi, kecuali ditentukan lain oleh peraturan
+      perundang-undangan; […]
+    text_en: >-
+      Personal Data processing as referred to in paragraph (1) is carried out in
+      accordance with the principles of Personal Data Protection, including:
+      a. Personal Data is collected in a limited and specific, lawful, and
+      transparent manner; […] e. Personal Data processing is carried out by
+      protecting the security of Personal Data from unauthorised access, disclosure,
+      alteration, misuse, destruction, and/or loss; f. Personal Data processing is
+      carried out by notifying the purpose and processing activities, as well as
+      failures of Personal Data Protection; g. Personal Data is destroyed and/or
+      deleted after the retention period ends or at the request of the Personal Data
+      Subject, unless statutory provisions provide otherwise; […]
+  p20-1:
+    citation_id: Pasal 20 ayat (1)
+    citation_en: Article 20(1)
+    article: 20
+    pdf_page: 10
+    text_id: Pengendali Data Pribadi wajib memiliki dasar pemrosesan Data Pribadi.
+    text_en: The Personal Data Controller must have a basis for processing Personal Data.
+  p20-2:
+    citation_id: Pasal 20 ayat (2)
+    citation_en: Article 20(2)
+    article: 20
+    pdf_page: 11
+    text_id: >-
+      Dasar pemrosesan Data Pribadi sebagaimana dimaksud pada ayat (1) meliputi:
+      a. persetujuan yang sah secara eksplisit dari Subjek Data Pribadi untuk 1 (satu)
+      atau beberapa tujuan tertentu yang telah disampaikan oleh Pengendali Data
+      Pribadi kepada Subjek Data Pribadi; b. pemenuhan kewajiban perjanjian dalam hal
+      Subjek Data Pribadi merupakan salah satu pihak atau untuk memenuhi permintaan
+      Subjek Data Pribadi pada saat akan melakukan perjanjian; c. pemenuhan kewajiban
+      hukum dari Pengendali Data Pribadi sesuai dengan ketentuan peraturan
+      perundang-undangan; d. pemenuhan pelindungan kepentingan vital Subjek Data
+      Pribadi; e. pelaksanaan tugas dalam rangka kepentingan umum, pelayanan publik,
+      atau pelaksanaan kewenangan Pengendali Data Pribadi berdasarkan peraturan
+      perundang-undangan; dan/atau f. pemenuhan kepentingan yang sah lainnya dengan
+      memperhatikan tujuan, kebutuhan, dan keseimbangan kepentingan Pengendali Data
+      Pribadi dan hak Subjek Data Pribadi.
+    text_en: >-
+      The basis for processing Personal Data as referred to in paragraph (1)
+      includes: a. valid explicit consent from the Personal Data Subject for 1 (one)
+      or more specific purposes that the Personal Data Controller has conveyed to the
+      Personal Data Subject; b. fulfilment of contractual obligations where the
+      Personal Data Subject is a party, or to fulfil the Personal Data Subject's
+      request when entering into an agreement; c. fulfilment of the Personal Data
+      Controller's legal obligations under statutory provisions; d. protection of the
+      vital interests of the Personal Data Subject; e. performance of tasks in the
+      public interest, public services, or the exercise of the Personal Data
+      Controller's authority under statutory provisions; and/or f. fulfilment of
+      other legitimate interests, taking into account the purpose, needs, and the
+      balance between the interests of the Personal Data Controller and the rights of
+      the Personal Data Subject.
+  p21-1:
+    citation_id: Pasal 21 ayat (1)
+    citation_en: Article 21(1)
+    article: 21
+    pdf_page: 11
+    text_id: >-
+      Dalam hal pemrosesan Data Pribadi berdasarkan persetujuan sebagaimana dimaksud
+      dalam Pasal 20 ayat (2) huruf a, Pengendali Data Pribadi wajib menyampaikan
+      Informasi mengenai: a. legalitas dari pemrosesan Data Pribadi; b. tujuan
+      pemrosesan Data Pribadi; c. jenis dan relevansi Data Pribadi yang akan
+      diproses; d. jangka waktu retensi dokumen yang memuat Data Pribadi; e. rincian
+      mengenai Informasi yang dikumpulkan; f. jangka waktu pemrosesan Data Pribadi;
+      dan g. hak Subjek Data Pribadi.
+    text_en: >-
+      Where Personal Data processing is based on consent as referred to in Article
+      20(2)(a), the Personal Data Controller must convey Information regarding:
+      a. the legality of the Personal Data processing; b. the purpose of the Personal
+      Data processing; c. the type and relevance of the Personal Data to be
+      processed; d. the retention period of documents containing Personal Data;
+      e. details of the Information collected; f. the period of Personal Data
+      processing; and g. the rights of the Personal Data Subject.
+  p21-2:
+    citation_id: Pasal 21 ayat (2)
+    citation_en: Article 21(2)
+    article: 21
+    pdf_page: 12
+    text_id: >-
+      Dalam hal terdapat perubahan Informasi sebagaimana dimaksud pada ayat (1),
+      Pengendali Data Pribadi wajib memberitahukan kepada Subjek Data Pribadi sebelum
+      terjadi perubahan Informasi.
+    text_en: >-
+      Where the Information referred to in paragraph (1) changes, the Personal Data
+      Controller must notify the Personal Data Subject before the change to the
+      Information takes place.
+  pj-p21-1-e:
+    citation_id: Penjelasan Pasal 21 ayat (1) huruf e
+    citation_en: Elucidation of Article 21(1)(e)
+    article: 21
+    pdf_page: 43
+    text_id: >-
+      Yang dimaksud dengan “rincian mengenai Informasi yang dikumpulkan” adalah
+      daftar Informasi mengenai Data Pribadi Subjek Data Pribadi, baik berupa Data
+      Pribadi yang bersifat umum maupun Data Pribadi yang bersifat spesifik, yang
+      dikumpulkan oleh Pengendali Data Pribadi dalam rangka pemrosesan Data Pribadi.
+    text_en: >-
+      "Details of the Information collected" means a list of Information about the
+      Personal Data Subject's Personal Data, whether general or specific Personal
+      Data, that the Personal Data Controller collects when processing Personal Data.
+  pj-p21-1-f:
+    citation_id: Penjelasan Pasal 21 ayat (1) huruf f
+    citation_en: Elucidation of Article 21(1)(f)
+    article: 21
+    pdf_page: 43
+    text_id: >-
+      Yang dimaksud dengan “jangka waktu pemrosesan Data Pribadi” adalah rentang
+      waktu dimulainya hingga selesainya serangkaian kegiatan pemrosesan Data Pribadi
+      sesuai dengan tujuan pemrosesan Data Pribadi.
+    text_en: >-
+      "Period of Personal Data processing" means the time from the start to the
+      completion of a series of Personal Data processing activities in accordance
+      with the purpose of the processing.
+  p22-1:
+    citation_id: Pasal 22 ayat (1)
+    citation_en: Article 22(1)
+    article: 22
+    pdf_page: 12
+    text_id: Persetujuan pemrosesan Data Pribadi dilakukan melalui persetujuan tertulis atau terekam.
+    text_en: Consent to Personal Data processing is given in writing or in recorded form.
+  p22-4:
+    citation_id: Pasal 22 ayat (4)
+    citation_en: Article 22(4)
+    article: 22
+    pdf_page: 12
+    text_id: >-
+      Dalam hal persetujuan sebagaimana dimaksud pada ayat (1) memuat tujuan lain,
+      permintaan persetujuan harus memenuhi ketentuan: a. dapat dibedakan secara
+      jelas dengan hal lainnya; b. dibuat dengan format yang dapat dipahami dan mudah
+      diakses; dan c. menggunakan bahasa yang sederhana dan jelas.
+    text_en: >-
+      Where the consent referred to in paragraph (1) also covers other purposes, the
+      request for consent must: a. be clearly distinguishable from other matters;
+      b. be made in an understandable and easily accessible format; and c. use simple
+      and clear language.
+  p22-5:
+    citation_id: Pasal 22 ayat (5)
+    citation_en: Article 22(5)
+    article: 22
+    pdf_page: 12
+    text_id: >-
+      Persetujuan yang tidak memenuhi ketentuan sebagaimana dimaksud pada ayat (1) dan
+      ayat (4) dinyatakan batal demi hukum.
+    text_en: >-
+      Consent that does not meet paragraphs (1) and (4) is declared null and void.
+  pj-p22-4-c:
+    citation_id: Penjelasan Pasal 22 ayat (4) huruf c
+    citation_en: Elucidation of Article 22(4)(c)
+    article: 22
+    pdf_page: 43
+    text_id: Yang dimaksud dengan “bahasa” adalah Bahasa Indonesia.
+    text_en: '"Language" means Bahasa Indonesia.'
+  p23:
+    citation_id: Pasal 23
+    citation_en: Article 23
+    article: 23
+    pdf_page: 12
+    text_id: >-
+      Klausul perjanjian yang di dalamnya terdapat permintaan pemrosesan Data Pribadi
+      yang tidak memuat persetujuan yang sah secara eksplisit dari Subjek Data
+      Pribadi dinyatakan batal demi hukum.
+    text_en: >-
+      A contract clause that requests Personal Data processing without containing
+      valid explicit consent from the Personal Data Subject is declared null and void.
+  p24:
+    citation_id: Pasal 24
+    citation_en: Article 24
+    article: 24
+    pdf_page: 12
+    text_id: >-
+      Dalam melakukan pemrosesan Data Pribadi, Pengendali Data Pribadi wajib
+      menunjukkan bukti persetujuan yang telah diberikan oleh Subjek Data Pribadi.
+    text_en: >-
+      When processing Personal Data, the Personal Data Controller must be able to show
+      proof of the consent given by the Personal Data Subject.
+  p25:
+    citation_id: Pasal 25
+    citation_en: Article 25
+    article: 25
+    pdf_page: 13
+    text_id: >-
+      (1) Pemrosesan Data Pribadi anak diselenggarakan secara khusus. (2) Pemrosesan
+      Data Pribadi anak sebagaimana dimaksud pada ayat (1) wajib mendapat persetujuan
+      dari orang tua anak dan/atau wali anak sesuai dengan ketentuan peraturan
+      perundang-undangan.
+    text_en: >-
+      (1) Children's Personal Data is processed under special arrangements. (2) The
+      processing of children's Personal Data referred to in paragraph (1) requires
+      consent from the child's parent and/or guardian in accordance with statutory
+      provisions.
+  p27:
+    citation_id: Pasal 27
+    citation_en: Article 27
+    article: 27
+    pdf_page: 13
+    text_id: >-
+      Pengendali Data Pribadi wajib melakukan pemrosesan Data Pribadi secara terbatas
+      dan spesifik, sah secara hukum, dan transparan.
+    text_en: >-
+      The Personal Data Controller must process Personal Data in a limited and
+      specific, lawful, and transparent manner.
+  pj-p27:
+    citation_id: Penjelasan Pasal 27
+    citation_en: Elucidation of Article 27
+    article: 27
+    pdf_page: 44
+    text_id: >-
+      Yang dimaksud dengan “secara terbatas dan spesifik” adalah pengumpulan Data
+      Pribadi harus terbatas sesuai dengan tujuan pemrosesannya serta tujuan
+      pemrosesan Data Pribadi harus secara eksplisit, sah, dan telah ditentukan pada
+      saat pengumpulan Data Pribadi. Yang dimaksud dengan “sah secara hukum” adalah
+      pemrosesan Data Pribadi dilakukan sesuai dengan ketentuan peraturan
+      perundang-undangan. Yang dimaksud dengan “transparan” adalah pemrosesan Data
+      Pribadi dilakukan dengan memastikan bahwa Subjek Data Pribadi telah mengetahui
+      Data Pribadi yang diproses dan bagaimana Data Pribadi tersebut diproses, serta
+      setiap Informasi dan komunikasi yang berkaitan dengan pemrosesan Data Pribadi
+      tersebut mudah diakses dan dipahami, dengan menggunakan bahasa yang jelas.
+    text_en: >-
+      "Limited and specific" means Personal Data collection must be limited to the
+      purpose of its processing, and the purpose must be explicit, lawful, and set at
+      the time the Personal Data is collected. "Lawful" means the processing follows
+      statutory provisions. "Transparent" means the processing ensures that the
+      Personal Data Subject knows which Personal Data is processed and how, and that
+      all Information and communication about the processing is easy to access and
+      understand, in clear language.
+  p30-1:
+    citation_id: Pasal 30 ayat (1)
+    citation_en: Article 30(1)
+    article: 30
+    pdf_page: 14
+    text_id: >-
+      Pengendali Data Pribadi wajib memperbarui dan/atau memperbaiki kesalahan
+      dan/atau ketidakakuratan Data Pribadi paling lambat 3 x 24 (tiga kali dua puluh
+      empat) jam terhitung sejak Pengendali Data Pribadi menerima permintaan
+      pembaruan dan/atau perbaikan Data Pribadi.
+    text_en: >-
+      The Personal Data Controller must update and/or correct errors and/or
+      inaccuracies in Personal Data within 3 x 24 (three times twenty-four) hours of
+      receiving the request to update and/or correct it.
+  p32:
+    citation_id: Pasal 32
+    citation_en: Article 32
+    article: 32
+    pdf_page: 14
+    text_id: >-
+      (1) Pengendali Data Pribadi wajib memberikan akses kepada Subjek Data Pribadi
+      terhadap Data Pribadi yang diproses beserta rekam jejak pemrosesan Data Pribadi
+      sesuai dengan jangka waktu penyimpanan Data Pribadi. (2) Akses sebagaimana
+      dimaksud pada ayat (1) diberikan paling lambat 3 x 24 (tiga kali dua puluh
+      empat) jam terhitung sejak Pengendali Data Pribadi menerima permintaan akses.
+    text_en: >-
+      (1) The Personal Data Controller must give the Personal Data Subject access to
+      the Personal Data processed, together with the processing record, in line with
+      the Personal Data storage period. (2) Access referred to in paragraph (1) is
+      given within 3 x 24 (three times twenty-four) hours of receiving the access
+      request.
+  p35:
+    citation_id: Pasal 35
+    citation_en: Article 35
+    article: 35
+    pdf_page: 15-16
+    text_id: >-
+      Pengendali Data Pribadi wajib melindungi dan memastikan keamanan Data Pribadi
+      yang diprosesnya, dengan melakukan: a. penyusunan dan penerapan langkah teknis
+      operasional untuk melindungi Data Pribadi dari gangguan pemrosesan Data Pribadi
+      yang bertentangan dengan ketentuan peraturan perundang-undangan; dan
+      b. penentuan tingkat keamanan Data Pribadi dengan memperhatikan sifat dan
+      risiko dari Data Pribadi yang harus dilindungi dalam pemrosesan Data Pribadi.
+    text_en: >-
+      The Personal Data Controller must protect and ensure the security of the
+      Personal Data it processes by: a. developing and applying operational technical
+      measures to protect Personal Data from interference with processing that
+      contravenes statutory provisions; and b. setting the security level of the
+      Personal Data, taking into account the nature and risks of the Personal Data to
+      be protected.
+  p39-1:
+    citation_id: Pasal 39 ayat (1)
+    citation_en: Article 39(1)
+    article: 39
+    pdf_page: 16
+    text_id: Pengendali Data Pribadi wajib mencegah Data Pribadi diakses secara tidak sah.
+    text_en: The Personal Data Controller must prevent unlawful access to Personal Data.
+  p40:
+    citation_id: Pasal 40
+    citation_en: Article 40
+    article: 40
+    pdf_page: 17
+    text_id: >-
+      (1) Pengendali Data Pribadi wajib menghentikan pemrosesan Data Pribadi dalam hal
+      Subjek Data Pribadi menarik kembali persetujuan pemrosesan Data Pribadi.
+      (2) Penghentian pemrosesan Data Pribadi sebagaimana dimaksud pada ayat (1)
+      dilakukan paling lambat 3 x 24 (tiga kali dua puluh empat) jam terhitung sejak
+      Pengendali Data Pribadi menerima permintaan penarikan kembali persetujuan
+      pemrosesan Data Pribadi.
+    text_en: >-
+      (1) The Personal Data Controller must stop processing Personal Data if the
+      Personal Data Subject withdraws consent to the processing. (2) Processing
+      referred to in paragraph (1) is stopped within 3 x 24 (three times twenty-four)
+      hours of receiving the request to withdraw consent.
+  p41-1:
+    citation_id: Pasal 41 ayat (1)
+    citation_en: Article 41(1)
+    article: 41
+    pdf_page: 17
+    text_id: >-
+      Pengendali Data Pribadi wajib melakukan penundaan dan pembatasan pemrosesan
+      Data Pribadi baik sebagian maupun seluruhnya paling lambat 3 x 24 (tiga kali
+      dua puluh empat) jam terhitung sejak Pengendali Data Pribadi menerima
+      permintaan penundaan dan pembatasan pemrosesan Data Pribadi.
+    text_en: >-
+      The Personal Data Controller must delay and restrict Personal Data processing,
+      in part or in full, within 3 x 24 (three times twenty-four) hours of receiving
+      the request to delay and restrict the processing.
+  p43-1:
+    citation_id: Pasal 43 ayat (1)
+    citation_en: Article 43(1)
+    article: 43
+    pdf_page: 18
+    text_id: >-
+      Pengendali Data Pribadi wajib menghapus Data Pribadi dalam hal: a. Data Pribadi
+      tidak lagi diperlukan untuk pencapaian tujuan pemrosesan Data Pribadi;
+      b. Subjek Data Pribadi telah melakukan penarikan kembali persetujuan pemrosesan
+      Data Pribadi; c. terdapat permintaan dari Subjek Data Pribadi; atau d. Data
+      Pribadi diperoleh dan/atau diproses dengan cara melawan hukum.
+    text_en: >-
+      The Personal Data Controller must delete Personal Data where: a. it is no
+      longer needed to achieve the purpose of the processing; b. the Personal Data
+      Subject has withdrawn consent to the processing; c. the Personal Data Subject
+      requests it; or d. it was obtained and/or processed unlawfully.
+  p46:
+    citation_id: Pasal 46
+    citation_en: Article 46
+    article: 46
+    pdf_page: 19
+    text_id: >-
+      (1) Dalam hal terjadi kegagalan Pelindungan Data Pribadi, Pengendali Data
+      Pribadi wajib menyampaikan pemberitahuan secara tertulis paling lambat 3 x 24
+      (tiga kali dua puluh empat) jam kepada: a. Subjek Data Pribadi; dan b. lembaga.
+      (2) Pemberitahuan tertulis sebagaimana dimaksud pada ayat (1) minimal memuat:
+      a. Data Pribadi yang terungkap; b. kapan dan bagaimana Data Pribadi terungkap;
+      dan c. upaya penanganan dan pemulihan atas terungkapnya Data Pribadi oleh
+      Pengendali Data Pribadi. (3) Dalam hal tertentu, Pengendali Data Pribadi wajib
+      memberitahukan kepada masyarakat mengenai kegagalan Pelindungan Data Pribadi.
+    text_en: >-
+      (1) If a failure of Personal Data Protection occurs, the Personal Data
+      Controller must give written notification within 3 x 24 (three times
+      twenty-four) hours to: a. the Personal Data Subject; and b. the institution.
+      (2) The written notification must contain at least: a. the Personal Data
+      disclosed; b. when and how it was disclosed; and c. the controller's efforts to
+      handle and recover from the disclosure. (3) In certain cases, the Personal Data
+      Controller must notify the public of the failure of Personal Data Protection.
+  pj-p46-1:
+    citation_id: Penjelasan Pasal 46 ayat (1)
+    citation_en: Elucidation of Article 46(1)
+    article: 46
+    pdf_page: 46
+    text_id: >-
+      Yang dimaksud dengan “kegagalan Pelindungan Data Pribadi” adalah kegagalan
+      melindungi Data Pribadi seseorang dalam hal kerahasiaan, integritas, dan
+      ketersediaan Data Pribadi, termasuk pelanggaran keamanan, baik yang disengaja
+      maupun tidak disengaja, yang mengarah pada perusakan, kehilangan, perubahan,
+      pengungkapan, atau akses yang tidak sah terhadap Data Pribadi yang dikirim,
+      disimpan, atau diproses.
+    text_en: >-
+      "Failure of Personal Data Protection" means failing to protect a person's
+      Personal Data in terms of confidentiality, integrity, and availability,
+      including security breaches, intentional or not, that lead to the destruction,
+      loss, alteration, disclosure of, or unauthorised access to Personal Data that is
+      transmitted, stored, or processed.
+  p48:
+    citation_id: Pasal 48 ayat (1) dan ayat (2)
+    citation_en: Article 48(1) and (2)
+    article: 48
+    pdf_page: 19-20
+    text_id: >-
+      (1) Pengendali Data Pribadi berbentuk badan hukum yang melakukan penggabungan,
+      pemisahan, pengambilalihan, peleburan, atau pembubaran badan hukum wajib
+      menyampaikan pemberitahuan pengalihan Data Pribadi kepada Subjek Data Pribadi.
+      (2) Pemberitahuan pengalihan Data Pribadi sebagaimana dimaksud pada ayat (1)
+      dilakukan sebelum dan sesudah penggabungan, pemisahan, pengambilalihan,
+      peleburan, atau pembubaran badan hukum.
+    text_en: >-
+      (1) A Personal Data Controller that is a legal entity and undergoes a merger,
+      split, acquisition, consolidation, or dissolution must notify Personal Data
+      Subjects of the transfer of Personal Data. (2) The notification is given before
+      and after the merger, split, acquisition, consolidation, or dissolution.
+  p53-1:
+    citation_id: Pasal 53 ayat (1)
+    citation_en: Article 53(1)
+    article: 53
+    pdf_page: 22
+    text_id: >-
+      Pengendali Data Pribadi dan Prosesor Data Pribadi wajib menunjuk pejabat atau
+      petugas yang melaksanakan fungsi Pelindungan Data Pribadi dalam hal:
+      a. pemrosesan Data Pribadi untuk kepentingan pelayanan publik; b. kegiatan inti
+      Pengendali Data Pribadi memiliki sifat, ruang lingkup, dan/atau tujuan yang
+      memerlukan pemantauan secara teratur dan sistematis atas Data Pribadi dengan
+      skala besar; dan c. kegiatan inti Pengendali Data Pribadi terdiri dari
+      pemrosesan Data Pribadi dalam skala besar untuk Data Pribadi yang bersifat
+      spesifik dan/atau Data Pribadi yang berkaitan dengan tindak pidana.
+    text_en: >-
+      The Personal Data Controller and Personal Data Processor must appoint an
+      official or officer to perform the Personal Data Protection function where:
+      a. Personal Data is processed for public services; b. the controller's core
+      activities by their nature, scope, and/or purposes require regular and
+      systematic large-scale monitoring of Personal Data; and [read as "and/or" per
+      Constitutional Court Decision 151/PUU-XXII/2024] c. the controller's core
+      activities consist of large-scale processing of specific Personal Data and/or
+      Personal Data relating to criminal offences.
+    modified_by: Putusan Mahkamah Konstitusi Nomor 151/PUU-XXII/2024
+  p54-1-d:
+    citation_id: Pasal 54 ayat (1) huruf d
+    citation_en: Article 54(1)(d)
+    article: 54
+    pdf_page: 22-23
+    text_id: >-
+      Pejabat atau petugas yang melaksanakan fungsi Pelindungan Data Pribadi memiliki
+      tugas paling sedikit: […] d. berkoordinasi dan bertindak sebagai narahubung
+      untuk isu yang berkaitan dengan pemrosesan Data Pribadi.
+    text_en: >-
+      The official or officer performing the Personal Data Protection function has at
+      least the following duties: […] d. coordinating and acting as the contact
+      person for issues relating to Personal Data processing.
+  p56:
+    citation_id: Pasal 56 ayat (1) sampai dengan ayat (4)
+    citation_en: Article 56(1) to (4)
+    article: 56
+    pdf_page: 24
+    text_id: >-
+      (1) Pengendali Data Pribadi dapat melakukan transfer Data Pribadi kepada
+      Pengendali Data Pribadi dan/atau Prosesor Data Pribadi di luar wilayah hukum
+      Negara Republik Indonesia sesuai dengan ketentuan yang diatur dalam
+      Undang-Undang ini. (2) Dalam melakukan transfer Data Pribadi sebagaimana
+      dimaksud pada ayat (1), Pengendali Data Pribadi wajib memastikan negara tempat
+      kedudukan Pengendali Data Pribadi dan/atau Prosesor Data Pribadi yang menerima
+      transfer Data Pribadi memiliki tingkat Pelindungan Data Pribadi yang setara atau
+      lebih tinggi dari yang diatur dalam Undang-Undang ini. (3) Dalam hal ketentuan
+      sebagaimana dimaksud pada ayat (2) tidak terpenuhi, Pengendali Data Pribadi
+      wajib memastikan terdapat Pelindungan Data Pribadi yang memadai dan bersifat
+      mengikat. (4) Dalam hal ketentuan sebagaimana dimaksud pada ayat (2) dan ayat
+      (3) tidak terpenuhi, Pengendali Data Pribadi wajib mendapatkan persetujuan
+      Subjek Data Pribadi.
+    text_en: >-
+      (1) The Personal Data Controller may transfer Personal Data to a controller
+      and/or processor outside the jurisdiction of the Republic of Indonesia in
+      accordance with this Law. (2) When doing so, the controller must ensure that
+      the country where the recipient is domiciled has a level of Personal Data
+      Protection equivalent to or higher than this Law. (3) If paragraph (2) is not
+      met, the controller must ensure adequate and binding Personal Data Protection.
+      (4) If paragraphs (2) and (3) are not met, the controller must obtain the
+      Personal Data Subject's consent.
+
+# =============================================================================
+# Rules. Order = display order. 31 rules:
+#   19 legal (direct), 2 legal (interpretive, needs_review), 10 best practice
+# =============================================================================
+rules:
+
+  # ---------------------------------------------------------------- identity
+  - id: PDP-ID-01
+    status: active
+    category: identity
+    requirement_type: legal
+    legal_mapping: direct
+    title:
+      id: Identitas Pengendali Data Pribadi
+      en: Identity of the personal data controller
+    explanation:
+      id: >-
+        Pasal 5 memberi Subjek Data Pribadi hak untuk mendapatkan Informasi tentang
+        kejelasan identitas pihak yang meminta Data Pribadi. Kebijakan perlu
+        menyebutkan dengan jelas organisasi (badan hukum) yang bertindak sebagai
+        Pengendali Data Pribadi.
+      en: >-
+        Article 5 gives data subjects the right to information about the clear
+        identity of whoever requests their personal data. The policy should clearly
+        name the organisation (legal entity) acting as the controller.
+    references:
+      - { provision: p5, role: basis, pinpoint: { id: kejelasan identitas, en: clarity of identity } }
+    applies_when: always
+    look_for:
+      id:
+        - Nama resmi badan hukum (mis. PT, CV, yayasan, instansi)
+        - Pernyataan bahwa entitas tersebut adalah Pengendali Data Pribadi atau bertanggung jawab atas pemrosesan
+        - Alamat atau detail identitas lain
+        - "Untuk grup usaha: entitas mana yang menjadi pengendali untuk layanan ini"
+      en:
+        - Legal name of the entity (e.g., PT, CV, foundation, public body)
+        - Statement that this entity is the controller or is responsible for the processing
+        - Address or other identifying details
+        - "For groups of companies: which entity is the controller for this service"
+    criteria:
+      addressed:
+        id: Menyebutkan badan hukum tertentu yang bertanggung jawab atas pemrosesan Data Pribadi.
+        en: Names the specific legal entity responsible for processing the personal data.
+      partially_addressed:
+        id: Hanya menyebut merek, nama aplikasi, atau "kami", atau menyebut grup usaha tanpa menjelaskan entitas yang bertanggung jawab.
+        en: Refers only to a brand, app name or "we", or to a group of companies without saying which entity is responsible.
+      not_found:
+        id: Tidak ada pernyataan yang mengidentifikasi pihak yang bertanggung jawab atas Data Pribadi.
+        en: Nothing identifies who is responsible for the personal data.
+    next_step:
+      id: Cantumkan nama lengkap badan hukum pengendali, alamatnya, dan pernyataan bahwa entitas tersebut bertanggung jawab atas pemrosesan yang dijelaskan.
+      en: State the controller's full legal name and address, and that it is responsible for the processing described.
+    example_wording:
+      id: >-
+        Kebijakan Privasi ini menjelaskan pemrosesan Data Pribadi oleh [NAMA BADAN
+        HUKUM], yang berkedudukan di [ALAMAT] ("kami"), sebagai Pengendali Data
+        Pribadi untuk layanan [NAMA LAYANAN].
+      en: >-
+        This Privacy Policy explains how [LEGAL ENTITY NAME], registered at
+        [ADDRESS] ("we"), processes personal data as the controller for
+        [SERVICE NAME].
+
+  - id: PDP-ID-02
+    status: needs_review
+    category: identity
+    requirement_type: legal
+    legal_mapping: interpretive
+    review_note:
+      id: >-
+        Pemetaan interpretatif. Pasal 5 memberi hak atas Informasi tentang
+        "akuntabilitas pihak yang meminta Data Pribadi", dan Pasal 14 menyatakan
+        permohonan pelaksanaan hak diajukan kepada Pengendali secara elektronik atau
+        nonelektronik. Tidak ada pasal yang secara tegas mewajibkan kontak dicantumkan
+        dalam kebijakan privasi; kami memaknai "akuntabilitas" setidaknya mencakup
+        cara menghubungi Pengendali. Putuskan: persyaratan hukum, praktik terbaik,
+        atau dikeluarkan.
+      en: >-
+        Interpretive mapping. Article 5 gives a right to information about the
+        "accountability of the party requesting personal data", and Article 14 says
+        rights requests are submitted to the controller electronically or
+        non-electronically. Neither expressly requires contact details in a privacy
+        policy; we read "accountability" as including at least a way to reach the
+        controller. Decide: legal requirement, best practice, or exclude.
+    title:
+      id: Kontak dan cara mengajukan permohonan
+      en: Contact point and how to submit requests
+    explanation:
+      id: >-
+        Pasal 5 memberi hak atas Informasi tentang akuntabilitas pihak yang meminta
+        Data Pribadi. Pasal 14 menyatakan pelaksanaan hak dalam Pasal 6 sampai dengan
+        Pasal 11 diajukan melalui permohonan tercatat secara elektronik atau
+        nonelektronik kepada Pengendali Data Pribadi. Kebijakan perlu memberikan
+        saluran kontak yang jelas dan menjelaskan cara mengajukan permohonan.
+      en: >-
+        Article 5 gives a right to information about the accountability of whoever
+        requests personal data. Article 14 says the rights in Articles 6 to 11 are
+        exercised through a recorded request submitted electronically or
+        non-electronically to the controller. The policy should give a clear contact
+        channel and explain how to submit requests.
+    references:
+      - { provision: p5, role: basis, pinpoint: { id: akuntabilitas pihak yang meminta Data Pribadi, en: accountability of the party requesting the personal data } }
+      - { provision: p14, role: related }
+    applies_when: always
+    look_for:
+      id:
+        - Email, alamat surat, formulir, atau nomor telepon untuk urusan Data Pribadi
+        - Cara mengajukan permohonan (elektronik/nonelektronik) dan informasi yang perlu disertakan
+        - Pencatatan atau nomor rujukan permohonan
+      en:
+        - Email, postal address, web form or phone number for personal data matters
+        - How to submit a request (electronically or non-electronically) and what to include
+        - Recording of requests or a reference number
+    criteria:
+      addressed:
+        id: Memberikan saluran kontak untuk urusan Data Pribadi dan menjelaskan cara mengajukan permohonan.
+        en: Gives a contact channel for personal data matters and explains how to submit requests.
+      partially_addressed:
+        id: Hanya ada kontak umum (mis. layanan pelanggan) tanpa menyebut bahwa kontak itu menangani permohonan Data Pribadi, atau ada saluran tetapi cara mengajukan permohonan tidak dijelaskan.
+        en: Gives only a general contact (e.g., customer service) without saying it handles personal data requests, or a channel without explaining how to submit requests.
+      not_found:
+        id: Tidak ada kontak atau saluran permohonan untuk urusan Data Pribadi.
+        en: No contact or request channel for personal data matters.
+    next_step:
+      id: Tambahkan kontak khusus (mis. email privasi dan alamat surat) serta jelaskan cara mengajukan dan memantau permohonan pelaksanaan hak.
+      en: Add a dedicated contact (e.g., a privacy email and postal address) and explain how to submit and track requests to exercise rights.
+    example_wording:
+      id: >-
+        Untuk pertanyaan atau permohonan terkait Data Pribadi Anda, hubungi kami
+        melalui [EMAIL PRIVASI] atau surat ke [ALAMAT]. Permohonan dapat diajukan
+        secara elektronik maupun nonelektronik. Setiap permohonan kami catat dan kami
+        beri nomor rujukan.
+      en: >-
+        For questions or requests about your personal data, contact us at
+        [PRIVACY EMAIL] or by post at [ADDRESS]. You can submit requests
+        electronically or non-electronically. We record every request and give it a
+        reference number.
+
+  # -------------------------------------------------------------------- data
+  - id: PDP-DATA-01
+    status: active
+    category: data
+    requirement_type: legal
+    legal_mapping: direct
+    title:
+      id: Rincian Data Pribadi yang dikumpulkan
+      en: Personal data collected
+    explanation:
+      id: >-
+        Untuk pemrosesan berdasarkan persetujuan, Pasal 21 ayat (1) huruf c dan huruf e
+        mewajibkan Pengendali menyampaikan jenis Data Pribadi yang diproses serta
+        rincian Informasi yang dikumpulkan. Menurut Penjelasan, rincian tersebut adalah
+        daftar Data Pribadi yang bersifat umum maupun spesifik. Asas transparan dalam
+        Pasal 27 juga mensyaratkan Subjek Data Pribadi mengetahui Data Pribadi yang
+        diproses.
+      en: >-
+        For consent-based processing, Article 21(1)(c) and (e) require the controller
+        to convey the types of personal data processed and details of the information
+        collected. Per the Elucidation, those details are a list of the general and
+        specific personal data collected. The transparency duty in Article 27 also
+        requires that data subjects know which personal data is processed.
+    references:
+      - { provision: p21-1, role: basis, pinpoint: { id: huruf c dan huruf e, en: letters c and e } }
+      - { provision: pj-p21-1-e, role: basis }
+      - { provision: p27, role: basis }
+      - { provision: pj-p27, role: basis }
+      - { provision: pj-p4-3-f, role: related }
+    applies_when: always
+    look_for:
+      id:
+        - Kategori atau butir data yang spesifik (identitas, kontak, akun, transaksi, lokasi)
+        - Data teknis yang dikumpulkan otomatis, seperti alamat IP dan pengenal perangkat
+        - Data yang diperoleh dari pihak lain
+      en:
+        - Specific categories or items (identity, contact, account, transaction, location data)
+        - Technical data collected automatically, such as IP addresses and device identifiers
+        - Data obtained from other parties
+    criteria:
+      addressed:
+        id: Mencantumkan kategori atau butir Data Pribadi yang dikumpulkan secara spesifik.
+        en: Lists the specific categories or items of personal data collected.
+      partially_addressed:
+        id: Menyebut Data Pribadi hanya secara umum (mis. "informasi pribadi", "data yang Anda berikan") atau daftarnya tidak lengkap sehingga kategori utama tidak jelas.
+        en: Describes personal data only in general terms (e.g., "personal information", "data you provide"), or the list leaves major categories unclear.
+      not_found:
+        id: Tidak menjelaskan Data Pribadi apa yang dikumpulkan.
+        en: Does not say what personal data is collected.
+    next_step:
+      id: Cantumkan setiap kategori Data Pribadi yang dikumpulkan beserta contohnya, termasuk data teknis seperti alamat IP dan pengenal perangkat.
+      en: List each category of personal data you collect, with examples, including technical data such as IP addresses and device identifiers.
+    example_wording:
+      id: >-
+        Kami mengumpulkan Data Pribadi berikut: (a) data identitas: nama lengkap dan
+        tanggal lahir; (b) data kontak: alamat email dan nomor telepon seluler;
+        (c) data akun dan transaksi: riwayat pesanan dan pembayaran; (d) data teknis:
+        alamat IP, jenis perangkat, dan log aktivitas.
+      en: >-
+        We collect the following personal data: (a) identity data: full name and
+        date of birth; (b) contact data: email address and mobile phone number;
+        (c) account and transaction data: order and payment history; (d) technical
+        data: IP address, device type and activity logs.
+
+  - id: PDP-DATA-02
+    status: active
+    category: data
+    requirement_type: legal
+    legal_mapping: direct
+    type_overrides: [consent_not_relied_on]
+    title:
+      id: Relevansi Data Pribadi dengan tujuan
+      en: Why each type of data is needed
+    explanation:
+      id: >-
+        Pasal 21 ayat (1) huruf c mewajibkan Pengendali menyampaikan tidak hanya
+        jenis, tetapi juga relevansi Data Pribadi yang akan diproses. Kebijakan perlu
+        menjelaskan mengapa setiap kategori data diperlukan, misalnya dengan
+        mengaitkannya dengan tujuan tertentu. Penjelasan Pasal 27 menyatakan
+        pengumpulan Data Pribadi harus terbatas sesuai dengan tujuan pemrosesannya.
+      en: >-
+        Article 21(1)(c) requires the controller to convey not only the types but also
+        the relevance of the personal data to be processed. The policy should explain
+        why each category is needed, for example by linking it to specific purposes.
+        The Elucidation of Article 27 says collection must be limited to what the
+        processing purpose requires.
+    references:
+      - { provision: p21-1, role: basis, pinpoint: { id: huruf c, en: letter c } }
+      - { provision: pj-p27, role: related }
+    applies_when: always
+    look_for:
+      id:
+        - Penjelasan mengapa setiap kategori data diperlukan
+        - Tabel atau daftar yang mengaitkan kategori data dengan tujuan
+      en:
+        - Explanations of why each data category is needed
+        - A table or list linking data categories to purposes
+    criteria:
+      addressed:
+        id: Menjelaskan mengapa kategori Data Pribadi diperlukan, misalnya dengan mengaitkan setiap kategori dengan tujuan yang dilayaninya.
+        en: Explains why the data categories are needed, e.g., by linking each category to the purposes it serves.
+      partially_addressed:
+        id: Mencantumkan data dan tujuan secara terpisah tanpa mengaitkannya, atau menjelaskan relevansi hanya untuk sebagian kategori.
+        en: Lists data and purposes separately without linking them, or explains relevance for only some categories.
+      not_found:
+        id: Tidak ada penjelasan mengapa Data Pribadi diperlukan.
+        en: No explanation of why the personal data is needed.
+    next_step:
+      id: Petakan setiap kategori data ke tujuan yang dilayaninya, misalnya dalam bentuk tabel.
+      en: Map each data category to the purposes it serves, for example in a table.
+    example_wording:
+      id: >-
+        Kami menggunakan nomor telepon seluler Anda untuk verifikasi akun dan
+        notifikasi pengiriman. Alamat pengiriman hanya digunakan untuk mengantarkan
+        pesanan Anda.
+      en: >-
+        We use your mobile number to verify your account and send delivery
+        notifications. We use your delivery address only to deliver your orders.
+
+  - id: PDP-DATA-03
+    status: active
+    category: data
+    requirement_type: legal
+    legal_mapping: direct
+    title:
+      id: Data Pribadi yang bersifat spesifik
+      en: Specific (sensitive) personal data
+    explanation:
+      id: >-
+        Menurut Penjelasan Pasal 21 ayat (1) huruf e, rincian Informasi yang
+        dikumpulkan mencakup Data Pribadi yang bersifat umum maupun spesifik. Jika
+        organisasi memproses Data Pribadi spesifik sebagaimana Pasal 4 ayat (2), yaitu
+        data dan informasi kesehatan, data biometrik, data genetika, catatan
+        kejahatan, data anak, data keuangan pribadi, atau data lain sesuai peraturan,
+        kebijakan perlu menyebutkannya secara eksplisit.
+      en: >-
+        Per the Elucidation of Article 21(1)(e), details of the information collected
+        cover both general and specific personal data. If the organisation processes
+        specific personal data under Article 4(2) (health data and information,
+        biometric data, genetic data, criminal records, children's data, personal
+        financial data, or other data under the law), the policy should name it
+        explicitly.
+    references:
+      - { provision: p21-1, role: basis, pinpoint: { id: huruf e, en: letter e } }
+      - { provision: pj-p21-1-e, role: basis }
+      - { provision: pj-p27, role: basis }
+      - { provision: p4-2, role: related }
+    applies_when:
+      any:
+        - { context: specific_data, in: [yes, unsure] }
+        - { context: children, in: [yes, unsure] }
+    look_for:
+      id:
+        - Penyebutan kategori spesifik yang diproses (kesehatan, biometrik, genetika, catatan kejahatan, data anak, keuangan pribadi)
+        - Tujuan pemrosesan data spesifik tersebut
+      en:
+        - Named specific categories that are processed (health, biometric, genetic, criminal records, children's data, personal financial data)
+        - Why that specific data is processed
+    criteria:
+      addressed:
+        id: Menyebutkan secara eksplisit kategori Data Pribadi spesifik (Pasal 4 ayat (2)) yang diproses.
+        en: Explicitly names the specific categories (Article 4(2)) that are processed.
+      partially_addressed:
+        id: Menyebut "data sensitif" secara umum tanpa kategorinya, atau hanya menyebut sebagian kategori spesifik yang tampak diproses.
+        en: Mentions "sensitive data" generally without naming categories, or names only some of the specific categories that appear to be processed.
+      not_found:
+        id: Tidak menyebut Data Pribadi yang bersifat spesifik.
+        en: No mention of specific personal data.
+    next_step:
+      id: Sebutkan setiap kategori Data Pribadi spesifik yang diproses dan alasannya.
+      en: Name each category of specific personal data you process and why.
+    example_wording:
+      id: >-
+        Untuk layanan konsultasi, kami memproses data dan informasi kesehatan Anda
+        (riwayat keluhan dan hasil pemeriksaan), yang termasuk Data Pribadi yang
+        bersifat spesifik.
+      en: >-
+        For consultations we process your health data and information (symptom
+        history and test results), which is specific personal data under the law.
+
+  - id: PDP-DATA-04
+    status: needs_review
+    category: data
+    requirement_type: legal
+    legal_mapping: interpretive
+    review_note:
+      id: >-
+        Pemetaan interpretatif. Pasal 16 ayat (2) huruf f mensyaratkan pemrosesan
+        dilakukan dengan memberitahukan tujuan dan aktivitas pemrosesan, dan Pasal 16
+        ayat (1) huruf a menyebut pemerolehan dan pengumpulan sebagai aktivitas
+        pemrosesan. Penjelasan Pasal 27 menyatakan transparan berarti Subjek Data
+        Pribadi mengetahui bagaimana Data Pribadinya diproses. Undang-undang tidak
+        secara tegas mewajibkan penyebutan sumber data. Putuskan: persyaratan hukum,
+        praktik terbaik, atau dikeluarkan.
+      en: >-
+        Interpretive mapping. Article 16(2)(f) requires processing to be carried out
+        by notifying the purpose and processing activities, and Article 16(1)(a)
+        lists obtaining and collecting as processing activities. The Elucidation of
+        Article 27 says transparency means the data subject knows how their data is
+        processed. The law does not expressly require naming data sources. Decide:
+        legal requirement, best practice, or exclude.
+    title:
+      id: Sumber dan cara memperoleh Data Pribadi
+      en: Sources and methods of collection
+    explanation:
+      id: >-
+        Pasal 16 ayat (2) huruf f mensyaratkan pemrosesan dilakukan dengan
+        memberitahukan tujuan dan aktivitas pemrosesan, dan Pasal 16 ayat (1) huruf a
+        menyebut pemerolehan dan pengumpulan sebagai bagian dari pemrosesan.
+        Kebijakan perlu menjelaskan dari mana dan bagaimana Data Pribadi diperoleh:
+        langsung dari Subjek Data Pribadi, secara otomatis (mis. cookie atau log),
+        atau dari pihak lain.
+      en: >-
+        Article 16(2)(f) requires processing to be carried out by notifying the
+        purpose and processing activities, and Article 16(1)(a) lists obtaining and
+        collecting as part of processing. The policy should explain where and how
+        personal data is obtained: directly from the data subject, automatically
+        (e.g., cookies or logs), or from other parties.
+    references:
+      - { provision: p16-1, role: basis, pinpoint: { id: huruf a, en: letter a } }
+      - { provision: p16-2, role: basis, pinpoint: { id: huruf f, en: letter f } }
+      - { provision: pj-p27, role: related }
+      - { provision: pj-p4-3-f, role: related }
+    applies_when: always
+    look_for:
+      id:
+        - Data yang diberikan langsung oleh pengguna
+        - "Pengumpulan otomatis: cookie, SDK, log server, lokasi perangkat"
+        - Data dari pihak lain (mitra, afiliasi, sumber publik)
+      en:
+        - Data provided directly by users
+        - "Automatic collection: cookies, SDKs, server logs, device location"
+        - Data from other parties (partners, affiliates, public sources)
+    criteria:
+      addressed:
+        id: Menjelaskan cara Data Pribadi diperoleh, mencakup pengumpulan langsung dan, jika ada, pengumpulan otomatis serta sumber pihak lain.
+        en: Explains how personal data is obtained, covering direct collection and, where applicable, automatic collection and third-party sources.
+      partially_addressed:
+        id: Hanya menyebut sebagian cara (mis. hanya "data yang Anda berikan") padahal cara lain tampak digunakan, atau samar tentang sumber pihak lain.
+        en: Mentions only some methods (e.g., only "data you provide") while others appear to be used, or is vague about third-party sources.
+      not_found:
+        id: Tidak menjelaskan bagaimana atau dari mana Data Pribadi diperoleh.
+        en: Does not explain how or from where personal data is obtained.
+    next_step:
+      id: "Jelaskan setiap cara memperoleh data: langsung dari pengguna, otomatis (cookie, SDK, log), dan dari pihak lain (sebutkan jenis sumbernya)."
+      en: "Describe each way you obtain data: directly from users, automatically (cookies, SDKs, logs), and from other parties (name the types of sources)."
+    example_wording:
+      id: >-
+        Kami memperoleh Data Pribadi (a) langsung dari Anda saat mendaftar atau
+        menghubungi kami; (b) secara otomatis melalui cookie dan log server saat Anda
+        menggunakan situs kami; dan (c) dari mitra pembayaran untuk mengonfirmasi
+        transaksi.
+      en: >-
+        We obtain personal data (a) directly from you when you register or contact
+        us; (b) automatically through cookies and server logs when you use our site;
+        and (c) from payment partners to confirm transactions.
+
+  # ------------------------------------------------------ purpose and basis
+  - id: PDP-PURP-01
+    status: active
+    category: purpose
+    requirement_type: legal
+    legal_mapping: direct
+    title:
+      id: Tujuan pemrosesan
+      en: Purposes of processing
+    explanation:
+      id: >-
+        Pasal 5 memberi hak atas Informasi tentang tujuan permintaan dan penggunaan
+        Data Pribadi. Pasal 16 ayat (2) huruf f mensyaratkan pemberitahuan tujuan
+        pemrosesan, dan Pasal 21 ayat (1) huruf b mewajibkannya untuk pemrosesan
+        berdasarkan persetujuan. Menurut Penjelasan Pasal 27, tujuan pemrosesan harus
+        eksplisit, sah, dan ditentukan pada saat pengumpulan.
+      en: >-
+        Article 5 gives a right to information about the purpose of requesting and
+        using personal data. Article 16(2)(f) requires processing purposes to be
+        notified, and Article 21(1)(b) requires this for consent-based processing.
+        Per the Elucidation of Article 27, purposes must be explicit, lawful and set
+        at the time of collection.
+    references:
+      - { provision: p5, role: basis, pinpoint: { id: tujuan permintaan dan penggunaan Data Pribadi, en: purpose of requesting and using the personal data } }
+      - { provision: p16-2, role: basis, pinpoint: { id: huruf f, en: letter f } }
+      - { provision: p21-1, role: basis, pinpoint: { id: huruf b, en: letter b } }
+      - { provision: pj-p27, role: related }
+    applies_when: always
+    look_for:
+      id:
+        - Daftar tujuan yang spesifik (mis. pengelolaan akun, pengiriman, pencegahan penipuan, pemasaran)
+        - Tujuan untuk setiap kategori pemrosesan
+      en:
+        - A list of specific purposes (e.g., account management, delivery, fraud prevention, marketing)
+        - Purposes for each kind of processing
+    criteria:
+      addressed:
+        id: Menyebutkan tujuan penggunaan Data Pribadi secara spesifik dan konkret.
+        en: States specific, concrete purposes for using personal data.
+      partially_addressed:
+        id: Tujuan hanya disebut secara samar atau terbuka (mis. "keperluan bisnis", "dan tujuan lainnya"), atau tidak ada tujuan untuk sebagian pemrosesan yang dijelaskan di bagian lain.
+        en: States purposes only vaguely or open-endedly (e.g., "business purposes", "and other purposes"), or gives no purpose for some processing described elsewhere.
+      not_found:
+        id: Tidak menyebutkan tujuan pemrosesan.
+        en: No purposes stated.
+    next_step:
+      id: Cantumkan setiap tujuan secara spesifik dan hindari frasa terbuka seperti "tujuan lainnya".
+      en: List each specific purpose and avoid open-ended phrases such as "other purposes".
+    example_wording:
+      id: >-
+        Kami menggunakan Data Pribadi Anda untuk: (a) membuat dan mengelola akun;
+        (b) memproses dan mengirimkan pesanan; (c) mencegah penipuan; dan
+        (d) mengirimkan informasi promosi jika Anda menyetujuinya.
+      en: >-
+        We use your personal data to: (a) create and manage your account; (b) process
+        and deliver orders; (c) prevent fraud; and (d) send promotional information
+        if you agree.
+
+  - id: PDP-BASIS-01
+    status: active
+    category: purpose
+    requirement_type: legal
+    legal_mapping: direct
+    title:
+      id: Dasar pemrosesan (legalitas)
+      en: Legal basis for processing
+    explanation:
+      id: >-
+        Pasal 20 mewajibkan Pengendali memiliki dasar pemrosesan, yaitu satu atau
+        lebih dari enam dasar dalam Pasal 20 ayat (2). Pasal 5 memberi hak atas
+        Informasi tentang dasar kepentingan hukum, dan Pasal 21 ayat (1) huruf a
+        mewajibkan penyampaian legalitas pemrosesan. Kebijakan perlu menyebutkan dasar
+        pemrosesan yang digunakan, sebaiknya untuk setiap tujuan.
+      en: >-
+        Article 20 requires the controller to have a processing basis: one or more of
+        the six bases in Article 20(2). Article 5 gives a right to information about
+        the legal-interest basis, and Article 21(1)(a) requires the legality of
+        processing to be conveyed. The policy should state the bases relied on,
+        ideally for each purpose.
+    references:
+      - { provision: p5, role: basis, pinpoint: { id: dasar kepentingan hukum, en: legal-interest basis } }
+      - { provision: p21-1, role: basis, pinpoint: { id: huruf a, en: letter a } }
+      - { provision: p20-1, role: related }
+      - { provision: p20-2, role: related }
+    applies_when: always
+    look_for:
+      id:
+        - Persetujuan eksplisit, perjanjian, kewajiban hukum, kepentingan vital, tugas kepentingan umum atau pelayanan publik, atau kepentingan yang sah lainnya
+        - Dasar pemrosesan untuk setiap tujuan
+      en:
+        - Explicit consent, contract, legal obligation, vital interests, public interest or public service task, or other legitimate interests
+        - The basis for each purpose
+    criteria:
+      addressed:
+        id: Menyebutkan dasar pemrosesan yang digunakan (dari Pasal 20 ayat (2)), sebaiknya untuk setiap tujuan.
+        en: Identifies the bases relied on (from Article 20(2)), ideally per purpose.
+      partially_addressed:
+        id: Menyebut dasar hanya secara umum (mis. "sesuai hukum yang berlaku"), atau hanya satu dasar padahal pemrosesan yang dijelaskan jelas memakai dasar lain.
+        en: Refers to a basis only generally (e.g., "as permitted by law"), or names one basis while the processing described clearly relies on others.
+      not_found:
+        id: Tidak menyebutkan dasar pemrosesan.
+        en: No legal basis stated.
+    next_step:
+      id: Untuk setiap tujuan, sebutkan dasar pemrosesan dalam Pasal 20 ayat (2) yang digunakan.
+      en: For each purpose, state which basis in Article 20(2) you rely on.
+    example_wording:
+      id: >-
+        Kami memproses Data Pribadi untuk mengirimkan pesanan berdasarkan pemenuhan
+        kewajiban perjanjian dengan Anda (Pasal 20 ayat (2) huruf b UU PDP), dan untuk
+        pemasaran berdasarkan persetujuan eksplisit Anda (Pasal 20 ayat (2) huruf a
+        UU PDP).
+      en: >-
+        We process personal data to deliver your orders to perform our contract with
+        you (Article 20(2)(b) of the PDP Law), and for marketing based on your
+        explicit consent (Article 20(2)(a)).
+
+  # --------------------------------------------------------------- retention
+  - id: PDP-RET-01
+    status: active
+    category: retention
+    requirement_type: legal
+    legal_mapping: direct
+    type_overrides: [consent_not_relied_on]
+    title:
+      id: Jangka waktu retensi
+      en: Retention period
+    explanation:
+      id: >-
+        Pasal 21 ayat (1) huruf d mewajibkan penyampaian jangka waktu retensi dokumen
+        yang memuat Data Pribadi. Pasal 16 ayat (2) huruf g menyatakan Data Pribadi
+        dimusnahkan dan/atau dihapus setelah masa retensi berakhir, kecuali ditentukan
+        lain oleh peraturan perundang-undangan.
+      en: >-
+        Article 21(1)(d) requires the retention period of documents containing
+        personal data to be conveyed. Article 16(2)(g) says personal data is
+        destroyed and/or deleted after the retention period ends, unless the law
+        provides otherwise.
+    references:
+      - { provision: p21-1, role: basis, pinpoint: { id: huruf d, en: letter d } }
+      - { provision: p16-2, role: related, pinpoint: { id: huruf g, en: letter g } }
+    applies_when: always
+    look_for:
+      id:
+        - Jangka waktu penyimpanan (angka) atau kriteria objektif per kategori data
+        - Apa yang terjadi setelah masa retensi (penghapusan atau pemusnahan)
+      en:
+        - Retention periods (numbers) or objective criteria per data category
+        - What happens after the retention period (deletion or destruction)
+    criteria:
+      addressed:
+        id: Menyebutkan berapa lama Data Pribadi atau dokumen yang memuatnya disimpan, dalam jangka waktu atau kriteria yang jelas per kategori.
+        en: States how long personal data (or documents containing it) is kept, as periods or clear criteria per category.
+      partially_addressed:
+        id: Hanya memakai frasa samar (mis. "selama diperlukan") tanpa jangka waktu atau kriteria, atau hanya mencakup sebagian kategori.
+        en: Uses only vague wording (e.g., "as long as necessary") without periods or criteria, or covers only some categories.
+      not_found:
+        id: Tidak ada informasi retensi.
+        en: No retention information.
+    next_step:
+      id: Sebutkan jangka waktu retensi (atau kriteria objektif) untuk setiap kategori data dan apa yang terjadi setelahnya.
+      en: State retention periods (or objective criteria) for each data category and what happens afterwards.
+    example_wording:
+      id: >-
+        Kami menyimpan data transaksi selama [10] tahun sejak transaksi untuk memenuhi
+        kewajiban hukum, dan data akun selama akun aktif ditambah [12] bulan. Setelah
+        itu, data dihapus atau dimusnahkan.
+      en: >-
+        We keep transaction records for [10] years after each transaction to meet
+        legal obligations, and account data while your account is active plus
+        [12] months. After that, the data is deleted or destroyed.
+
+  - id: PDP-RET-02
+    status: active
+    category: retention
+    requirement_type: legal
+    legal_mapping: direct
+    type_overrides: [consent_not_relied_on]
+    title:
+      id: Jangka waktu pemrosesan
+      en: Processing period
+    explanation:
+      id: >-
+        Pasal 21 ayat (1) huruf f mewajibkan penyampaian jangka waktu pemrosesan Data
+        Pribadi. Menurut Penjelasan, ini adalah rentang waktu dimulainya hingga
+        selesainya serangkaian kegiatan pemrosesan sesuai dengan tujuannya, yang dapat
+        berbeda dari jangka waktu retensi dokumen.
+      en: >-
+        Article 21(1)(f) requires the period of processing to be conveyed. Per the
+        Elucidation, this is the time from the start to the completion of the
+        processing activities for a purpose, which can differ from the document
+        retention period.
+    references:
+      - { provision: p21-1, role: basis, pinpoint: { id: huruf f, en: letter f } }
+      - { provision: pj-p21-1-f, role: basis }
+    applies_when: always
+    look_for:
+      id:
+        - Kapan pemrosesan untuk setiap tujuan dimulai dan berakhir
+        - "Contoh: \"selama akun aktif\", \"sampai persetujuan ditarik\", \"selama program berlangsung\""
+      en:
+        - When processing for each purpose starts and ends
+        - "Examples: \"while your account is active\", \"until you withdraw consent\", \"for the duration of the programme\""
+    criteria:
+      addressed:
+        id: Menyebutkan kapan pemrosesan untuk setiap tujuan dimulai dan berakhir.
+        en: States when processing for each purpose starts and ends.
+      partially_addressed:
+        id: Menyebut jangka waktu hanya untuk sebagian tujuan atau hanya dengan frasa samar.
+        en: Gives a period for only some purposes, or only in vague terms.
+      not_found:
+        id: Tidak ada informasi tentang berapa lama pemrosesan berlangsung.
+        en: No information on how long processing lasts.
+    next_step:
+      id: Untuk setiap tujuan, sebutkan berapa lama pemrosesan berlangsung (mis. sampai akun ditutup atau persetujuan ditarik).
+      en: For each purpose, state how long processing continues (e.g., until account closure or consent withdrawal).
+    example_wording:
+      id: >-
+        Kami memproses data Anda untuk tujuan pemasaran sejak Anda memberikan
+        persetujuan hingga Anda menariknya kembali.
+      en: >-
+        We process your data for marketing from when you give consent until you
+        withdraw it.
+
+  # ------------------------------------------------------ sharing, transfers
+  - id: PDP-SHARE-01
+    status: active
+    category: sharing
+    requirement_type: legal
+    legal_mapping: direct
+    title:
+      id: Pengungkapan dan transfer kepada pihak lain
+      en: Disclosure and transfer to other parties
+    explanation:
+      id: >-
+        Pasal 16 ayat (1) huruf e menyebut transfer, penyebarluasan, dan pengungkapan
+        sebagai bentuk pemrosesan, dan Pasal 16 ayat (2) huruf f mensyaratkan
+        pemrosesan dilakukan dengan memberitahukan tujuan dan aktivitas pemrosesan.
+        Kebijakan perlu menjelaskan apakah Data Pribadi dibagikan atau ditransfer
+        kepada pihak lain, kepada siapa (setidaknya kategori penerima), dan untuk
+        tujuan apa.
+      en: >-
+        Article 16(1)(e) lists transfer, dissemination and disclosure as forms of
+        processing, and Article 16(2)(f) requires processing to be carried out by
+        notifying the purpose and processing activities. The policy should say
+        whether personal data is shared with or transferred to other parties, to whom
+        (at least categories of recipients), and why.
+    references:
+      - { provision: p16-1, role: basis, pinpoint: { id: huruf e, en: letter e } }
+      - { provision: p16-2, role: basis, pinpoint: { id: huruf f, en: letter f } }
+      - { provision: pj-p16-1-e, role: related }
+    applies_when: always
+    look_for:
+      id:
+        - "Kategori penerima: penyedia layanan atau prosesor, afiliasi, mitra, instansi berwenang"
+        - Tujuan pembagian untuk setiap penerima
+        - Pernyataan bahwa data tidak dijual atau dibagikan (jika berlaku)
+      en:
+        - "Categories of recipients: service providers or processors, affiliates, partners, authorities"
+        - The purpose of sharing with each recipient
+        - A statement that data is not sold or shared (if applicable)
+    criteria:
+      addressed:
+        id: Menyatakan apakah Data Pribadi dibagikan atau ditransfer kepada pihak lain dan menyebutkan penerima atau kategori penerima beserta tujuannya.
+        en: States whether personal data is shared or transferred and names the recipients or categories of recipients and the purpose.
+      partially_addressed:
+        id: Menyebut pembagian data secara samar (mis. "mitra tepercaya", "pihak ketiga") tanpa kategori atau tujuan.
+        en: Mentions sharing only vaguely (e.g., "trusted partners", "third parties") without categories or purposes.
+      not_found:
+        id: Tidak ada informasi tentang pengungkapan atau transfer kepada pihak lain.
+        en: No information on disclosure or transfer to other parties.
+    next_step:
+      id: Cantumkan kategori penerima (penyedia layanan, afiliasi, mitra pembayaran, instansi berwenang) dan alasan data dibagikan kepada masing-masing.
+      en: List categories of recipients (service providers, affiliates, payment partners, authorities) and why data is shared with each.
+    example_wording:
+      id: >-
+        Kami membagikan Data Pribadi kepada: (a) penyedia layanan logistik untuk
+        mengirimkan pesanan; (b) penyedia layanan pembayaran untuk memproses
+        transaksi; dan (c) instansi berwenang jika diwajibkan oleh peraturan
+        perundang-undangan.
+      en: >-
+        We share personal data with: (a) logistics providers to deliver orders;
+        (b) payment service providers to process transactions; and (c) competent
+        authorities where the law requires it.
+
+  - id: PDP-XFER-01
+    status: active
+    category: sharing
+    requirement_type: legal
+    legal_mapping: direct
+    title:
+      id: Transfer ke luar wilayah hukum Indonesia
+      en: Transfers outside Indonesia
+    explanation:
+      id: >-
+        Transfer adalah aktivitas pemrosesan yang perlu diberitahukan (Pasal 16), dan
+        Pasal 56 mengatur transfer Data Pribadi ke luar wilayah hukum Negara Republik
+        Indonesia. Jika Data Pribadi disimpan atau diakses di luar negeri, termasuk
+        melalui penyedia cloud, kebijakan perlu menyatakannya dengan jelas.
+      en: >-
+        Transfer is a processing activity that must be notified (Article 16), and
+        Article 56 governs transfers of personal data outside Indonesia. If personal
+        data is stored or accessed abroad, including through cloud providers, the
+        policy should say so clearly.
+    references:
+      - { provision: p16-1, role: basis, pinpoint: { id: huruf e, en: letter e } }
+      - { provision: p16-2, role: basis, pinpoint: { id: huruf f, en: letter f } }
+      - { provision: pj-p16-1-e, role: related }
+      - { provision: p56, role: related }
+    applies_when:
+      any:
+        - { context: international_transfer, in: [yes, unsure] }
+    look_for:
+      id:
+        - Pernyataan bahwa data ditransfer atau disimpan di luar Indonesia
+        - Negara tujuan atau jenis penerima di luar negeri
+      en:
+        - A statement that data is transferred or stored outside Indonesia
+        - Destination countries or types of overseas recipients
+    criteria:
+      addressed:
+        id: Menyatakan dengan jelas bahwa Data Pribadi (dapat) ditransfer atau disimpan di luar Indonesia, sebaiknya dengan menyebut negara atau jenis penerima.
+        en: Clearly states that personal data is (or may be) transferred to or stored outside Indonesia, ideally naming countries or recipient types.
+      partially_addressed:
+        id: Menyinggung transfer secara ambigu (mis. "server global", "penyedia cloud") tanpa menyatakan data dapat keluar dari Indonesia.
+        en: Refers to transfers only ambiguously (e.g., "global servers", "cloud providers") without saying data may leave Indonesia.
+      not_found:
+        id: Tidak menyebut transfer ke luar Indonesia.
+        en: No mention of transfers outside Indonesia.
+    next_step:
+      id: Nyatakan apakah data keluar dari Indonesia, ke negara atau jenis penerima mana, dan untuk tujuan apa.
+      en: State whether data leaves Indonesia, to which countries or types of recipients, and why.
+    example_wording:
+      id: >-
+        Data Pribadi Anda disimpan di pusat data penyedia layanan cloud kami di
+        [NEGARA], sehingga ditransfer ke luar wilayah hukum Negara Republik Indonesia.
+      en: >-
+        Your personal data is stored in our cloud provider's data centres in
+        [COUNTRY], so it is transferred outside the Republic of Indonesia.
+
+  - id: PDP-XFER-02
+    status: active
+    category: sharing
+    requirement_type: best_practice
+    title:
+      id: Pelindungan untuk transfer ke luar negeri
+      en: Safeguards for transfers outside Indonesia
+    explanation:
+      id: >-
+        Pasal 56 mewajibkan Pengendali memastikan negara penerima memiliki tingkat
+        Pelindungan Data Pribadi yang setara atau lebih tinggi. Jika tidak, Pengendali
+        wajib memastikan pelindungan yang memadai dan bersifat mengikat, dan jika
+        keduanya tidak terpenuhi, wajib mendapatkan persetujuan Subjek Data Pribadi.
+        UU PDP tidak secara tegas mewajibkan hal ini dicantumkan dalam kebijakan,
+        tetapi menjelaskannya menunjukkan bagaimana kewajiban tersebut dipenuhi.
+      en: >-
+        Article 56 requires the controller to ensure the receiving country has
+        equivalent or higher protection. If not, the controller must ensure adequate
+        and binding protection, and if neither is met, it must obtain the data
+        subject's consent. The law doesn't expressly require this in the policy, but
+        explaining it shows how the obligation is met.
+    references:
+      - { provision: p56, role: related }
+    applies_when:
+      any:
+        - { context: international_transfer, in: [yes, unsure] }
+    look_for:
+      id:
+        - "Mekanisme yang digunakan: tingkat pelindungan setara, perjanjian atau klausul yang mengikat, atau persetujuan"
+      en:
+        - "The mechanism relied on: equivalent protection, binding contracts or clauses, or consent"
+    criteria:
+      addressed:
+        id: Menjelaskan pelindungan yang digunakan untuk transfer ke luar negeri (pelindungan setara, pelindungan yang memadai dan mengikat, atau persetujuan).
+        en: Explains the safeguard used for overseas transfers (equivalent protection, adequate and binding protection, or consent).
+      partially_addressed:
+        id: Hanya menyatakan pelindungan secara umum ("kami memastikan pelindungan yang memadai") tanpa menjelaskan mekanismenya.
+        en: Only asserts protection in general ("we ensure adequate protection") without explaining the mechanism.
+      not_found:
+        id: Tidak menjelaskan pelindungan untuk transfer ke luar negeri.
+        en: Does not explain safeguards for overseas transfers.
+    next_step:
+      id: "Jelaskan dasar yang digunakan untuk setiap transfer ke luar negeri: pelindungan setara, perjanjian yang mengikat, atau persetujuan Subjek Data Pribadi."
+      en: "Explain the basis for each overseas transfer: equivalent protection, binding agreements, or the data subject's consent."
+    example_wording:
+      id: >-
+        Jika Data Pribadi ditransfer ke negara yang tingkat pelindungannya belum
+        setara dengan UU PDP, kami menggunakan perjanjian tertulis yang mengikat
+        penerima untuk melindungi Data Pribadi sesuai standar UU PDP.
+      en: >-
+        When personal data goes to a country whose protection is not equivalent to
+        the PDP Law, we use written agreements that bind the recipient to protect the
+        data to the PDP Law's standard.
+
+  # ------------------------------------------------------------------ rights
+  - id: PDP-RIGHT-01
+    status: active
+    category: rights
+    requirement_type: legal
+    legal_mapping: direct
+    type_overrides: [consent_not_relied_on]
+    title:
+      id: Hak melengkapi, memperbarui, dan memperbaiki data
+      en: Right to complete, update and correct data
+    explanation:
+      id: >-
+        Pasal 6 memberi hak untuk melengkapi, memperbarui, dan/atau memperbaiki
+        kesalahan dan/atau ketidakakuratan Data Pribadi. Untuk pemrosesan berdasarkan
+        persetujuan, Pasal 21 ayat (1) huruf g mewajibkan Pengendali menyampaikan hak
+        Subjek Data Pribadi. Pasal 30 ayat (1) mewajibkan pembaruan atau perbaikan
+        paling lambat 3 x 24 jam sejak permintaan diterima.
+      en: >-
+        Article 6 gives the right to complete, update and/or correct errors and
+        inaccuracies in personal data. For consent-based processing, Article 21(1)(g)
+        requires the controller to convey data subjects' rights. Article 30(1)
+        requires updates or corrections within 3 x 24 hours of receiving the request.
+    references:
+      - { provision: p6, role: basis }
+      - { provision: p21-1, role: basis, pinpoint: { id: huruf g, en: letter g } }
+      - { provision: p30-1, role: related }
+    applies_when: always
+    look_for:
+      id:
+        - Hak untuk melengkapi, memperbarui, atau memperbaiki data
+        - Cara menggunakan hak tersebut
+      en:
+        - The right to complete, update or correct data
+        - How to use the right
+    criteria:
+      addressed:
+        id: Memberi tahu bahwa Subjek Data Pribadi berhak melengkapi, memperbarui, dan/atau memperbaiki Data Pribadinya.
+        en: Tells data subjects they can complete, update and/or correct their personal data.
+      partially_addressed:
+        id: Hak disebut secara terbatas (mis. hanya sebagian data, atau hanya lewat pengaturan akun tanpa cara meminta perbaikan).
+        en: Mentions the right only in a limited way (e.g., only some fields, or only via account settings with no way to request corrections).
+      not_found:
+        id: Hak ini tidak disebutkan.
+        en: This right is not mentioned.
+    next_step:
+      id: Nyatakan hak ini dan cara menggunakannya.
+      en: State this right and how to use it.
+    example_wording:
+      id: >-
+        Anda berhak melengkapi, memperbarui, dan/atau memperbaiki Data Pribadi Anda
+        yang tidak akurat. Ajukan permohonan melalui [KONTAK]; kami akan
+        menindaklanjutinya paling lambat 3 x 24 jam sejak permohonan diterima.
+      en: >-
+        You have the right to complete, update and/or correct inaccurate personal
+        data about you. Send your request to [CONTACT]; we will act on it within
+        3 x 24 hours of receiving it.
+
+  - id: PDP-RIGHT-02
+    status: active
+    category: rights
+    requirement_type: legal
+    legal_mapping: direct
+    type_overrides: [consent_not_relied_on]
+    title:
+      id: Hak akses dan memperoleh salinan
+      en: Right of access and to a copy
+    explanation:
+      id: >-
+        Pasal 7 memberi hak untuk mendapatkan akses dan memperoleh salinan Data
+        Pribadi. Menurut Penjelasan Pasal 7, salinan diberikan secara gratis, kecuali
+        untuk kondisi tertentu yang memang membutuhkan biaya. Pasal 32 ayat (2)
+        mewajibkan akses diberikan paling lambat 3 x 24 jam.
+      en: >-
+        Article 7 gives the right to access and obtain a copy of personal data. Per
+        the Elucidation of Article 7, copies are free except in certain conditions
+        that genuinely require a cost. Article 32(2) requires access within
+        3 x 24 hours.
+    references:
+      - { provision: p7, role: basis }
+      - { provision: p21-1, role: basis, pinpoint: { id: huruf g, en: letter g } }
+      - { provision: pj-p7, role: related }
+      - { provision: p32, role: related }
+    applies_when: always
+    look_for:
+      id:
+        - Hak untuk mengakses data
+        - Hak untuk memperoleh salinan data
+        - Ketentuan biaya (jika ada)
+      en:
+        - The right to access data
+        - The right to obtain a copy
+        - Any fees
+    criteria:
+      addressed:
+        id: Memberi tahu bahwa Subjek Data Pribadi berhak mengakses dan memperoleh salinan Data Pribadinya.
+        en: Tells data subjects they can access and obtain a copy of their personal data.
+      partially_addressed:
+        id: Hanya menyebut akses tanpa salinan (atau sebaliknya), atau mengenakan biaya secara umum untuk salinan.
+        en: Mentions access without copies (or the reverse), or charges a general fee for copies.
+      not_found:
+        id: Hak ini tidak disebutkan.
+        en: This right is not mentioned.
+    next_step:
+      id: Nyatakan hak akses dan hak memperoleh salinan, serta bahwa salinan diberikan tanpa biaya kecuali dalam kondisi tertentu.
+      en: State the rights of access and to a copy, and that copies are free except in certain conditions.
+    example_wording:
+      id: >-
+        Anda berhak mengakses dan memperoleh salinan Data Pribadi Anda. Salinan
+        diberikan tanpa biaya, kecuali dalam kondisi tertentu yang memerlukan biaya
+        dan akan kami beritahukan terlebih dahulu.
+      en: >-
+        You have the right to access and get a copy of your personal data. Copies are
+        free, except in certain conditions that require a cost, which we will tell you
+        about first.
+
+  - id: PDP-RIGHT-03
+    status: active
+    category: rights
+    requirement_type: legal
+    legal_mapping: direct
+    type_overrides: [consent_not_relied_on]
+    title:
+      id: Hak mengakhiri pemrosesan, menghapus, dan memusnahkan
+      en: Right to end processing, delete and destroy data
+    explanation:
+      id: >-
+        Pasal 8 memberi hak untuk mengakhiri pemrosesan, menghapus, dan/atau
+        memusnahkan Data Pribadi sesuai dengan ketentuan peraturan
+        perundang-undangan. Pasal 43 ayat (1) huruf c mewajibkan Pengendali menghapus
+        Data Pribadi jika terdapat permintaan Subjek Data Pribadi.
+      en: >-
+        Article 8 gives the right to end processing, delete and/or destroy personal
+        data in accordance with the law. Article 43(1)(c) requires the controller to
+        delete personal data when the data subject requests it.
+    references:
+      - { provision: p8, role: basis }
+      - { provision: p21-1, role: basis, pinpoint: { id: huruf g, en: letter g } }
+      - { provision: p43-1, role: related }
+    applies_when: always
+    look_for:
+      id:
+        - Hak meminta pemrosesan diakhiri
+        - Hak meminta penghapusan dan/atau pemusnahan data
+      en:
+        - The right to ask for processing to end
+        - The right to ask for deletion and/or destruction
+    criteria:
+      addressed:
+        id: Memberi tahu bahwa Subjek Data Pribadi dapat meminta pemrosesan diakhiri serta Data Pribadinya dihapus dan/atau dimusnahkan.
+        en: Tells data subjects they can ask for processing to end and their data to be deleted and/or destroyed.
+      partially_addressed:
+        id: Hanya menyebut penghapusan akun atau hanya satu unsur (mis. penghapusan tanpa pengakhiran pemrosesan), atau menyajikannya sebagai kebijaksanaan Pengendali, bukan hak.
+        en: Mentions only account deletion or one element (e.g., deletion but not ending processing), or presents it as the controller's discretion rather than a right.
+      not_found:
+        id: Hak ini tidak disebutkan.
+        en: This right is not mentioned.
+    next_step:
+      id: Nyatakan hak untuk meminta pengakhiran pemrosesan, penghapusan, dan pemusnahan Data Pribadi.
+      en: State the right to ask for processing to end and for data to be deleted and destroyed.
+    example_wording:
+      id: >-
+        Anda berhak meminta kami mengakhiri pemrosesan serta menghapus dan/atau
+        memusnahkan Data Pribadi Anda, sepanjang tidak ada kewajiban hukum yang
+        mengharuskan kami menyimpannya.
+      en: >-
+        You have the right to ask us to stop processing and to delete and/or destroy
+        your personal data, unless the law requires us to keep it.
+
+  - id: PDP-RIGHT-04
+    status: active
+    category: rights
+    requirement_type: legal
+    legal_mapping: direct
+    title:
+      id: Hak menarik kembali persetujuan
+      en: Right to withdraw consent
+    explanation:
+      id: >-
+        Pasal 9 memberi hak untuk menarik kembali persetujuan pemrosesan Data Pribadi.
+        Pasal 40 mewajibkan Pengendali menghentikan pemrosesan paling lambat
+        3 x 24 jam sejak menerima permintaan penarikan persetujuan.
+      en: >-
+        Article 9 gives the right to withdraw consent to processing. Article 40
+        requires the controller to stop processing within 3 x 24 hours of receiving
+        the withdrawal request.
+    references:
+      - { provision: p9, role: basis }
+      - { provision: p21-1, role: basis, pinpoint: { id: huruf g, en: letter g } }
+      - { provision: p40, role: related }
+    applies_when:
+      any:
+        - { context: consent_basis, in: [yes, unsure] }
+    look_for:
+      id:
+        - Hak menarik kembali persetujuan
+        - Cara menarik persetujuan
+      en:
+        - The right to withdraw consent
+        - How to withdraw it
+    criteria:
+      addressed:
+        id: Memberi tahu bahwa persetujuan dapat ditarik kembali dan cara melakukannya.
+        en: Tells data subjects they can withdraw consent and how.
+      partially_addressed:
+        id: Hanya menyebut berhenti berlangganan email pemasaran, tanpa hak umum menarik persetujuan untuk pemrosesan lain yang berbasis persetujuan.
+        en: Mentions only unsubscribing from marketing emails, with no general right to withdraw consent for other consent-based processing.
+      not_found:
+        id: Hak ini tidak disebutkan.
+        en: This right is not mentioned.
+    next_step:
+      id: Nyatakan hak menarik kembali persetujuan dan cara melakukannya.
+      en: State the right to withdraw consent and how to do it.
+    example_wording:
+      id: >-
+        Anda dapat menarik kembali persetujuan Anda kapan saja melalui
+        [PENGATURAN/KONTAK]. Kami akan menghentikan pemrosesan terkait paling lambat
+        3 x 24 jam sejak menerima permintaan Anda.
+      en: >-
+        You can withdraw your consent at any time via [SETTINGS/CONTACT]. We will stop
+        the related processing within 3 x 24 hours of receiving your request.
+
+  - id: PDP-RIGHT-05
+    status: active
+    category: rights
+    requirement_type: legal
+    legal_mapping: direct
+    type_overrides: [consent_not_relied_on]
+    title:
+      id: Hak keberatan atas keputusan otomatis dan pemrofilan
+      en: Right to object to automated decisions and profiling
+    explanation:
+      id: >-
+        Pasal 10 ayat (1) memberi hak untuk mengajukan keberatan atas pengambilan
+        keputusan yang hanya didasarkan pada pemrosesan secara otomatis, termasuk
+        pemrofilan, yang menimbulkan akibat hukum atau berdampak signifikan.
+        Penjelasannya mendefinisikan pemrofilan. Ketentuan lebih lanjut mengenai
+        pengajuan keberatan diatur dalam Peraturan Pemerintah (Pasal 10 ayat (2)).
+      en: >-
+        Article 10(1) gives the right to object to decisions based solely on automated
+        processing, including profiling, that have legal consequences or a
+        significant impact. Its Elucidation defines profiling. Further rules on
+        objections are left to a Government Regulation (Article 10(2)).
+    references:
+      - { provision: p10-1, role: basis }
+      - { provision: p21-1, role: basis, pinpoint: { id: huruf g, en: letter g } }
+      - { provision: pj-p10-1, role: related }
+    applies_when:
+      any:
+        - { context: automated_decisions, in: [yes, unsure] }
+    look_for:
+      id:
+        - Hak keberatan atas keputusan otomatis atau pemrofilan
+        - Penjelasan kapan keputusan otomatis digunakan
+      en:
+        - The right to object to automated decisions or profiling
+        - When automated decisions are used
+    criteria:
+      addressed:
+        id: Memberi tahu hak mengajukan keberatan atas keputusan yang hanya didasarkan pada pemrosesan otomatis, termasuk pemrofilan, yang berdampak hukum atau signifikan.
+        en: Tells data subjects they can object to decisions based solely on automated processing, including profiling, with legal or significant effects.
+      partially_addressed:
+        id: Menyebut pemrofilan atau pemrosesan otomatis tanpa hak keberatan, atau hanya opsi menolak iklan yang dipersonalisasi.
+        en: Mentions profiling or automated processing without the right to object, or only an opt-out from personalised ads.
+      not_found:
+        id: Hak ini tidak disebutkan.
+        en: This right is not mentioned.
+    next_step:
+      id: Nyatakan hak mengajukan keberatan atas keputusan otomatis dan cara mengajukannya.
+      en: State the right to object to automated decisions and how to do it.
+    example_wording:
+      id: >-
+        Jika kami mengambil keputusan yang hanya didasarkan pada pemrosesan otomatis,
+        termasuk pemrofilan, yang menimbulkan akibat hukum atau berdampak signifikan
+        bagi Anda, Anda berhak mengajukan keberatan melalui [KONTAK].
+      en: >-
+        If we make a decision based solely on automated processing, including
+        profiling, that has legal consequences or significantly affects you, you have
+        the right to object via [CONTACT].
+
+  - id: PDP-RIGHT-06
+    status: active
+    category: rights
+    requirement_type: legal
+    legal_mapping: direct
+    type_overrides: [consent_not_relied_on]
+    title:
+      id: Hak menunda atau membatasi pemrosesan
+      en: Right to delay or restrict processing
+    explanation:
+      id: >-
+        Pasal 11 memberi hak untuk menunda atau membatasi pemrosesan Data Pribadi
+        secara proporsional sesuai dengan tujuan pemrosesan. Pasal 41 ayat (1)
+        mewajibkan Pengendali melaksanakannya paling lambat 3 x 24 jam sejak
+        permintaan diterima, dengan pengecualian dalam Pasal 41 ayat (2).
+      en: >-
+        Article 11 gives the right to delay or restrict processing proportionally to
+        the processing purpose. Article 41(1) requires the controller to do so within
+        3 x 24 hours of receiving the request, subject to the exceptions in
+        Article 41(2).
+    references:
+      - { provision: p11, role: basis }
+      - { provision: p21-1, role: basis, pinpoint: { id: huruf g, en: letter g } }
+      - { provision: p41-1, role: related }
+    applies_when: always
+    look_for:
+      id:
+        - Hak menunda atau membatasi pemrosesan
+      en:
+        - The right to delay or restrict processing
+    criteria:
+      addressed:
+        id: Memberi tahu bahwa Subjek Data Pribadi dapat meminta penundaan atau pembatasan pemrosesan.
+        en: Tells data subjects they can ask for processing to be delayed or restricted.
+      partially_addressed:
+        id: Hanya menyebut kasus sempit (mis. berhenti menerima pemasaran) tanpa hak umum menunda atau membatasi pemrosesan.
+        en: Mentions only a narrow case (e.g., stopping marketing) without a general right to delay or restrict processing.
+      not_found:
+        id: Hak ini tidak disebutkan.
+        en: This right is not mentioned.
+    next_step:
+      id: Nyatakan hak menunda atau membatasi pemrosesan dan cara menggunakannya.
+      en: State the right to delay or restrict processing and how to use it.
+    example_wording:
+      id: >-
+        Anda berhak meminta kami menunda atau membatasi pemrosesan Data Pribadi Anda
+        secara proporsional sesuai dengan tujuan pemrosesan.
+      en: >-
+        You have the right to ask us to delay or restrict the processing of your
+        personal data, in proportion to the purpose of the processing.
+
+  - id: PDP-RIGHT-07
+    status: active
+    category: rights
+    requirement_type: legal
+    legal_mapping: direct
+    type_overrides: [consent_not_relied_on]
+    title:
+      id: Hak menggugat dan menerima ganti rugi
+      en: Right to sue and receive compensation
+    explanation:
+      id: >-
+        Pasal 12 ayat (1) memberi hak untuk menggugat dan menerima ganti rugi atas
+        pelanggaran pemrosesan Data Pribadi sesuai dengan ketentuan peraturan
+        perundang-undangan. Tata cara pengenaan ganti rugi diatur lebih lanjut dalam
+        Peraturan Pemerintah (Pasal 12 ayat (2)).
+      en: >-
+        Article 12(1) gives the right to sue and receive compensation for violations
+        in the processing of personal data, in accordance with the law. The
+        compensation procedure is left to a Government Regulation (Article 12(2)).
+    references:
+      - { provision: p12-1, role: basis }
+      - { provision: p21-1, role: basis, pinpoint: { id: huruf g, en: letter g } }
+    applies_when: always
+    look_for:
+      id:
+        - Hak menggugat dan menerima ganti rugi
+      en:
+        - The right to sue and receive compensation
+    criteria:
+      addressed:
+        id: Memberi tahu hak untuk menggugat dan menerima ganti rugi atas pelanggaran pemrosesan Data Pribadi.
+        en: Tells data subjects they can sue and receive compensation for violations in processing their personal data.
+      partially_addressed:
+        id: Hanya menyebut pengaduan atau penyelesaian sengketa secara umum tanpa hak atas ganti rugi.
+        en: Mentions complaints or dispute resolution generally, without the right to compensation.
+      not_found:
+        id: Hak ini tidak disebutkan.
+        en: This right is not mentioned.
+    next_step:
+      id: Nyatakan bahwa Subjek Data Pribadi dapat menggugat dan menerima ganti rugi sesuai dengan ketentuan peraturan perundang-undangan.
+      en: State that data subjects may sue and receive compensation as provided by law.
+    example_wording:
+      id: >-
+        Anda berhak menggugat dan menerima ganti rugi atas pelanggaran pemrosesan
+        Data Pribadi Anda sesuai dengan ketentuan peraturan perundang-undangan.
+      en: >-
+        You have the right to sue and receive compensation for violations in the
+        processing of your personal data, as provided by law.
+
+  - id: PDP-RIGHT-08
+    status: active
+    category: rights
+    requirement_type: legal
+    legal_mapping: direct
+    type_overrides: [consent_not_relied_on]
+    title:
+      id: Hak memperoleh dan mengirimkan data (portabilitas)
+      en: Right to obtain and transmit data (portability)
+    explanation:
+      id: >-
+        Pasal 13 ayat (1) memberi hak untuk mendapatkan dan/atau menggunakan Data
+        Pribadi dalam struktur dan/atau format yang lazim digunakan atau dapat dibaca
+        oleh sistem elektronik. Pasal 13 ayat (2) memberi hak untuk menggunakan dan
+        mengirimkan Data Pribadi ke Pengendali Data Pribadi lain, sepanjang sistemnya
+        dapat saling berkomunikasi secara aman.
+      en: >-
+        Article 13(1) gives the right to obtain and/or use personal data in a
+        structure or format that is commonly used or machine-readable. Article 13(2)
+        gives the right to use and send the data to another controller, provided the
+        systems can communicate securely.
+    references:
+      - { provision: p13-1, role: basis }
+      - { provision: p13-2, role: basis }
+      - { provision: p21-1, role: basis, pinpoint: { id: huruf g, en: letter g } }
+    applies_when: always
+    look_for:
+      id:
+        - Hak memperoleh data dalam format yang lazim atau dapat dibaca mesin
+        - Hak mengirimkan data ke Pengendali lain
+      en:
+        - The right to obtain data in a commonly used or machine-readable format
+        - The right to send data to another controller
+    criteria:
+      addressed:
+        id: Memberi tahu hak memperoleh Data Pribadi dalam format yang lazim atau dapat dibaca mesin dan mengirimkannya ke Pengendali lain.
+        en: Tells data subjects they can obtain their data in a commonly used or machine-readable format and send it to another controller.
+      partially_addressed:
+        id: Hanya menyebut unduh atau ekspor data tanpa format atau pengiriman ke Pengendali lain, atau hanya salah satu unsur.
+        en: Mentions only downloading or exporting data, without the format or transmission to another controller, or only one of the two.
+      not_found:
+        id: Hak ini tidak disebutkan.
+        en: This right is not mentioned.
+    next_step:
+      id: Nyatakan hak memperoleh data dalam format yang lazim dan hak mengirimkannya ke Pengendali lain.
+      en: State the right to obtain data in a common format and to send it to another controller.
+    example_wording:
+      id: >-
+        Anda berhak memperoleh Data Pribadi Anda dalam format yang lazim digunakan
+        dan dapat dibaca mesin (mis. CSV atau JSON), serta meminta kami mengirimkannya
+        ke Pengendali Data Pribadi lain sepanjang sistemnya dapat saling berkomunikasi
+        secara aman.
+      en: >-
+        You have the right to get your personal data in a commonly used,
+        machine-readable format (e.g., CSV or JSON), and to ask us to send it to
+        another controller where the systems can communicate securely.
+
+  - id: PDP-RIGHT-09
+    status: active
+    category: rights
+    requirement_type: best_practice
+    title:
+      id: Jangka waktu tanggapan atas permohonan
+      en: Response times for requests
+    explanation:
+      id: >-
+        UU PDP menetapkan batas 3 x 24 jam untuk memperbarui atau memperbaiki data
+        (Pasal 30 ayat (1)), memberikan akses (Pasal 32 ayat (2)), menghentikan
+        pemrosesan setelah persetujuan ditarik (Pasal 40 ayat (2)), serta menunda dan
+        membatasi pemrosesan (Pasal 41 ayat (1)). Kebijakan tidak wajib mencantumkan
+        jangka waktu, tetapi jika dicantumkan, jangka waktunya sebaiknya tidak
+        melebihi batas tersebut.
+      en: >-
+        The PDP Law sets a 3 x 24 hour limit to update or correct data
+        (Article 30(1)), give access (Article 32(2)), stop processing after consent is
+        withdrawn (Article 40(2)), and delay or restrict processing (Article 41(1)).
+        The policy doesn't have to state response times, but any it states should not
+        exceed these limits.
+    references:
+      - { provision: p30-1, role: related }
+      - { provision: p32, role: related }
+      - { provision: p40, role: related }
+      - { provision: p41-1, role: related }
+    applies_when: always
+    look_for:
+      id:
+        - Jangka waktu tanggapan untuk permohonan pembaruan, akses, penarikan persetujuan, penundaan, atau pembatasan
+      en:
+        - Response times for update, access, consent-withdrawal, delay or restriction requests
+    criteria:
+      addressed:
+        id: Menyebutkan jangka waktu tanggapan yang tidak melebihi 3 x 24 jam untuk permohonan yang diatur pasal-pasal tersebut.
+        en: States response times that don't exceed 3 x 24 hours for the requests these articles cover.
+      partially_addressed:
+        id: Menyebutkan jangka waktu yang lebih lama dari 3 x 24 jam (mis. "14 hari kerja", "30 hari") untuk permohonan tersebut, atau hanya untuk sebagian jenis permohonan.
+        en: States longer times than 3 x 24 hours (e.g., "14 working days", "30 days") for these requests, or covers only some request types.
+      not_found:
+        id: Tidak ada jangka waktu tanggapan.
+        en: No response times stated.
+    next_step:
+      id: Jika mencantumkan jangka waktu, sesuaikan dengan batas 3 x 24 jam.
+      en: If you state response times, align them with the 3 x 24 hour limits.
+    example_wording:
+      id: >-
+        Kami akan menindaklanjuti permohonan pembaruan, perbaikan, akses, penarikan
+        persetujuan, serta penundaan dan pembatasan pemrosesan paling lambat
+        3 x 24 jam sejak permohonan diterima.
+      en: >-
+        We act on requests to update, correct or access data, withdraw consent, or
+        delay and restrict processing within 3 x 24 hours of receiving them.
+
+  # ----------------------------------------------------------------- changes
+  - id: PDP-CHG-01
+    status: active
+    category: changes
+    requirement_type: legal
+    legal_mapping: direct
+    type_overrides: [consent_not_relied_on]
+    title:
+      id: Pemberitahuan sebelum perubahan
+      en: Notice before changes
+    explanation:
+      id: >-
+        Pasal 21 ayat (2) mewajibkan Pengendali memberitahukan kepada Subjek Data
+        Pribadi sebelum terjadi perubahan Informasi sebagaimana dimaksud dalam Pasal 21
+        ayat (1). Klausul yang menyatakan perubahan berlaku sejak diunggah, atau
+        menganggap penggunaan berkelanjutan sebagai persetujuan atas perubahan, tidak
+        mencerminkan kewajiban pemberitahuan sebelumnya.
+      en: >-
+        Article 21(2) requires the controller to notify data subjects before the
+        information in Article 21(1) changes. Clauses saying changes take effect when
+        posted, or that continued use means acceptance, don't reflect this
+        prior-notice duty.
+    references:
+      - { provision: p21-2, role: basis }
+    applies_when: always
+    look_for:
+      id:
+        - Komitmen memberi tahu sebelum perubahan berlaku
+        - Saluran dan tenggat pemberitahuan
+      en:
+        - A commitment to notify before changes take effect
+        - The notification channel and notice period
+    criteria:
+      addressed:
+        id: Berkomitmen memberitahukan Subjek Data Pribadi sebelum perubahan berlaku (mis. melalui email atau notifikasi aplikasi).
+        en: Commits to notify data subjects before changes take effect (e.g., by email or in-app notice).
+      partially_addressed:
+        id: Hanya menyatakan kebijakan dapat berubah dan akan diunggah, atau penggunaan berkelanjutan dianggap menerima perubahan, tanpa pemberitahuan sebelumnya.
+        en: Only says the policy may change and will be posted, or that continued use means acceptance, without prior notice.
+      not_found:
+        id: Tidak ada pernyataan tentang perubahan kebijakan.
+        en: Says nothing about changes.
+    next_step:
+      id: Berkomitmen memberitahukan pengguna (mis. melalui email atau notifikasi aplikasi) sebelum perubahan berlaku, dan sebutkan tenggat pemberitahuannya.
+      en: Commit to notifying users (e.g., by email or in-app notice) before changes take effect, and say how much notice you give.
+    example_wording:
+      id: >-
+        Jika kami mengubah informasi dalam Kebijakan Privasi ini, kami akan
+        memberitahukan Anda melalui email atau notifikasi aplikasi sebelum perubahan
+        berlaku, paling lambat [14] hari sebelumnya.
+      en: >-
+        If we change the information in this Privacy Policy, we will tell you by email
+        or in-app notice before the change takes effect, at least [14] days in
+        advance.
+
+  # ---------------------------------------------------- best practices: consent
+  - id: PDP-CONSENT-01
+    status: active
+    category: consent
+    requirement_type: best_practice
+    title:
+      id: Cara memperoleh persetujuan eksplisit
+      en: How explicit consent is obtained
+    explanation:
+      id: >-
+        Jika pemrosesan didasarkan pada persetujuan, Pasal 20 ayat (2) huruf a
+        mensyaratkan persetujuan yang sah secara eksplisit, dan Pasal 22 ayat (1)
+        mensyaratkan persetujuan tertulis atau terekam. Persetujuan yang tidak
+        memenuhi Pasal 22 ayat (1) dan ayat (4) batal demi hukum (Pasal 22 ayat (5)).
+        UU PDP tidak mewajibkan kebijakan privasi menjelaskan mekanisme persetujuan,
+        tetapi menjelaskannya mendukung transparansi. Pernyataan seperti "dengan
+        menggunakan layanan, Anda dianggap menyetujui" mungkin tidak memenuhi syarat
+        persetujuan eksplisit; periksa bersama ahli hukum.
+      en: >-
+        Where processing relies on consent, Article 20(2)(a) requires valid explicit
+        consent and Article 22(1) requires written or recorded consent. Consent that
+        doesn't meet Article 22(1) and (4) is void (Article 22(5)). The law doesn't
+        require the policy to describe the consent mechanism, but doing so supports
+        transparency. Statements such as "by using the service you are deemed to
+        agree" may not meet the explicit-consent requirement; check with a lawyer.
+    references:
+      - { provision: p20-2, role: related, pinpoint: { id: huruf a, en: letter a } }
+      - { provision: p22-1, role: related }
+      - { provision: p22-4, role: related }
+      - { provision: p22-5, role: related }
+      - { provision: p23, role: related }
+      - { provision: p24, role: related }
+    applies_when:
+      any:
+        - { context: consent_basis, in: [yes, unsure] }
+    look_for:
+      id:
+        - Mekanisme opt-in (kotak centang, permintaan persetujuan terpisah)
+        - Pencatatan bukti persetujuan
+        - "Tanda bahaya: \"dengan menggunakan layanan ini, Anda menyetujui...\""
+      en:
+        - Opt-in mechanisms (checkboxes, separate consent requests)
+        - Keeping proof of consent
+        - "Red flag: \"by using this service, you agree...\""
+    criteria:
+      addressed:
+        id: Menjelaskan cara persetujuan eksplisit diperoleh (mis. kotak centang opt-in, permintaan persetujuan terpisah) dan tidak menganggap penggunaan layanan sebagai persetujuan.
+        en: Explains how explicit consent is obtained (e.g., opt-in checkbox, separate consent request) and doesn't treat use of the service as consent.
+      partially_addressed:
+        id: Bergantung pada persetujuan yang dianggap atau tersirat (mis. "dengan menggunakan layanan, Anda menyetujui"), atau menjelaskan persetujuan secara samar.
+        en: Relies on deemed or implied consent (e.g., "by using the service you agree"), or describes consent only vaguely.
+      not_found:
+        id: Tidak menjelaskan cara memperoleh persetujuan.
+        en: Does not explain how consent is obtained.
+    next_step:
+      id: Jelaskan mekanisme persetujuan eksplisit (tertulis atau terekam) dan hindari menganggap penggunaan berkelanjutan sebagai persetujuan.
+      en: Describe your explicit (written or recorded) consent mechanism and avoid treating continued use as consent.
+    example_wording:
+      id: >-
+        Kami meminta persetujuan eksplisit Anda secara terpisah untuk setiap tujuan
+        yang memerlukan persetujuan, melalui kotak centang yang tidak tercentang
+        secara bawaan, dan kami menyimpan catatan persetujuan Anda.
+      en: >-
+        We ask for your explicit consent separately for each purpose that needs it,
+        using checkboxes that are unticked by default, and we keep a record of your
+        consent.
+
+  # ------------------------------------------- best practices: security, breach
+  - id: PDP-SEC-01
+    status: active
+    category: security
+    requirement_type: best_practice
+    title:
+      id: Langkah keamanan
+      en: Security measures
+    explanation:
+      id: >-
+        Pasal 35 mewajibkan Pengendali melindungi dan memastikan keamanan Data Pribadi
+        melalui langkah teknis operasional dan penentuan tingkat keamanan, dan
+        Pasal 39 ayat (1) mewajibkan pencegahan akses yang tidak sah. UU PDP tidak
+        mewajibkan langkah tersebut diuraikan dalam kebijakan, tetapi gambaran
+        umumnya membantu Subjek Data Pribadi memahami bagaimana datanya dilindungi.
+      en: >-
+        Article 35 requires the controller to protect and ensure the security of
+        personal data through operational technical measures and a suitable security
+        level, and Article 39(1) requires it to prevent unlawful access. The law
+        doesn't require these measures to be described in the policy, but an overview
+        helps data subjects understand how their data is protected.
+    references:
+      - { provision: p16-2, role: related, pinpoint: { id: huruf e, en: letter e } }
+      - { provision: p35, role: related }
+      - { provision: p39-1, role: related }
+    applies_when: always
+    look_for:
+      id:
+        - Langkah teknis (mis. enkripsi, kontrol akses, pemantauan)
+        - Langkah organisasi (mis. pelatihan, kebijakan internal, kewajiban kerahasiaan)
+      en:
+        - Technical measures (e.g., encryption, access controls, monitoring)
+        - Organisational measures (e.g., training, internal policies, confidentiality duties)
+    criteria:
+      addressed:
+        id: Menguraikan langkah teknis dan organisasi untuk melindungi Data Pribadi.
+        en: Describes technical and organisational measures that protect personal data.
+      partially_addressed:
+        id: Hanya berupa jaminan umum ("kami menjaga keamanan data Anda").
+        en: Only gives general assurances ("we keep your data secure").
+      not_found:
+        id: Tidak menyebut langkah keamanan.
+        en: No security measures mentioned.
+    next_step:
+      id: Uraikan langkah keamanan utama secara ringkas tanpa membuka detail yang dapat membahayakan keamanan.
+      en: Summarise your main security measures without revealing details that could weaken security.
+    example_wording:
+      id: >-
+        Kami melindungi Data Pribadi dengan enkripsi saat transmisi dan penyimpanan,
+        pembatasan akses berdasarkan kebutuhan, serta pemantauan keamanan berkala.
+      en: >-
+        We protect personal data with encryption in transit and at rest, need-to-know
+        access controls, and regular security monitoring.
+
+  - id: PDP-BREACH-01
+    status: active
+    category: security
+    requirement_type: best_practice
+    title:
+      id: Pemberitahuan kegagalan Pelindungan Data Pribadi
+      en: Notifying data protection failures (breaches)
+    explanation:
+      id: >-
+        Pasal 46 ayat (1) mewajibkan pemberitahuan tertulis paling lambat 3 x 24 jam
+        kepada Subjek Data Pribadi dan lembaga jika terjadi kegagalan Pelindungan Data
+        Pribadi, dengan isi minimal menurut Pasal 46 ayat (2). Kewajiban ini berlaku
+        saat insiden terjadi; mencantumkan komitmen pemberitahuan dalam kebijakan
+        adalah praktik yang baik. Per tanggal tinjauan ruleset ini, lembaga
+        Pelindungan Data Pribadi dilaporkan belum dibentuk.
+      en: >-
+        Article 46(1) requires written notice within 3 x 24 hours to data subjects and
+        the institution (lembaga) when personal data protection fails, with the
+        minimum content in Article 46(2). The duty applies when an incident happens;
+        committing to it in the policy is good practice. As of this ruleset's review
+        date, the PDP institution has reportedly not yet been formed.
+    references:
+      - { provision: p16-2, role: related, pinpoint: { id: huruf f, en: letter f } }
+      - { provision: p46, role: related }
+      - { provision: pj-p46-1, role: related }
+    applies_when: always
+    look_for:
+      id:
+        - Komitmen memberi tahu Subjek Data Pribadi jika terjadi insiden
+        - Jangka waktu dan isi pemberitahuan
+      en:
+        - A commitment to notify data subjects of incidents
+        - The notification timeframe and content
+    criteria:
+      addressed:
+        id: Berkomitmen memberitahukan Subjek Data Pribadi secara tertulis paling lambat 3 x 24 jam jika terjadi kegagalan Pelindungan Data Pribadi, termasuk informasi yang akan disampaikan.
+        en: Commits to notify affected data subjects in writing within 3 x 24 hours of a data protection failure, including what the notice will contain.
+      partially_addressed:
+        id: Menyebut pemberitahuan insiden tanpa jangka waktu, dengan jangka waktu lebih lama, atau hanya "jika diwajibkan oleh hukum".
+        en: Mentions breach notification without a timeframe, with a longer one, or only "where required by law".
+      not_found:
+        id: Tidak menyebut pemberitahuan insiden.
+        en: No mention of breach notification.
+    next_step:
+      id: Nyatakan komitmen pemberitahuan tertulis paling lambat 3 x 24 jam beserta isi minimal pemberitahuannya.
+      en: State a commitment to written notice within 3 x 24 hours, with its minimum content.
+    example_wording:
+      id: >-
+        Jika terjadi kegagalan Pelindungan Data Pribadi, kami akan memberitahukan Anda
+        secara tertulis paling lambat 3 x 24 jam, termasuk Data Pribadi yang
+        terungkap, kapan dan bagaimana Data Pribadi terungkap, serta upaya penanganan
+        dan pemulihan yang kami lakukan.
+      en: >-
+        If a personal data protection failure occurs, we will notify you in writing
+        within 3 x 24 hours, including what data was disclosed, when and how, and what
+        we are doing to handle and recover from it.
+
+  # ------------------------------------------------- best practices: children
+  - id: PDP-CHILD-01
+    status: active
+    category: children
+    requirement_type: best_practice
+    title:
+      id: Persetujuan orang tua atau wali untuk data anak
+      en: Parent or guardian consent for children's data
+    explanation:
+      id: >-
+        Pasal 25 menyatakan pemrosesan Data Pribadi anak diselenggarakan secara khusus
+        dan wajib mendapat persetujuan dari orang tua dan/atau wali anak sesuai dengan
+        ketentuan peraturan perundang-undangan. UU PDP tidak mendefinisikan "anak"
+        (Pasal 1 tidak memuat definisinya), sehingga batas usia merujuk pada peraturan
+        lain. Menjelaskan cara memperoleh persetujuan orang tua atau wali membantu
+        menunjukkan pemenuhan kewajiban ini.
+      en: >-
+        Article 25 says children's personal data is processed under special
+        arrangements and requires consent from the child's parent and/or guardian
+        under applicable law. The PDP Law doesn't define "child" (Article 1 has no
+        definition), so the age threshold comes from other legislation. Explaining
+        how parent or guardian consent is obtained helps show the duty is met.
+    references:
+      - { provision: p25, role: related }
+      - { provision: p4-2, role: related, pinpoint: { id: huruf e, en: letter e } }
+    applies_when:
+      any:
+        - { context: children, in: [yes, unsure] }
+    look_for:
+      id:
+        - Pernyataan tentang pengguna anak atau batas usia
+        - Mekanisme persetujuan dan verifikasi orang tua atau wali
+      en:
+        - Statements about child users or age limits
+        - How parent or guardian consent is obtained and verified
+    criteria:
+      addressed:
+        id: Menjelaskan bahwa Data Pribadi anak hanya diproses dengan persetujuan orang tua dan/atau wali, serta cara persetujuan itu diperoleh.
+        en: Explains that children's data is processed only with parent and/or guardian consent, and how that consent is obtained.
+      partially_addressed:
+        id: Menyebut anak atau batas usia tanpa menjelaskan persetujuan orang tua atau wali.
+        en: Mentions children or age limits without explaining parent or guardian consent.
+      not_found:
+        id: Tidak menyebut pemrosesan Data Pribadi anak.
+        en: No mention of processing children's data.
+    next_step:
+      id: Jelaskan kapan persetujuan orang tua atau wali diperlukan dan bagaimana Anda memperoleh serta memverifikasinya.
+      en: Explain when parent or guardian consent is needed and how you obtain and verify it.
+    example_wording:
+      id: >-
+        Jika pengguna adalah anak, kami hanya memproses Data Pribadinya setelah
+        memperoleh persetujuan dari orang tua dan/atau wali melalui [MEKANISME
+        VERIFIKASI].
+      en: >-
+        If a user is a child, we process their personal data only after obtaining
+        consent from their parent and/or guardian through [VERIFICATION METHOD].
+
+  # ----------------------------------------------- best practices: governance
+  - id: PDP-DPO-01
+    status: active
+    category: governance
+    requirement_type: best_practice
+    title:
+      id: Kontak pejabat atau petugas Pelindungan Data Pribadi
+      en: Data protection officer contact
+    explanation:
+      id: >-
+        Pasal 53 ayat (1) mewajibkan Pengendali dan Prosesor menunjuk pejabat atau
+        petugas yang melaksanakan fungsi Pelindungan Data Pribadi dalam hal tertentu.
+        Sejak Putusan MK Nomor 151/PUU-XXII/2024, kata "dan" pada huruf b dimaknai
+        "dan/atau", sehingga cukup satu kriteria terpenuhi. Pasal 54 ayat (1) huruf d
+        menyebut tugasnya sebagai narahubung. Mencantumkan kontaknya dalam kebijakan
+        tidak diwajibkan secara tegas, tetapi dianjurkan.
+      en: >-
+        Article 53(1) requires controllers and processors to appoint an official or
+        officer performing the data protection function in certain cases. Since
+        Constitutional Court Decision 151/PUU-XXII/2024, "dan" in letter b is read as
+        "dan/atau" (and/or), so meeting one criterion is enough. Article 54(1)(d) makes
+        the officer a contact person. Publishing their contact in the policy isn't
+        expressly required but is recommended.
+    references:
+      - { provision: p53-1, role: related }
+      - { provision: p54-1-d, role: related }
+    applies_when: always
+    look_for:
+      id:
+        - Penyebutan pejabat/petugas Pelindungan Data Pribadi (PPDP/DPO)
+        - Kontak PPDP
+      en:
+        - A named data protection officer (PPDP/DPO)
+        - The officer's contact details
+    criteria:
+      addressed:
+        id: Memberikan kontak pejabat atau petugas Pelindungan Data Pribadi (PPDP/DPO) atau fungsi setara.
+        en: Gives contact details for a designated data protection officer or equivalent function.
+      partially_addressed:
+        id: Menyebut PPDP/DPO atau tim privasi tanpa kontak.
+        en: Mentions a DPO or privacy team without contact details.
+      not_found:
+        id: Tidak menyebut PPDP/DPO.
+        en: No mention of a data protection officer.
+    next_step:
+      id: Jika telah menunjuk PPDP, cantumkan kontaknya.
+      en: If you have appointed a data protection officer, publish their contact details.
+    example_wording:
+      id: >-
+        Kami telah menunjuk pejabat Pelindungan Data Pribadi yang dapat dihubungi
+        melalui [EMAIL PPDP].
+      en: >-
+        We have appointed a data protection officer, who can be reached at
+        [DPO EMAIL].
+
+  - id: PDP-CORP-01
+    status: active
+    category: governance
+    requirement_type: best_practice
+    title:
+      id: Pemberitahuan pengalihan data dalam aksi korporasi
+      en: Notice of data transfer in corporate transactions
+    explanation:
+      id: >-
+        Pasal 48 mewajibkan Pengendali berbentuk badan hukum yang melakukan
+        penggabungan, pemisahan, pengambilalihan, peleburan, atau pembubaran untuk
+        menyampaikan pemberitahuan pengalihan Data Pribadi kepada Subjek Data Pribadi,
+        sebelum dan sesudah aksi tersebut. Mencantumkan komitmen ini dalam kebijakan
+        adalah praktik yang baik.
+      en: >-
+        Article 48 requires a controller that is a legal entity undergoing a merger,
+        split, acquisition, consolidation or dissolution to notify data subjects of
+        the transfer of their personal data, both before and after. Stating this
+        commitment in the policy is good practice.
+    references:
+      - { provision: p48, role: related }
+    applies_when: always
+    look_for:
+      id:
+        - Ketentuan tentang pengalihan data dalam penggabungan, pengambilalihan, atau pembubaran
+        - Komitmen pemberitahuan sebelum dan sesudah
+      en:
+        - Terms on data transfer in a merger, acquisition or dissolution
+        - A commitment to notify before and after
+    criteria:
+      addressed:
+        id: Menyatakan Subjek Data Pribadi akan diberi tahu sebelum dan sesudah pengalihan Data Pribadi akibat aksi korporasi.
+        en: States data subjects will be notified before and after a transfer of personal data caused by a corporate transaction.
+      partially_addressed:
+        id: Menyebut kemungkinan pengalihan dalam transaksi bisnis tanpa komitmen pemberitahuan, atau hanya pemberitahuan sesudahnya.
+        en: Mentions possible transfer in a business transaction without committing to notify, or only notifying afterwards.
+      not_found:
+        id: Tidak menyebut pengalihan data dalam aksi korporasi.
+        en: No mention of data transfer in corporate transactions.
+    next_step:
+      id: Nyatakan komitmen memberi tahu sebelum dan sesudah pengalihan Data Pribadi akibat aksi korporasi.
+      en: Commit to notifying data subjects before and after any transfer caused by a corporate transaction.
+    example_wording:
+      id: >-
+        Jika kami melakukan penggabungan, pemisahan, pengambilalihan, peleburan, atau
+        pembubaran yang mengakibatkan pengalihan Data Pribadi, kami akan
+        memberitahukan Anda sebelum dan sesudah aksi korporasi tersebut.
+      en: >-
+        If a merger, split, acquisition, consolidation or dissolution results in a
+        transfer of personal data, we will notify you before and after it happens.
+
+  # ------------------------------------------------ best practices: document
+  - id: PDP-META-01
+    status: active
+    category: document
+    requirement_type: best_practice
+    title:
+      id: Tanggal berlaku atau pembaruan terakhir
+      en: Effective or last-updated date
+    explanation:
+      id: >-
+        Mencantumkan tanggal berlaku atau tanggal pembaruan terakhir membantu Subjek
+        Data Pribadi mengetahui versi informasi yang berlaku, dan mendukung
+        pemberitahuan perubahan sebagaimana Pasal 21 ayat (2).
+      en: >-
+        Showing an effective or last-updated date tells data subjects which version
+        applies and supports change notification under Article 21(2).
+    references:
+      - { provision: p21-2, role: related }
+    applies_when: always
+    look_for:
+      id:
+        - Tanggal berlaku, tanggal pembaruan terakhir, atau nomor versi
+      en:
+        - An effective date, last-updated date or version number
+    criteria:
+      addressed:
+        id: Mencantumkan tanggal berlaku, tanggal pembaruan terakhir, atau nomor versi.
+        en: States an effective date, a last-updated date or a version number.
+      partially_addressed:
+        id: Menyebut adanya pembaruan tanpa tanggal.
+        en: Mentions updates without a date.
+      not_found:
+        id: Tidak ada tanggal atau versi.
+        en: No date or version.
+    next_step:
+      id: Cantumkan tanggal berlaku dan tanggal pembaruan terakhir di awal atau akhir kebijakan.
+      en: Add the effective and last-updated dates at the start or end of the policy.
+    example_wording:
+      id: "Berlaku sejak: [TANGGAL]. Terakhir diperbarui: [TANGGAL]."
+      en: "Effective: [DATE]. Last updated: [DATE]."
+
+  - id: PDP-LANG-01
+    status: active
+    category: document
+    requirement_type: best_practice
+    evaluator: language_check   # deterministic: detected language first, AI only for English-only policies
+    title:
+      id: Tersedia dalam Bahasa Indonesia
+      en: Available in Bahasa Indonesia
+    explanation:
+      id: >-
+        Penjelasan Pasal 27 menyatakan Informasi terkait pemrosesan harus mudah
+        diakses dan dipahami dengan bahasa yang jelas. Untuk permintaan persetujuan
+        yang memuat tujuan lain, Pasal 22 ayat (4) huruf c mensyaratkan bahasa yang
+        sederhana dan jelas, dan menurut Penjelasan, "bahasa" tersebut adalah Bahasa
+        Indonesia. Menyediakan kebijakan dalam Bahasa Indonesia membantu Subjek Data
+        Pribadi di Indonesia memahaminya.
+      en: >-
+        The Elucidation of Article 27 says information about processing must be easy
+        to access and understand, in clear language. For consent requests that
+        include other purposes, Article 22(4)(c) requires simple and clear language,
+        which the Elucidation defines as Bahasa Indonesia. Offering the policy in
+        Bahasa Indonesia helps data subjects in Indonesia understand it.
+    references:
+      - { provision: pj-p27, role: related }
+      - { provision: p22-4, role: related, pinpoint: { id: huruf c, en: letter c } }
+      - { provision: pj-p22-4-c, role: related }
+    applies_when: always
+    look_for:
+      id:
+        - Kebijakan ditulis dalam Bahasa Indonesia, atau merujuk versi Bahasa Indonesia
+      en:
+        - The policy is written in Bahasa Indonesia, or refers to an Indonesian version
+    criteria:
+      addressed:
+        id: Kebijakan ditulis dalam Bahasa Indonesia, atau menyediakan atau merujuk versi Bahasa Indonesia.
+        en: The policy is in Bahasa Indonesia, or provides or links an Indonesian version.
+      partially_addressed:
+        id: Hanya sebagian kebijakan yang tersedia dalam Bahasa Indonesia.
+        en: Only part of the policy is available in Bahasa Indonesia.
+      not_found:
+        id: Kebijakan hanya dalam bahasa lain dan tidak merujuk versi Bahasa Indonesia.
+        en: The policy is only in another language and doesn't refer to an Indonesian version.
+    next_step:
+      id: Sediakan versi Bahasa Indonesia dan rujuk versi tersebut dari versi bahasa lain.
+      en: Provide an Indonesian version and link to it from other language versions.
+    example_wording:
+      id: Kebijakan Privasi ini tersedia dalam Bahasa Indonesia dan bahasa Inggris.
+      en: This Privacy Policy is available in Bahasa Indonesia and English.

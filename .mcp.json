@@ -1,0 +1,8 @@
+{
+  "mcpServers": {
+    "pasal-id": {
+      "type": "http",
+      "url": "https://mcp.pasal.id/mcp"
+    }
+  }
+}
