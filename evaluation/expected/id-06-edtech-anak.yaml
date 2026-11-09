@@ -1,0 +1,54 @@
+fixture: id-06-edtech-anak
+title: CeriaBelajar (learning app for children), Indonesian policy
+language: id
+ruleset_version: 1.0.0
+description: >-
+  A children's learning app that explains parental consent, links each data
+  item to its purpose and identifies children's data as specific data. Gaps:
+  generic transfer safeguards and security, access without copies, and several
+  rights and best practices missing.
+
+context:
+  consent_basis: "yes"
+  specific_data: "yes"
+  children: "yes"
+  international_transfer: "yes"
+  automated_decisions: "no"
+
+expected:
+  PDP-ID-01: addressed
+  PDP-ID-02: addressed
+  PDP-DATA-01: addressed
+  PDP-DATA-02: addressed
+  PDP-DATA-03: addressed
+  PDP-DATA-04: addressed
+  PDP-PURP-01: addressed
+  PDP-BASIS-01: addressed
+  PDP-RET-01: addressed
+  PDP-RET-02:
+    status: partially_addressed
+    acceptable: [not_found]
+    note: >-
+      Storage "selama akun aktif" implies processing during the account's life,
+      but no processing period is stated per purpose.
+  PDP-SHARE-01: addressed
+  PDP-XFER-01: addressed
+  PDP-XFER-02: partially_addressed
+  PDP-RIGHT-01: addressed
+  PDP-RIGHT-02: partially_addressed
+  PDP-RIGHT-03: addressed
+  PDP-RIGHT-04: addressed
+  PDP-RIGHT-05: not_applicable
+  PDP-RIGHT-06: not_found
+  PDP-RIGHT-07: not_found
+  PDP-RIGHT-08: not_found
+  PDP-RIGHT-09: not_found
+  PDP-CHG-01: addressed
+  PDP-CONSENT-01: addressed
+  PDP-SEC-01: partially_addressed
+  PDP-BREACH-01: not_found
+  PDP-CHILD-01: addressed
+  PDP-DPO-01: not_found
+  PDP-CORP-01: not_found
+  PDP-META-01: addressed
+  PDP-LANG-01: addressed

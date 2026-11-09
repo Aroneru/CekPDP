@@ -1,0 +1,49 @@
+fixture: id-05-klinik-kesehatan
+title: Klinik Sehat Sentosa (clinic and telemedicine), Indonesian policy with health data
+language: id
+ruleset_version: 1.0.0
+description: >-
+  Identifies health data as specific data and explains parental consent for
+  child patients, a DPO and breach notification within 3 x 24 hours. Gaps:
+  collection methods omit the analytics it mentions, no processing period,
+  several rights missing, and changes are only posted.
+
+context:
+  consent_basis: "yes"
+  specific_data: "yes"
+  children: "unsure"
+  international_transfer: "no"
+  automated_decisions: "no"
+
+expected:
+  PDP-ID-01: addressed
+  PDP-ID-02: addressed
+  PDP-DATA-01: addressed
+  PDP-DATA-02: partially_addressed
+  PDP-DATA-03: addressed
+  PDP-DATA-04: partially_addressed
+  PDP-PURP-01: addressed
+  PDP-BASIS-01: addressed
+  PDP-RET-01: addressed
+  PDP-RET-02: not_found
+  PDP-SHARE-01: addressed
+  PDP-XFER-01: not_applicable
+  PDP-XFER-02: not_applicable
+  PDP-RIGHT-01: addressed
+  PDP-RIGHT-02: addressed
+  PDP-RIGHT-03: addressed
+  PDP-RIGHT-04: addressed
+  PDP-RIGHT-05: not_applicable
+  PDP-RIGHT-06: not_found
+  PDP-RIGHT-07: not_found
+  PDP-RIGHT-08: not_found
+  PDP-RIGHT-09: not_found
+  PDP-CHG-01: partially_addressed
+  PDP-CONSENT-01: addressed
+  PDP-SEC-01: addressed
+  PDP-BREACH-01: addressed
+  PDP-CHILD-01: addressed
+  PDP-DPO-01: addressed
+  PDP-CORP-01: not_found
+  PDP-META-01: addressed
+  PDP-LANG-01: addressed

@@ -1,0 +1,49 @@
+fixture: bi-11-logistik-dwibahasa
+title: KirimCepat (courier service), bilingual Indonesian–English policy
+language: mixed
+ruleset_version: 1.0.0
+description: >-
+  A bilingual policy in which every section appears in Indonesian, then
+  English. Fairly complete, including recipient data received from senders and
+  3 x 24 hour responses, but with no right to sue or portability, purposes not
+  linked to data items, and processing periods given only for some purposes.
+
+context:
+  consent_basis: "yes"
+  specific_data: "no"
+  children: "no"
+  international_transfer: "no"
+  automated_decisions: "no"
+
+expected:
+  PDP-ID-01: addressed
+  PDP-ID-02: addressed
+  PDP-DATA-01: addressed
+  PDP-DATA-02: partially_addressed
+  PDP-DATA-03: not_applicable
+  PDP-DATA-04: addressed
+  PDP-PURP-01: addressed
+  PDP-BASIS-01: addressed
+  PDP-RET-01: addressed
+  PDP-RET-02: partially_addressed
+  PDP-SHARE-01: addressed
+  PDP-XFER-01: not_applicable
+  PDP-XFER-02: not_applicable
+  PDP-RIGHT-01: addressed
+  PDP-RIGHT-02: addressed
+  PDP-RIGHT-03: addressed
+  PDP-RIGHT-04: addressed
+  PDP-RIGHT-05: not_applicable
+  PDP-RIGHT-06: addressed
+  PDP-RIGHT-07: not_found
+  PDP-RIGHT-08: not_found
+  PDP-RIGHT-09: addressed
+  PDP-CHG-01: addressed
+  PDP-CONSENT-01: addressed
+  PDP-SEC-01: addressed
+  PDP-BREACH-01: addressed
+  PDP-CHILD-01: not_applicable
+  PDP-DPO-01: addressed
+  PDP-CORP-01: addressed
+  PDP-META-01: addressed
+  PDP-LANG-01: addressed

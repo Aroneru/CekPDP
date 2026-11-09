@@ -1,28 +1,42 @@
 # =============================================================================
-# CekPDP ruleset: DRAFT FOR REVIEW (not active)
+# CekPDP ruleset 1.0.0
 # Instrument: UU No. 27 Tahun 2022 tentang Pelindungan Data Pribadi
 #
-# How to review
-#   1. `provisions` is a catalogue of every legal text the rules cite. Each entry
-#      was checked word for word against the page image of the official copy
-#      (see docs/legal/SOURCES.md). `pdf_page` is the PDF page number.
-#   2. Each rule has:
-#        requirement_type  legal | best_practice
-#        legal_mapping     direct | interpretive   (legal rules only)
-#        status            active | needs_review   (needs_review = excluded from
-#                                                   the active checklist until you
-#                                                   approve it)
-#   3. English text is an unofficial translation. Indonesian is authoritative.
-#   4. Mock-provider keyword signals are added in Milestone 1. They are left out
-#      here to keep the review readable.
+#   provisions  every legal text cited by the rules, checked word for word
+#               against the page image of the official copy
+#               (docs/legal/SOURCES.md). `pdf_page` is the PDF page number.
+#   rules       requirement_type: legal | best_practice
+#               legal_mapping:    direct | interpretive (legal rules only;
+#                                 interpretive rules show their reasoning)
+#               status:           active | needs_review (needs_review rules are
+#                                 never used in analyses)
+#               signals:          keyword patterns for the offline mock
+#                                 provider only; the AI provider ignores them
+#
+# English text is an unofficial translation. The Indonesian text is
+# authoritative. To change this file, follow docs/plan/PLAN.md section 11:
+# create a new version file instead of editing a released one.
 # =============================================================================
 
 schema_version: 1
 id: uu-pdp-27-2022
-version: 1.0.0-draft.1
-status: draft
-last_reviewed: 2026-11-05
-reviewed_by: null
+version: 1.0.0
+status: active
+last_reviewed: "2026-11-09"
+
+review:
+  verified_by: Claude (AI assistant), against page images of the official copy
+  verified_on: "2026-11-05"
+  approved_on: "2026-11-09"
+  approval_note:
+    id: >-
+      Pemilik proyek menyetujui rekomendasi dalam rencana, termasuk mengaktifkan
+      dua aturan interpretatif. Tinjauan oleh ahli hukum yang berkualifikasi tetap
+      dianjurkan.
+    en: >-
+      The project owner accepted the plan's recommendations, including activating
+      the two interpretive rules. Review by a qualified lawyer is still
+      recommended.
 
 scope:
   id: >-
@@ -38,35 +52,47 @@ instrument:
   key: UU-27-2022
   title_id: Undang-Undang Republik Indonesia Nomor 27 Tahun 2022 tentang Pelindungan Data Pribadi
   title_en: Law of the Republic of Indonesia Number 27 of 2022 on Personal Data Protection (unofficial translation)
-  enacted_on: 2022-10-17
-  promulgated_on: 2022-10-17
-  in_force_from: 2022-10-17          # Pasal 76, p. 33
-  transition_ended_on: 2024-10-17    # Pasal 74, p. 33: 2 years after promulgation
+  enacted_on: "2022-10-17"
+  promulgated_on: "2022-10-17"
+  in_force_from: "2022-10-17"          # Pasal 76, p. 33
+  transition_ended_on: "2024-10-17"    # Pasal 74, p. 33: 2 years after promulgation
   gazette: Lembaran Negara RI Tahun 2022 Nomor 196; Tambahan Lembaran Negara RI Nomor 6820
   court_decisions:
     - ref: Putusan Mahkamah Konstitusi Nomor 151/PUU-XXII/2024
-      pronounced_on: 2025-07-30
+      pronounced_on: "2025-07-30"
       affects: p53-1
-      effect_id: >-
-        Kata "dan" dalam Pasal 53 ayat (1) huruf b bertentangan dengan UUD 1945 dan
-        tidak mempunyai kekuatan hukum mengikat secara bersyarat sepanjang tidak
-        dimaknai "dan/atau".
-      effect_en: >-
-        The word "dan" (and) in Article 53(1)(b) is conditionally unconstitutional
-        unless read as "dan/atau" (and/or), so the DPO criteria are alternative.
+      effect:
+        id: >-
+          Kata "dan" dalam Pasal 53 ayat (1) huruf b bertentangan dengan UUD 1945
+          dan tidak mempunyai kekuatan hukum mengikat secara bersyarat sepanjang
+          tidak dimaknai "dan/atau".
+        en: >-
+          The word "dan" (and) in Article 53(1)(b) is conditionally
+          unconstitutional unless read as "dan/atau" (and/or), so the DPO
+          criteria are alternative.
       source: mk-151-2024
-      verified_on: 2026-11-05
+      verified_on: "2026-11-05"
   implementing_regulations:
     - ref: Peraturan Pemerintah Nomor 33 Tahun 2026
       status: promulgated_not_in_force
-      note_en: >-
-        Reported as promulgated in July 2026 and entering into force about
-        January 2027. Official copy not yet obtained, so it is not used by this
-        ruleset. See docs/legal/SOURCES.md section 3.
-      checked_on: 2026-11-05
+      note:
+        id: >-
+          Dilaporkan diundangkan pada Juli 2026 dan mulai berlaku sekitar Januari
+          2027. Salinan resmi belum diperoleh, sehingga tidak digunakan oleh
+          ruleset ini.
+        en: >-
+          Reported as promulgated in July 2026 and entering into force around
+          January 2027. No official copy has been obtained yet, so this ruleset
+          does not use it.
+      checked_on: "2026-11-09"
+      used_by_rules: false
     - ref: Peraturan Presiden tentang lembaga Pelindungan Data Pribadi (Pasal 58 ayat (5))
       status: not_enacted
-      checked_on: 2026-11-05
+      note:
+        id: Rancangan Perpres dilaporkan masih menunggu penetapan Presiden.
+        en: The draft Presidential Regulation is reportedly still awaiting the President's signature.
+      checked_on: "2026-11-09"
+      used_by_rules: false
 
 sources:
   uu27-bpk:
@@ -78,7 +104,8 @@ sources:
   mk-151-2024:
     kind: official
     name: Putusan MK Nomor 151/PUU-XXII/2024 (copy linked from JDIH BPK)
-    url: https://peraturan.bpk.go.id/DownloadUjiMateri/218/putusan_mkri_151_PUU-XXII_2024.pdf
+    url: https://peraturan.bpk.go.id/Details/229798/uu-no-27-tahun-2022
+    document_url: https://peraturan.bpk.go.id/DownloadUjiMateri/218/putusan_mkri_151_PUU-XXII_2024.pdf
     sha256: 6dbbdb8092625df850707a86592e240379c4edb7a28cb98b99ff8ac077815e47
   pasal-id:
     kind: secondary_reader      # convenience links only; never the basis of a rule
@@ -94,8 +121,8 @@ contexts:
     help:
       id: Pasal 21 berlaku untuk pemrosesan berdasarkan persetujuan (Pasal 20 ayat (2) huruf a).
       en: Article 21 applies to processing based on consent (Article 20(2)(a)).
-    options: [yes, no, unsure]
-    default: unsure
+    options: ["yes", "no", "unsure"]
+    default: "unsure"
   specific_data:
     question:
       id: Apakah organisasi memproses Data Pribadi yang bersifat spesifik (kesehatan, biometrik, genetika, catatan kejahatan, data anak, atau data keuangan pribadi)?
@@ -103,31 +130,31 @@ contexts:
     help:
       id: Kategori menurut Pasal 4 ayat (2).
       en: Categories listed in Article 4(2).
-    options: [yes, no, unsure]
-    default: unsure
+    options: ["yes", "no", "unsure"]
+    default: "unsure"
   children:
     question:
       id: Apakah organisasi memproses Data Pribadi anak?
       en: Does the organisation process children's personal data?
-    options: [yes, no, unsure]
-    default: unsure
+    options: ["yes", "no", "unsure"]
+    default: "unsure"
   international_transfer:
     question:
       id: Apakah Data Pribadi ditransfer, disimpan, atau dapat diakses di luar Indonesia (termasuk melalui penyedia cloud atau layanan asing)?
       en: Is personal data transferred, stored or accessible outside Indonesia (including via foreign cloud or service providers)?
-    options: [yes, no, unsure]
-    default: unsure
+    options: ["yes", "no", "unsure"]
+    default: "unsure"
   automated_decisions:
     question:
       id: Apakah organisasi mengambil keputusan yang hanya didasarkan pada pemrosesan otomatis, termasuk pemrofilan, yang berdampak hukum atau signifikan bagi seseorang?
       en: Does the organisation make decisions based solely on automated processing, including profiling, that have legal or significant effects on people?
-    options: [yes, no, unsure]
-    default: unsure
+    options: ["yes", "no", "unsure"]
+    default: "unsure"
 
 # Named requirement-type overrides, referenced by rules.
 overrides:
   consent_not_relied_on:
-    when: { context: consent_basis, in: [no] }
+    when: { context: consent_basis, in: ["no"] }
     requirement_type: best_practice
     reason:
       id: >-
@@ -140,7 +167,7 @@ overrides:
         this item is shown as a best practice.
 
 # =============================================================================
-# Provision catalogue. All entries verified against page images on 2026-11-05.
+# Provision catalogue. Each entry records its source and verification date.
 # "[…]" marks omitted text. Curly quotes follow the official copy.
 # =============================================================================
 provisions:
@@ -148,7 +175,9 @@ provisions:
     citation_id: Pasal 4 ayat (2)
     citation_en: Article 4(2)
     article: 4
-    pdf_page: 5
+    pdf_page: "5"
+    source: uu27-bpk
+    verified_on: "2026-11-05"
     text_id: >-
       Data Pribadi yang bersifat spesifik sebagaimana dimaksud pada ayat (1) huruf a
       meliputi: a. data dan informasi kesehatan; b. data biometrik; c. data genetika;
@@ -163,7 +192,9 @@ provisions:
     citation_id: Penjelasan Pasal 4 ayat (3) huruf f
     citation_en: Elucidation of Article 4(3)(f)
     article: 4
-    pdf_page: 39
+    pdf_page: "39"
+    source: uu27-bpk
+    verified_on: "2026-11-05"
     text_id: >-
       Yang dimaksud dengan “Data Pribadi yang dikombinasikan untuk mengidentifikasi
       seseorang” antara lain nomor telepon seluler dan IP Address.
@@ -174,7 +205,9 @@ provisions:
     citation_id: Pasal 5
     citation_en: Article 5
     article: 5
-    pdf_page: 5
+    pdf_page: "5"
+    source: uu27-bpk
+    verified_on: "2026-11-05"
     text_id: >-
       Subjek Data Pribadi berhak mendapatkan Informasi tentang kejelasan identitas,
       dasar kepentingan hukum, tujuan permintaan dan penggunaan Data Pribadi, dan
@@ -187,7 +220,9 @@ provisions:
     citation_id: Pasal 6
     citation_en: Article 6
     article: 6
-    pdf_page: 5
+    pdf_page: "5"
+    source: uu27-bpk
+    verified_on: "2026-11-05"
     text_id: >-
       Subjek Data Pribadi berhak melengkapi, memperbarui, dan/atau memperbaiki
       kesalahan dan/atau ketidakakuratan Data Pribadi tentang dirinya sesuai dengan
@@ -200,7 +235,9 @@ provisions:
     citation_id: Pasal 7
     citation_en: Article 7
     article: 7
-    pdf_page: 6
+    pdf_page: "6"
+    source: uu27-bpk
+    verified_on: "2026-11-05"
     text_id: >-
       Subjek Data Pribadi berhak mendapatkan akses dan memperoleh salinan Data
       Pribadi tentang dirinya sesuai dengan ketentuan peraturan perundang-undangan.
@@ -211,7 +248,9 @@ provisions:
     citation_id: Penjelasan Pasal 7
     citation_en: Elucidation of Article 7
     article: 7
-    pdf_page: 39
+    pdf_page: "39"
+    source: uu27-bpk
+    verified_on: "2026-11-05"
     text_id: >-
       Hak untuk memperoleh salinan Data Pribadi dilakukan secara gratis, kecuali
       untuk kondisi tertentu yang memang membutuhkan biaya.
@@ -222,7 +261,9 @@ provisions:
     citation_id: Pasal 8
     citation_en: Article 8
     article: 8
-    pdf_page: 6
+    pdf_page: "6"
+    source: uu27-bpk
+    verified_on: "2026-11-05"
     text_id: >-
       Subjek Data Pribadi berhak untuk mengakhiri pemrosesan, menghapus, dan/atau
       memusnahkan Data Pribadi tentang dirinya sesuai dengan ketentuan peraturan
@@ -234,7 +275,9 @@ provisions:
     citation_id: Pasal 9
     citation_en: Article 9
     article: 9
-    pdf_page: 6
+    pdf_page: "6"
+    source: uu27-bpk
+    verified_on: "2026-11-05"
     text_id: >-
       Subjek Data Pribadi berhak menarik kembali persetujuan pemrosesan Data Pribadi
       tentang dirinya yang telah diberikan kepada Pengendali Data Pribadi.
@@ -246,7 +289,9 @@ provisions:
     citation_id: Pasal 10 ayat (1)
     citation_en: Article 10(1)
     article: 10
-    pdf_page: 6
+    pdf_page: "6"
+    source: uu27-bpk
+    verified_on: "2026-11-05"
     text_id: >-
       Subjek Data Pribadi berhak untuk mengajukan keberatan atas tindakan pengambilan
       keputusan yang hanya didasarkan pada pemrosesan secara otomatis, termasuk
@@ -260,7 +305,9 @@ provisions:
     citation_id: Penjelasan Pasal 10 ayat (1)
     citation_en: Elucidation of Article 10(1)
     article: 10
-    pdf_page: 40
+    pdf_page: "40"
+    source: uu27-bpk
+    verified_on: "2026-11-05"
     text_id: >-
       Yang dimaksud dengan “pemrofilan” adalah kegiatan mengidentifikasi seseorang
       termasuk namun tidak terbatas pada riwayat pekerjaan, kondisi ekonomi,
@@ -275,7 +322,9 @@ provisions:
     citation_id: Pasal 11
     citation_en: Article 11
     article: 11
-    pdf_page: 6
+    pdf_page: "6"
+    source: uu27-bpk
+    verified_on: "2026-11-05"
     text_id: >-
       Subjek Data Pribadi berhak menunda atau membatasi pemrosesan Data Pribadi
       secara proporsional sesuai dengan tujuan pemrosesan Data Pribadi.
@@ -286,7 +335,9 @@ provisions:
     citation_id: Pasal 12 ayat (1)
     citation_en: Article 12(1)
     article: 12
-    pdf_page: 6
+    pdf_page: "6"
+    source: uu27-bpk
+    verified_on: "2026-11-05"
     text_id: >-
       Subjek Data Pribadi berhak menggugat dan menerima ganti rugi atas pelanggaran
       pemrosesan Data Pribadi tentang dirinya sesuai dengan ketentuan peraturan
@@ -299,7 +350,9 @@ provisions:
     citation_id: Pasal 13 ayat (1)
     citation_en: Article 13(1)
     article: 13
-    pdf_page: 7
+    pdf_page: "7"
+    source: uu27-bpk
+    verified_on: "2026-11-05"
     text_id: >-
       Subjek Data Pribadi berhak mendapatkan dan/atau menggunakan Data Pribadi tentang
       dirinya dari Pengendali Data Pribadi dalam bentuk yang sesuai dengan struktur
@@ -312,7 +365,9 @@ provisions:
     citation_id: Pasal 13 ayat (2)
     citation_en: Article 13(2)
     article: 13
-    pdf_page: 7
+    pdf_page: "7"
+    source: uu27-bpk
+    verified_on: "2026-11-05"
     text_id: >-
       Subjek Data Pribadi berhak menggunakan dan mengirimkan Data Pribadi tentang
       dirinya ke Pengendali Data Pribadi lainnya, sepanjang sistem yang digunakan
@@ -327,7 +382,9 @@ provisions:
     citation_id: Pasal 14
     citation_en: Article 14
     article: 14
-    pdf_page: 7
+    pdf_page: "7"
+    source: uu27-bpk
+    verified_on: "2026-11-05"
     text_id: >-
       Pelaksanaan hak Subjek Data Pribadi sebagaimana dimaksud dalam Pasal 6 sampai
       dengan Pasal 11 diajukan melalui permohonan tercatat yang disampaikan secara
@@ -340,7 +397,9 @@ provisions:
     citation_id: Pasal 16 ayat (1)
     citation_en: Article 16(1)
     article: 16
-    pdf_page: 8
+    pdf_page: "8"
+    source: uu27-bpk
+    verified_on: "2026-11-05"
     text_id: >-
       Pemrosesan Data Pribadi meliputi: a. pemerolehan dan pengumpulan; b. pengolahan
       dan penganalisisan; c. penyimpanan; d. perbaikan dan pembaruan; e. penampilan,
@@ -355,7 +414,9 @@ provisions:
     citation_id: Penjelasan Pasal 16 ayat (1) huruf e
     citation_en: Elucidation of Article 16(1)(e)
     article: 16
-    pdf_page: 41
+    pdf_page: "41"
+    source: uu27-bpk
+    verified_on: "2026-11-05"
     text_id: >-
       […] Yang dimaksud dengan “transfer” adalah perpindahan, pengiriman, dan/atau
       penggandaan Data Pribadi baik secara elektronik maupun nonelektronik dari
@@ -368,7 +429,9 @@ provisions:
     citation_id: Pasal 16 ayat (2)
     citation_en: Article 16(2)
     article: 16
-    pdf_page: 8-9
+    pdf_page: "8-9"
+    source: uu27-bpk
+    verified_on: "2026-11-05"
     text_id: >-
       Pemrosesan Data Pribadi sebagaimana dimaksud pada ayat (1) dilakukan sesuai
       dengan prinsip Pelindungan Data Pribadi meliputi: a. pengumpulan Data Pribadi
@@ -396,14 +459,18 @@ provisions:
     citation_id: Pasal 20 ayat (1)
     citation_en: Article 20(1)
     article: 20
-    pdf_page: 10
+    pdf_page: "10"
+    source: uu27-bpk
+    verified_on: "2026-11-05"
     text_id: Pengendali Data Pribadi wajib memiliki dasar pemrosesan Data Pribadi.
     text_en: The Personal Data Controller must have a basis for processing Personal Data.
   p20-2:
     citation_id: Pasal 20 ayat (2)
     citation_en: Article 20(2)
     article: 20
-    pdf_page: 11
+    pdf_page: "11"
+    source: uu27-bpk
+    verified_on: "2026-11-05"
     text_id: >-
       Dasar pemrosesan Data Pribadi sebagaimana dimaksud pada ayat (1) meliputi:
       a. persetujuan yang sah secara eksplisit dari Subjek Data Pribadi untuk 1 (satu)
@@ -436,7 +503,9 @@ provisions:
     citation_id: Pasal 21 ayat (1)
     citation_en: Article 21(1)
     article: 21
-    pdf_page: 11
+    pdf_page: "11"
+    source: uu27-bpk
+    verified_on: "2026-11-05"
     text_id: >-
       Dalam hal pemrosesan Data Pribadi berdasarkan persetujuan sebagaimana dimaksud
       dalam Pasal 20 ayat (2) huruf a, Pengendali Data Pribadi wajib menyampaikan
@@ -457,7 +526,9 @@ provisions:
     citation_id: Pasal 21 ayat (2)
     citation_en: Article 21(2)
     article: 21
-    pdf_page: 12
+    pdf_page: "12"
+    source: uu27-bpk
+    verified_on: "2026-11-05"
     text_id: >-
       Dalam hal terdapat perubahan Informasi sebagaimana dimaksud pada ayat (1),
       Pengendali Data Pribadi wajib memberitahukan kepada Subjek Data Pribadi sebelum
@@ -470,7 +541,9 @@ provisions:
     citation_id: Penjelasan Pasal 21 ayat (1) huruf e
     citation_en: Elucidation of Article 21(1)(e)
     article: 21
-    pdf_page: 43
+    pdf_page: "43"
+    source: uu27-bpk
+    verified_on: "2026-11-05"
     text_id: >-
       Yang dimaksud dengan “rincian mengenai Informasi yang dikumpulkan” adalah
       daftar Informasi mengenai Data Pribadi Subjek Data Pribadi, baik berupa Data
@@ -484,7 +557,9 @@ provisions:
     citation_id: Penjelasan Pasal 21 ayat (1) huruf f
     citation_en: Elucidation of Article 21(1)(f)
     article: 21
-    pdf_page: 43
+    pdf_page: "43"
+    source: uu27-bpk
+    verified_on: "2026-11-05"
     text_id: >-
       Yang dimaksud dengan “jangka waktu pemrosesan Data Pribadi” adalah rentang
       waktu dimulainya hingga selesainya serangkaian kegiatan pemrosesan Data Pribadi
@@ -497,14 +572,18 @@ provisions:
     citation_id: Pasal 22 ayat (1)
     citation_en: Article 22(1)
     article: 22
-    pdf_page: 12
+    pdf_page: "12"
+    source: uu27-bpk
+    verified_on: "2026-11-05"
     text_id: Persetujuan pemrosesan Data Pribadi dilakukan melalui persetujuan tertulis atau terekam.
     text_en: Consent to Personal Data processing is given in writing or in recorded form.
   p22-4:
     citation_id: Pasal 22 ayat (4)
     citation_en: Article 22(4)
     article: 22
-    pdf_page: 12
+    pdf_page: "12"
+    source: uu27-bpk
+    verified_on: "2026-11-05"
     text_id: >-
       Dalam hal persetujuan sebagaimana dimaksud pada ayat (1) memuat tujuan lain,
       permintaan persetujuan harus memenuhi ketentuan: a. dapat dibedakan secara
@@ -519,7 +598,9 @@ provisions:
     citation_id: Pasal 22 ayat (5)
     citation_en: Article 22(5)
     article: 22
-    pdf_page: 12
+    pdf_page: "12"
+    source: uu27-bpk
+    verified_on: "2026-11-05"
     text_id: >-
       Persetujuan yang tidak memenuhi ketentuan sebagaimana dimaksud pada ayat (1) dan
       ayat (4) dinyatakan batal demi hukum.
@@ -529,14 +610,18 @@ provisions:
     citation_id: Penjelasan Pasal 22 ayat (4) huruf c
     citation_en: Elucidation of Article 22(4)(c)
     article: 22
-    pdf_page: 43
+    pdf_page: "43"
+    source: uu27-bpk
+    verified_on: "2026-11-05"
     text_id: Yang dimaksud dengan “bahasa” adalah Bahasa Indonesia.
     text_en: '"Language" means Bahasa Indonesia.'
   p23:
     citation_id: Pasal 23
     citation_en: Article 23
     article: 23
-    pdf_page: 12
+    pdf_page: "12"
+    source: uu27-bpk
+    verified_on: "2026-11-05"
     text_id: >-
       Klausul perjanjian yang di dalamnya terdapat permintaan pemrosesan Data Pribadi
       yang tidak memuat persetujuan yang sah secara eksplisit dari Subjek Data
@@ -548,7 +633,9 @@ provisions:
     citation_id: Pasal 24
     citation_en: Article 24
     article: 24
-    pdf_page: 12
+    pdf_page: "12"
+    source: uu27-bpk
+    verified_on: "2026-11-05"
     text_id: >-
       Dalam melakukan pemrosesan Data Pribadi, Pengendali Data Pribadi wajib
       menunjukkan bukti persetujuan yang telah diberikan oleh Subjek Data Pribadi.
@@ -559,7 +646,9 @@ provisions:
     citation_id: Pasal 25
     citation_en: Article 25
     article: 25
-    pdf_page: 13
+    pdf_page: "13"
+    source: uu27-bpk
+    verified_on: "2026-11-05"
     text_id: >-
       (1) Pemrosesan Data Pribadi anak diselenggarakan secara khusus. (2) Pemrosesan
       Data Pribadi anak sebagaimana dimaksud pada ayat (1) wajib mendapat persetujuan
@@ -574,7 +663,9 @@ provisions:
     citation_id: Pasal 27
     citation_en: Article 27
     article: 27
-    pdf_page: 13
+    pdf_page: "13"
+    source: uu27-bpk
+    verified_on: "2026-11-05"
     text_id: >-
       Pengendali Data Pribadi wajib melakukan pemrosesan Data Pribadi secara terbatas
       dan spesifik, sah secara hukum, dan transparan.
@@ -585,7 +676,9 @@ provisions:
     citation_id: Penjelasan Pasal 27
     citation_en: Elucidation of Article 27
     article: 27
-    pdf_page: 44
+    pdf_page: "44"
+    source: uu27-bpk
+    verified_on: "2026-11-05"
     text_id: >-
       Yang dimaksud dengan “secara terbatas dan spesifik” adalah pengumpulan Data
       Pribadi harus terbatas sesuai dengan tujuan pemrosesannya serta tujuan
@@ -609,7 +702,9 @@ provisions:
     citation_id: Pasal 30 ayat (1)
     citation_en: Article 30(1)
     article: 30
-    pdf_page: 14
+    pdf_page: "14"
+    source: uu27-bpk
+    verified_on: "2026-11-05"
     text_id: >-
       Pengendali Data Pribadi wajib memperbarui dan/atau memperbaiki kesalahan
       dan/atau ketidakakuratan Data Pribadi paling lambat 3 x 24 (tiga kali dua puluh
@@ -623,7 +718,9 @@ provisions:
     citation_id: Pasal 32
     citation_en: Article 32
     article: 32
-    pdf_page: 14
+    pdf_page: "14"
+    source: uu27-bpk
+    verified_on: "2026-11-05"
     text_id: >-
       (1) Pengendali Data Pribadi wajib memberikan akses kepada Subjek Data Pribadi
       terhadap Data Pribadi yang diproses beserta rekam jejak pemrosesan Data Pribadi
@@ -640,7 +737,9 @@ provisions:
     citation_id: Pasal 35
     citation_en: Article 35
     article: 35
-    pdf_page: 15-16
+    pdf_page: "15-16"
+    source: uu27-bpk
+    verified_on: "2026-11-05"
     text_id: >-
       Pengendali Data Pribadi wajib melindungi dan memastikan keamanan Data Pribadi
       yang diprosesnya, dengan melakukan: a. penyusunan dan penerapan langkah teknis
@@ -659,14 +758,18 @@ provisions:
     citation_id: Pasal 39 ayat (1)
     citation_en: Article 39(1)
     article: 39
-    pdf_page: 16
+    pdf_page: "16"
+    source: uu27-bpk
+    verified_on: "2026-11-05"
     text_id: Pengendali Data Pribadi wajib mencegah Data Pribadi diakses secara tidak sah.
     text_en: The Personal Data Controller must prevent unlawful access to Personal Data.
   p40:
     citation_id: Pasal 40
     citation_en: Article 40
     article: 40
-    pdf_page: 17
+    pdf_page: "17"
+    source: uu27-bpk
+    verified_on: "2026-11-05"
     text_id: >-
       (1) Pengendali Data Pribadi wajib menghentikan pemrosesan Data Pribadi dalam hal
       Subjek Data Pribadi menarik kembali persetujuan pemrosesan Data Pribadi.
@@ -683,7 +786,9 @@ provisions:
     citation_id: Pasal 41 ayat (1)
     citation_en: Article 41(1)
     article: 41
-    pdf_page: 17
+    pdf_page: "17"
+    source: uu27-bpk
+    verified_on: "2026-11-05"
     text_id: >-
       Pengendali Data Pribadi wajib melakukan penundaan dan pembatasan pemrosesan
       Data Pribadi baik sebagian maupun seluruhnya paling lambat 3 x 24 (tiga kali
@@ -697,7 +802,9 @@ provisions:
     citation_id: Pasal 43 ayat (1)
     citation_en: Article 43(1)
     article: 43
-    pdf_page: 18
+    pdf_page: "18"
+    source: uu27-bpk
+    verified_on: "2026-11-05"
     text_id: >-
       Pengendali Data Pribadi wajib menghapus Data Pribadi dalam hal: a. Data Pribadi
       tidak lagi diperlukan untuk pencapaian tujuan pemrosesan Data Pribadi;
@@ -713,7 +820,9 @@ provisions:
     citation_id: Pasal 46
     citation_en: Article 46
     article: 46
-    pdf_page: 19
+    pdf_page: "19"
+    source: uu27-bpk
+    verified_on: "2026-11-05"
     text_id: >-
       (1) Dalam hal terjadi kegagalan Pelindungan Data Pribadi, Pengendali Data
       Pribadi wajib menyampaikan pemberitahuan secara tertulis paling lambat 3 x 24
@@ -735,7 +844,9 @@ provisions:
     citation_id: Penjelasan Pasal 46 ayat (1)
     citation_en: Elucidation of Article 46(1)
     article: 46
-    pdf_page: 46
+    pdf_page: "46"
+    source: uu27-bpk
+    verified_on: "2026-11-05"
     text_id: >-
       Yang dimaksud dengan “kegagalan Pelindungan Data Pribadi” adalah kegagalan
       melindungi Data Pribadi seseorang dalam hal kerahasiaan, integritas, dan
@@ -753,7 +864,9 @@ provisions:
     citation_id: Pasal 48 ayat (1) dan ayat (2)
     citation_en: Article 48(1) and (2)
     article: 48
-    pdf_page: 19-20
+    pdf_page: "19-20"
+    source: uu27-bpk
+    verified_on: "2026-11-05"
     text_id: >-
       (1) Pengendali Data Pribadi berbentuk badan hukum yang melakukan penggabungan,
       pemisahan, pengambilalihan, peleburan, atau pembubaran badan hukum wajib
@@ -770,7 +883,9 @@ provisions:
     citation_id: Pasal 53 ayat (1)
     citation_en: Article 53(1)
     article: 53
-    pdf_page: 22
+    pdf_page: "22"
+    source: uu27-bpk
+    verified_on: "2026-11-05"
     text_id: >-
       Pengendali Data Pribadi dan Prosesor Data Pribadi wajib menunjuk pejabat atau
       petugas yang melaksanakan fungsi Pelindungan Data Pribadi dalam hal:
@@ -794,7 +909,9 @@ provisions:
     citation_id: Pasal 54 ayat (1) huruf d
     citation_en: Article 54(1)(d)
     article: 54
-    pdf_page: 22-23
+    pdf_page: "22-23"
+    source: uu27-bpk
+    verified_on: "2026-11-05"
     text_id: >-
       Pejabat atau petugas yang melaksanakan fungsi Pelindungan Data Pribadi memiliki
       tugas paling sedikit: […] d. berkoordinasi dan bertindak sebagai narahubung
@@ -807,7 +924,9 @@ provisions:
     citation_id: Pasal 56 ayat (1) sampai dengan ayat (4)
     citation_en: Article 56(1) to (4)
     article: 56
-    pdf_page: 24
+    pdf_page: "24"
+    source: uu27-bpk
+    verified_on: "2026-11-05"
     text_id: >-
       (1) Pengendali Data Pribadi dapat melakukan transfer Data Pribadi kepada
       Pengendali Data Pribadi dan/atau Prosesor Data Pribadi di luar wilayah hukum
@@ -834,7 +953,7 @@ provisions:
 
 # =============================================================================
 # Rules. Order = display order. 31 rules:
-#   19 legal (direct), 2 legal (interpretive, needs_review), 10 best practice
+#   19 legal (direct), 2 legal (interpretive), 10 best practice
 # =============================================================================
 rules:
 
@@ -893,28 +1012,37 @@ rules:
         This Privacy Policy explains how [LEGAL ENTITY NAME], registered at
         [ADDRESS] ("we"), processes personal data as the controller for
         [SERVICE NAME].
+    signals:
+      topic:
+        id: ['\bPT\b', '\bCV\b', 'perseroan', 'yayasan', 'koperasi', 'pengendali data', 'bertanggung jawab atas', 'berkedudukan']
+        en: ['\bPT\b', '\bCV\b', '\bLtd\b', '\bInc\b', '\bLLC\b', '\bPte\b', 'controller', 'responsible for', 'registered (office|address)']
+      complete:
+        - id: ['\bPT\b', '\bCV\b', 'perseroan', 'yayasan', 'koperasi']
+          en: ['\bPT\b', '\bCV\b', '\bLtd\b', '\bInc\b', '\bLLC\b', '\bPte\b', 'GmbH', 'limited']
+      caps:
+        id: []
+        en: []
 
   - id: PDP-ID-02
-    status: needs_review
+    status: active
     category: identity
     requirement_type: legal
     legal_mapping: interpretive
-    review_note:
+    interpretation_note:
       id: >-
-        Pemetaan interpretatif. Pasal 5 memberi hak atas Informasi tentang
-        "akuntabilitas pihak yang meminta Data Pribadi", dan Pasal 14 menyatakan
-        permohonan pelaksanaan hak diajukan kepada Pengendali secara elektronik atau
-        nonelektronik. Tidak ada pasal yang secara tegas mewajibkan kontak dicantumkan
-        dalam kebijakan privasi; kami memaknai "akuntabilitas" setidaknya mencakup
-        cara menghubungi Pengendali. Putuskan: persyaratan hukum, praktik terbaik,
-        atau dikeluarkan.
+        Butir ini didasarkan pada penafsiran. Pasal 5 memberi hak atas Informasi
+        tentang "akuntabilitas pihak yang meminta Data Pribadi", dan Pasal 14
+        menyatakan permohonan pelaksanaan hak diajukan kepada Pengendali. Tidak ada
+        pasal yang secara tegas mewajibkan kontak dicantumkan dalam kebijakan
+        privasi; CekPDP memaknai "akuntabilitas" setidaknya mencakup cara
+        menghubungi Pengendali.
       en: >-
-        Interpretive mapping. Article 5 gives a right to information about the
-        "accountability of the party requesting personal data", and Article 14 says
-        rights requests are submitted to the controller electronically or
-        non-electronically. Neither expressly requires contact details in a privacy
-        policy; we read "accountability" as including at least a way to reach the
-        controller. Decide: legal requirement, best practice, or exclude.
+        This item rests on an interpretation. Article 5 gives a right to
+        information about the "accountability of the party requesting personal
+        data", and Article 14 says rights requests are submitted to the
+        controller. No article expressly requires contact details in a privacy
+        policy; CekPDP reads "accountability" as including at least a way to reach
+        the controller.
     title:
       id: Kontak dan cara mengajukan permohonan
       en: Contact point and how to submit requests
@@ -968,6 +1096,18 @@ rules:
         [PRIVACY EMAIL] or by post at [ADDRESS]. You can submit requests
         electronically or non-electronically. We record every request and give it a
         reference number.
+    signals:
+      topic:
+        id: ['hubungi', 'menghubungi', 'e-?mail', 'surel', 'kontak', 'permohonan', 'formulir']
+        en: ['contact', 'e-?mail', 'write to', 'request', '\bform\b']
+      complete:
+        - id: ['@', 'e-?mail', 'surel', 'formulir', 'alamat surat']
+          en: ['@', 'e-?mail', '\bform\b', 'postal']
+        - id: ['permohonan', 'permintaan', 'mengajukan']
+          en: ['request', 'submit', 'exercise']
+      caps:
+        id: []
+        en: []
 
   # -------------------------------------------------------------------- data
   - id: PDP-DATA-01
@@ -1032,6 +1172,16 @@ rules:
         date of birth; (b) contact data: email address and mobile phone number;
         (c) account and transaction data: order and payment history; (d) technical
         data: IP address, device type and activity logs.
+    signals:
+      topic:
+        id: ['mengumpulkan', 'dikumpulkan', 'kami kumpulkan', 'nama lengkap', 'alamat e-?mail', 'nomor telepon', 'alamat IP']
+        en: ['we collect', 'information we collect', 'data we collect', 'full name', 'e-?mail address', 'phone number', 'IP address']
+      complete:
+        - id: ['\bnama\b', 'e-?mail', 'telepon', 'alamat', 'tanggal lahir', 'perangkat', 'lokasi']
+          en: ['\bname\b', 'e-?mail', 'phone', 'address', 'date of birth', 'device', 'location']
+      caps:
+        id: []
+        en: []
 
   - id: PDP-DATA-02
     status: active
@@ -1087,6 +1237,16 @@ rules:
       en: >-
         We use your mobile number to verify your account and send delivery
         notifications. We use your delivery address only to deliver your orders.
+    signals:
+      topic:
+        id: ['(digunakan|kami gunakan|diperlukan|dibutuhkan) untuk', 'agar kami dapat', 'relevan']
+        en: ['(used|needed|required|necessary) (to|for)', 'so that we can', 'in order to']
+      complete:
+        - id: ['(nama|e-?mail|nomor|telepon|alamat|lokasi|perangkat|data \w+)[^.;]{0,80}(digunakan|kami gunakan|diperlukan) untuk']
+          en: ['(name|e-?mail|number|phone|address|location|device|\w+ data)[^.;]{0,80}(is|are) (used|needed|required) (to|for)']
+      caps:
+        id: []
+        en: []
 
   - id: PDP-DATA-03
     status: active
@@ -1118,8 +1278,8 @@ rules:
       - { provision: p4-2, role: related }
     applies_when:
       any:
-        - { context: specific_data, in: [yes, unsure] }
-        - { context: children, in: [yes, unsure] }
+        - { context: specific_data, in: ["yes", "unsure"] }
+        - { context: children, in: ["yes", "unsure"] }
     look_for:
       id:
         - Penyebutan kategori spesifik yang diproses (kesehatan, biometrik, genetika, catatan kejahatan, data anak, keuangan pribadi)
@@ -1148,28 +1308,36 @@ rules:
       en: >-
         For consultations we process your health data and information (symptom
         history and test results), which is specific personal data under the law.
+    signals:
+      topic:
+        id: ['spesifik', 'sensitif', 'kesehatan', 'biometrik', 'genetika', 'catatan kejahatan', 'data anak', 'keuangan pribadi', 'rekam medis']
+        en: ['specific personal data', 'sensitive', 'health', 'biometric', 'genetic', 'criminal record', 'children.s data', 'financial (data|information)', 'medical']
+      complete:
+        - id: ['kesehatan', 'biometrik', 'genetika', 'catatan kejahatan', 'data anak', 'keuangan pribadi', 'rekam medis']
+          en: ['health', 'biometric', 'genetic', 'criminal record', 'children.s data', 'financial (data|information)', 'medical']
+      caps:
+        id: ['tidak (memproses|mengumpulkan) data (pribadi )?(sensitif|spesifik)']
+        en: ['do not (process|collect) (any )?(sensitive|specific)']
 
   - id: PDP-DATA-04
-    status: needs_review
+    status: active
     category: data
     requirement_type: legal
     legal_mapping: interpretive
-    review_note:
+    interpretation_note:
       id: >-
-        Pemetaan interpretatif. Pasal 16 ayat (2) huruf f mensyaratkan pemrosesan
-        dilakukan dengan memberitahukan tujuan dan aktivitas pemrosesan, dan Pasal 16
+        Butir ini didasarkan pada penafsiran. Pasal 16 ayat (2) huruf f
+        mensyaratkan pemberitahuan tujuan dan aktivitas pemrosesan, dan Pasal 16
         ayat (1) huruf a menyebut pemerolehan dan pengumpulan sebagai aktivitas
-        pemrosesan. Penjelasan Pasal 27 menyatakan transparan berarti Subjek Data
-        Pribadi mengetahui bagaimana Data Pribadinya diproses. Undang-undang tidak
-        secara tegas mewajibkan penyebutan sumber data. Putuskan: persyaratan hukum,
-        praktik terbaik, atau dikeluarkan.
+        pemrosesan. Undang-undang tidak secara tegas mewajibkan penyebutan sumber
+        data; CekPDP memaknai kewajiban pemberitahuan tersebut mencakup cara Data
+        Pribadi diperoleh.
       en: >-
-        Interpretive mapping. Article 16(2)(f) requires processing to be carried out
-        by notifying the purpose and processing activities, and Article 16(1)(a)
-        lists obtaining and collecting as processing activities. The Elucidation of
-        Article 27 says transparency means the data subject knows how their data is
-        processed. The law does not expressly require naming data sources. Decide:
-        legal requirement, best practice, or exclude.
+        This item rests on an interpretation. Article 16(2)(f) requires notifying
+        the purpose and processing activities, and Article 16(1)(a) lists obtaining
+        and collecting as processing activities. The law doesn't expressly require
+        naming data sources; CekPDP reads the notification duty as covering how
+        personal data is obtained.
     title:
       id: Sumber dan cara memperoleh Data Pribadi
       en: Sources and methods of collection
@@ -1225,6 +1393,18 @@ rules:
         We obtain personal data (a) directly from you when you register or contact
         us; (b) automatically through cookies and server logs when you use our site;
         and (c) from payment partners to confirm transactions.
+    signals:
+      topic:
+        id: ['dari Anda', 'Anda berikan', 'secara otomatis', 'cookie', '\blog\b', 'pihak ketiga', 'mitra', 'kami peroleh', 'kami terima dari']
+        en: ['directly from you', 'you (provide|give)', 'automatically', 'cookies?', '\blogs?\b', 'third.part(y|ies)', 'partners?', 'we (obtain|receive)']
+      complete:
+        - id: ['dari Anda', 'Anda berikan', 'saat Anda (mendaftar|memesan|menghubungi|mengisi)']
+          en: ['from you', 'you (provide|give)', 'when you (register|sign up|order|contact|fill)']
+        - id: ['otomatis', 'cookie', '\blog\b', 'pihak (ketiga|lain)', 'mitra']
+          en: ['automatic', 'cookie', '\blogs?\b', 'third.part', 'partner', 'other sources']
+      caps:
+        id: []
+        en: []
 
   # ------------------------------------------------------ purpose and basis
   - id: PDP-PURP-01
@@ -1283,6 +1463,16 @@ rules:
         We use your personal data to: (a) create and manage your account; (b) process
         and deliver orders; (c) prevent fraud; and (d) send promotional information
         if you agree.
+    signals:
+      topic:
+        id: ['tujuan', '(kami gunakan|digunakan) untuk', 'menggunakan data[^.]{0,40} untuk']
+        en: ['purposes?', 'we use (your )?(personal )?(data|information) (to|for)', 'used (to|for)']
+      complete:
+        - id: ['untuk (membuat|mengelola|memproses|mengirim|mencegah|memverifikasi|menyediakan|memberikan|menghubungi|melayani|mengantar)']
+          en: ['to (create|manage|process|deliver|prevent|verify|provide|send|contact|operate|run|show)']
+      caps:
+        id: ['dan tujuan lain(nya)?', 'keperluan bisnis (lainnya|kami)']
+        en: ['(and|or) (for )?other (business )?purposes', 'for business purposes']
 
   - id: PDP-BASIS-01
     status: active
@@ -1341,6 +1531,16 @@ rules:
         We process personal data to deliver your orders to perform our contract with
         you (Article 20(2)(b) of the PDP Law), and for marketing based on your
         explicit consent (Article 20(2)(a)).
+    signals:
+      topic:
+        id: ['dasar (pemrosesan|hukum)', 'berdasarkan (persetujuan|perjanjian|kewajiban hukum|kepentingan)', 'Pasal 20']
+        en: ['legal basis', 'lawful basis', 'based on (your )?(consent|contract|legal obligation|legitimate interest)', 'Article 20']
+      complete:
+        - id: ['dasar (pemrosesan|hukum)', 'Pasal 20', 'berdasarkan (persetujuan|perjanjian|pemenuhan|kewajiban hukum|kepentingan)']
+          en: ['legal basis', 'lawful bas', 'Article 20', 'based on (your )?(consent|contract|legal obligation|legitimate interest|performance)']
+      caps:
+        id: []
+        en: []
 
   # --------------------------------------------------------------- retention
   - id: PDP-RET-01
@@ -1396,6 +1596,16 @@ rules:
         We keep transaction records for [10] years after each transaction to meet
         legal obligations, and account data while your account is active plus
         [12] months. After that, the data is deleted or destroyed.
+    signals:
+      topic:
+        id: ['simpan', 'penyimpanan', 'retensi']
+        en: ['retain', 'retention', 'keep (your )?(personal )?(data|information|records)', '\bstore']
+      complete:
+        - id: ['\d+\s*(hari|bulan|tahun)', '(satu|dua|tiga|lima|sepuluh) (bulan|tahun)']
+          en: ['\d+\s*(days?|months?|years?)', '(one|two|three|five|ten) (months?|years?)']
+      caps:
+        id: []
+        en: []
 
   - id: PDP-RET-02
     status: active
@@ -1448,6 +1658,16 @@ rules:
       en: >-
         We process your data for marketing from when you give consent until you
         withdraw it.
+    signals:
+      topic:
+        id: ['selama akun', 'hingga Anda (menarik|menutup|menghapus|berhenti)', 'sampai (persetujuan|akun|Anda)', 'jangka waktu pemrosesan', 'selama (program|layanan|kontrak|hubungan)']
+        en: ['while your account', 'until you (withdraw|close|delete|stop)', 'for the duration of', 'as long as you (use|have|remain)']
+      complete:
+        - id: ['selama akun', 'hingga Anda (menarik|menutup|menghapus|berhenti)', 'sampai (persetujuan|akun|Anda)', 'jangka waktu pemrosesan', 'selama (program|layanan|kontrak|hubungan)']
+          en: ['while your account', 'until you (withdraw|close|delete|stop)', 'for the duration of', 'as long as you (use|have|remain)']
+      caps:
+        id: []
+        en: []
 
   # ------------------------------------------------------ sharing, transfers
   - id: PDP-SHARE-01
@@ -1509,6 +1729,16 @@ rules:
         We share personal data with: (a) logistics providers to deliver orders;
         (b) payment service providers to process transactions; and (c) competent
         authorities where the law requires it.
+    signals:
+      topic:
+        id: ['membagikan', 'berbagi', 'mengungkapkan', 'pihak (ketiga|lain)', 'mitra', 'penyedia (layanan|jasa)', 'instansi']
+        en: ['\bshare', 'disclose', 'third.part', 'partners?', 'service providers?', 'authorities']
+      complete:
+        - id: ['penyedia (layanan|jasa)', 'kurir', 'logistik', 'pembayaran', 'afiliasi', 'instansi', 'prosesor', 'laboratorium', 'sekolah', 'apotek']
+          en: ['service providers?', 'courier', 'logistics', 'payment', 'affiliates?', 'authorit', 'processors?', 'vendors?', 'advertis', 'hosting']
+      caps:
+        id: []
+        en: []
 
   - id: PDP-XFER-01
     status: active
@@ -1536,7 +1766,7 @@ rules:
       - { provision: p56, role: related }
     applies_when:
       any:
-        - { context: international_transfer, in: [yes, unsure] }
+        - { context: international_transfer, in: ["yes", "unsure"] }
     look_for:
       id:
         - Pernyataan bahwa data ditransfer atau disimpan di luar Indonesia
@@ -1564,6 +1794,16 @@ rules:
       en: >-
         Your personal data is stored in our cloud provider's data centres in
         [COUNTRY], so it is transferred outside the Republic of Indonesia.
+    signals:
+      topic:
+        id: ['luar (wilayah|negeri)', 'luar Indonesia', 'lintas negara', 'Singapura', 'Amerika Serikat', 'server global']
+        en: ['outside (of )?Indonesia', 'abroad', 'overseas', 'cross.border', 'international transfer', 'Singapore', 'United States', 'global (servers|infrastructure)']
+      complete:
+        - id: ['luar (wilayah hukum|negeri)', 'luar Indonesia', 'di (Singapura|Amerika Serikat|Jepang)', 'ke (Singapura|Amerika Serikat|Jepang)']
+          en: ['outside (of )?Indonesia', 'abroad', 'overseas', 'in (Singapore|the United States|Japan)', 'to (Singapore|the United States|Japan)']
+      caps:
+        id: []
+        en: []
 
   - id: PDP-XFER-02
     status: active
@@ -1590,7 +1830,7 @@ rules:
       - { provision: p56, role: related }
     applies_when:
       any:
-        - { context: international_transfer, in: [yes, unsure] }
+        - { context: international_transfer, in: ["yes", "unsure"] }
     look_for:
       id:
         - "Mekanisme yang digunakan: tingkat pelindungan setara, perjanjian atau klausul yang mengikat, atau persetujuan"
@@ -1618,6 +1858,16 @@ rules:
         When personal data goes to a country whose protection is not equivalent to
         the PDP Law, we use written agreements that bind the recipient to protect the
         data to the PDP Law's standard.
+    signals:
+      topic:
+        id: ['setara', 'pelindungan (yang )?memadai', 'perjanjian (tertulis|yang mengikat)', 'klausul']
+        en: ['equivalent', 'adequate (protection|safeguards|level)', 'binding', 'contractual clauses', 'appropriate safeguards']
+      complete:
+        - id: ['setara', 'mengikat', 'perjanjian tertulis', 'klausul']
+          en: ['equivalent', 'binding', 'contractual clauses', 'written agreements?']
+      caps:
+        id: []
+        en: []
 
   # ------------------------------------------------------------------ rights
   - id: PDP-RIGHT-01
@@ -1675,6 +1925,16 @@ rules:
         You have the right to complete, update and/or correct inaccurate personal
         data about you. Send your request to [CONTACT]; we will act on it within
         3 x 24 hours of receiving it.
+    signals:
+      topic:
+        id: ['memperbarui', 'memperbaiki', 'melengkapi', 'pembaruan', 'perbaikan']
+        en: ['correct', 'rectif', 'update', 'inaccurate']
+      complete:
+        - id: ['berhak', 'hak (untuk|Anda)', 'dapat meminta', 'mengajukan permohonan']
+          en: ['right', 'entitled', 'you (can|may) (ask|request)']
+      caps:
+        id: []
+        en: []
 
   - id: PDP-RIGHT-02
     status: active
@@ -1733,6 +1993,18 @@ rules:
         You have the right to access and get a copy of your personal data. Copies are
         free, except in certain conditions that require a cost, which we will tell you
         about first.
+    signals:
+      topic:
+        id: ['akses', 'salinan']
+        en: ['access', '\bcopy\b']
+      complete:
+        - id: ['akses']
+          en: ['access']
+        - id: ['salinan']
+          en: ['\bcopy\b']
+      caps:
+        id: ['dikenakan biaya', 'biaya administrasi']
+        en: ['(administrative|processing|reasonable) fee', 'we (will|may) charge']
 
   - id: PDP-RIGHT-03
     status: active
@@ -1786,6 +2058,18 @@ rules:
       en: >-
         You have the right to ask us to stop processing and to delete and/or destroy
         your personal data, unless the law requires us to keep it.
+    signals:
+      topic:
+        id: ['menghapus', 'penghapusan', 'memusnahkan', 'pemusnahan', 'mengakhiri pemrosesan', 'hapus akun']
+        en: ['delet', '\berase', 'erasure', 'destroy', 'stop processing', 'end (the )?processing']
+      complete:
+        - id: ['hapus', 'penghapusan', 'musnah']
+          en: ['delet', '\berase', 'destroy']
+        - id: ['mengakhiri', 'menghentikan', 'berhenti memproses']
+          en: ['stop (the )?processing', 'end (the )?processing', 'cease']
+      caps:
+        id: []
+        en: []
 
   - id: PDP-RIGHT-04
     status: active
@@ -1810,7 +2094,7 @@ rules:
       - { provision: p40, role: related }
     applies_when:
       any:
-        - { context: consent_basis, in: [yes, unsure] }
+        - { context: consent_basis, in: ["yes", "unsure"] }
     look_for:
       id:
         - Hak menarik kembali persetujuan
@@ -1839,6 +2123,16 @@ rules:
       en: >-
         You can withdraw your consent at any time via [SETTINGS/CONTACT]. We will stop
         the related processing within 3 x 24 hours of receiving your request.
+    signals:
+      topic:
+        id: ['menarik (kembali )?persetujuan', 'penarikan (kembali )?persetujuan', 'mencabut persetujuan', 'berhenti berlangganan']
+        en: ['withdraw (your )?consent', 'revoke', 'unsubscribe', 'opt.out']
+      complete:
+        - id: ['menarik (kembali )?persetujuan', 'penarikan (kembali )?persetujuan', 'mencabut persetujuan']
+          en: ['withdraw (your )?consent', 'revoke (your )?consent']
+      caps:
+        id: []
+        en: []
 
   - id: PDP-RIGHT-05
     status: active
@@ -1867,7 +2161,7 @@ rules:
       - { provision: pj-p10-1, role: related }
     applies_when:
       any:
-        - { context: automated_decisions, in: [yes, unsure] }
+        - { context: automated_decisions, in: ["yes", "unsure"] }
     look_for:
       id:
         - Hak keberatan atas keputusan otomatis atau pemrofilan
@@ -1897,6 +2191,18 @@ rules:
         If we make a decision based solely on automated processing, including
         profiling, that has legal consequences or significantly affects you, you have
         the right to object via [CONTACT].
+    signals:
+      topic:
+        id: ['otomatis', 'pemrofilan', 'profil']
+        en: ['automated', 'profiling']
+      complete:
+        - id: ['keberatan', 'menolak']
+          en: ['object', 'not to be subject', 'contest']
+        - id: ['otomatis', 'pemrofilan']
+          en: ['automated', 'profiling']
+      caps:
+        id: []
+        en: []
 
   - id: PDP-RIGHT-06
     status: active
@@ -1948,6 +2254,16 @@ rules:
       en: >-
         You have the right to ask us to delay or restrict the processing of your
         personal data, in proportion to the purpose of the processing.
+    signals:
+      topic:
+        id: ['menunda (atau membatasi )?pemrosesan', 'membatasi pemrosesan', 'pembatasan pemrosesan', 'penundaan (dan pembatasan )?pemrosesan']
+        en: ['restrict(ion of)? (the )?processing', 'restrict (how|our use)', 'suspend (the )?processing', 'limit (the )?processing']
+      complete:
+        - id: ['menunda', 'membatasi', 'pembatasan', 'penundaan']
+          en: ['restrict', 'suspend', 'limit']
+      caps:
+        id: []
+        en: []
 
   - id: PDP-RIGHT-07
     status: active
@@ -1997,6 +2313,16 @@ rules:
       en: >-
         You have the right to sue and receive compensation for violations in the
         processing of your personal data, as provided by law.
+    signals:
+      topic:
+        id: ['menggugat', 'ganti rugi', 'gugatan', 'pengaduan', 'sengketa']
+        en: ['\bsue\b', 'compensation', 'damages', 'complaint', 'dispute']
+      complete:
+        - id: ['menggugat', 'gugatan', 'ganti rugi']
+          en: ['\bsue\b', 'compensation', 'damages']
+      caps:
+        id: []
+        en: []
 
   - id: PDP-RIGHT-08
     status: active
@@ -2054,6 +2380,18 @@ rules:
         You have the right to get your personal data in a commonly used,
         machine-readable format (e.g., CSV or JSON), and to ask us to send it to
         another controller where the systems can communicate securely.
+    signals:
+      topic:
+        id: ['portabilitas', 'format yang (lazim|terstruktur|dapat dibaca)', 'dapat dibaca mesin', 'mengunduh data', 'ekspor']
+        en: ['portab', 'machine.readable', 'commonly used', 'transmit', 'export', 'download (a copy of )?your data']
+      complete:
+        - id: ['format (yang )?(lazim|terstruktur)', 'dapat dibaca (mesin|oleh sistem)']
+          en: ['machine.readable', 'commonly used', 'structured']
+        - id: ['mengirimkan', 'Pengendali (Data Pribadi )?lain', 'penyedia lain']
+          en: ['transmit', 'another (controller|provider|service)', 'send (it|them|your data) to']
+      caps:
+        id: []
+        en: []
 
   - id: PDP-RIGHT-09
     status: active
@@ -2108,6 +2446,16 @@ rules:
       en: >-
         We act on requests to update, correct or access data, withdraw consent, or
         delay and restrict processing within 3 x 24 hours of receiving them.
+    signals:
+      topic:
+        id: ['\d+\s*(x|×)\s*24 jam', 'hari kerja', '\d+ hari', '\d+ jam']
+        en: ['within \d+ (hours|days|business days|working days|calendar days)', 'one month', '\d+ (calendar |business |working )?days']
+      complete:
+        - id: ['3\s*(x|×)\s*24 jam', '72 jam', 'tiga kali dua puluh empat']
+          en: ['3\s*(x|×)\s*24 hours', '72 hours']
+      caps:
+        id: ['([4-9]|\d{2,}) hari', 'hari kerja']
+        en: ['([4-9]|\d{2,}) (calendar |business |working )?days', 'one month']
 
   # ----------------------------------------------------------------- changes
   - id: PDP-CHG-01
@@ -2163,6 +2511,16 @@ rules:
         If we change the information in this Privacy Policy, we will tell you by email
         or in-app notice before the change takes effect, at least [14] days in
         advance.
+    signals:
+      topic:
+        id: ['perubahan', 'mengubah', 'memperbarui kebijakan']
+        en: ['change', 'update (this|our) (policy|notice)', 'modif']
+      complete:
+        - id: ['sebelum (perubahan )?(tersebut )?berlaku', 'memberitahu(kan)?[^.]{0,80}sebelum']
+          en: ['before (the )?(changes?|it|they) takes? effect', 'prior notice', 'in advance', 'notify you[^.]{0,60}before']
+      caps:
+        id: ['berlaku sejak (diunggah|diumumkan|dipublikasikan|ditayangkan)', 'penggunaan[^.]{0,60}(berkelanjutan|selanjutnya)', 'dianggap menyetujui']
+        en: ['effective (immediately|upon posting|when (posted|published))', 'continued use', 'deemed to (accept|agree)']
 
   # ---------------------------------------------------- best practices: consent
   - id: PDP-CONSENT-01
@@ -2198,7 +2556,7 @@ rules:
       - { provision: p24, role: related }
     applies_when:
       any:
-        - { context: consent_basis, in: [yes, unsure] }
+        - { context: consent_basis, in: ["yes", "unsure"] }
     look_for:
       id:
         - Mekanisme opt-in (kotak centang, permintaan persetujuan terpisah)
@@ -2230,6 +2588,16 @@ rules:
         We ask for your explicit consent separately for each purpose that needs it,
         using checkboxes that are unticked by default, and we keep a record of your
         consent.
+    signals:
+      topic:
+        id: ['persetujuan', 'menyetujui', 'centang']
+        en: ['consent', '\bagree', 'checkbox', '\btick', 'opt.in']
+      complete:
+        - id: ['kotak centang', 'centang', 'terpisah', 'eksplisit', 'tertulis', 'terekam', 'opt.in']
+          en: ['checkbox', '\btick', 'separate', 'explicit', 'opt.in']
+      caps:
+        id: ['dengan (menggunakan|mengakses|mengunduh)[^.]{0,80}(menyetujui|dianggap)', 'dianggap (telah )?menyetujui']
+        en: ['by (using|accessing|downloading)[^.]{0,80}(agree|consent)', 'deemed to (have )?(agreed|consented)']
 
   # ------------------------------------------- best practices: security, breach
   - id: PDP-SEC-01
@@ -2284,6 +2652,16 @@ rules:
       en: >-
         We protect personal data with encryption in transit and at rest, need-to-know
         access controls, and regular security monitoring.
+    signals:
+      topic:
+        id: ['keamanan', 'enkripsi', 'melindungi data']
+        en: ['secur', 'encrypt', 'protect (your )?(personal )?(data|information)']
+      complete:
+        - id: ['enkripsi', 'kontrol akses', 'pembatasan akses', 'autentikasi', 'firewall', 'pelatihan', 'audit']
+          en: ['encrypt', 'access control', 'authentication', 'firewall', 'training', 'audit', 'pseudonym']
+      caps:
+        id: []
+        en: []
 
   - id: PDP-BREACH-01
     status: active
@@ -2341,6 +2719,18 @@ rules:
         If a personal data protection failure occurs, we will notify you in writing
         within 3 x 24 hours, including what data was disclosed, when and how, and what
         we are doing to handle and recover from it.
+    signals:
+      topic:
+        id: ['kegagalan pelindungan', 'insiden', 'kebocoran', 'pelanggaran keamanan']
+        en: ['breach', 'incident', 'unauthori[sz]ed access', 'data leak']
+      complete:
+        - id: ['memberitahu', 'pemberitahuan']
+          en: ['notify', 'notification', 'inform']
+        - id: ['3\s*(x|×)\s*24 jam', '72 jam', 'tiga kali dua puluh empat']
+          en: ['3\s*(x|×)\s*24 hours', '72 hours']
+      caps:
+        id: ['jika diwajibkan', 'apabila diwajibkan']
+        en: ['where (required|necessary)', 'if required by law', 'where the law requires']
 
   # ------------------------------------------------- best practices: children
   - id: PDP-CHILD-01
@@ -2369,7 +2759,7 @@ rules:
       - { provision: p4-2, role: related, pinpoint: { id: huruf e, en: letter e } }
     applies_when:
       any:
-        - { context: children, in: [yes, unsure] }
+        - { context: children, in: ["yes", "unsure"] }
     look_for:
       id:
         - Pernyataan tentang pengguna anak atau batas usia
@@ -2398,6 +2788,16 @@ rules:
       en: >-
         If a user is a child, we process their personal data only after obtaining
         consent from their parent and/or guardian through [VERIFICATION METHOD].
+    signals:
+      topic:
+        id: ['\banak\b', 'di bawah umur', 'orang tua', '\bwali\b']
+        en: ['child', 'minor', 'under (the age of )?\d+', 'parent', 'guardian']
+      complete:
+        - id: ['persetujuan (dari )?(orang tua|wali)', 'orang tua (dan/atau|atau) wali[^.]{0,60}(persetujuan|menyetujui)']
+          en: ['(parental|parent|guardian)(.s)? consent', 'consent (of|from) (a |the |their )?(parent|guardian)']
+      caps:
+        id: []
+        en: []
 
   # ----------------------------------------------- best practices: governance
   - id: PDP-DPO-01
@@ -2453,6 +2853,16 @@ rules:
       en: >-
         We have appointed a data protection officer, who can be reached at
         [DPO EMAIL].
+    signals:
+      topic:
+        id: ['pejabat (atau petugas )?(yang melaksanakan fungsi )?pelindungan data', 'petugas pelindungan data', '\bPPDP\b', '\bDPO\b']
+        en: ['data protection officer', '\bDPO\b', 'privacy officer']
+      complete:
+        - id: ['@', 'e-?mail', 'surel', 'hubungi']
+          en: ['@', 'e-?mail', 'contact', 'reach']
+      caps:
+        id: []
+        en: []
 
   - id: PDP-CORP-01
     status: active
@@ -2504,6 +2914,16 @@ rules:
       en: >-
         If a merger, split, acquisition, consolidation or dissolution results in a
         transfer of personal data, we will notify you before and after it happens.
+    signals:
+      topic:
+        id: ['penggabungan', 'pengambilalihan', 'peleburan', 'pemisahan', 'pembubaran', 'merger', 'akuisisi']
+        en: ['merger', 'acquisition', 'sale of (assets|(the|our) business)', 'business transfer', 'reorgani[sz]ation', 'dissolution']
+      complete:
+        - id: ['sebelum dan (sesudah|setelah)']
+          en: ['before and after']
+      caps:
+        id: []
+        en: []
 
   # ------------------------------------------------ best practices: document
   - id: PDP-META-01
@@ -2545,6 +2965,16 @@ rules:
     example_wording:
       id: "Berlaku sejak: [TANGGAL]. Terakhir diperbarui: [TANGGAL]."
       en: "Effective: [DATE]. Last updated: [DATE]."
+    signals:
+      topic:
+        id: ['berlaku sejak', 'terakhir diperbarui', 'tanggal berlaku', 'versi']
+        en: ['effective (date|as of|from|since)', 'last updated', 'version']
+      complete:
+        - id: ['\d{1,2} (Januari|Februari|Maret|April|Mei|Juni|Juli|Agustus|September|Oktober|November|Desember) \d{4}', '\d{4}-\d{2}-\d{2}']
+          en: ['(January|February|March|April|May|June|July|August|September|October|November|December) \d{1,2},? \d{4}', '\d{1,2} (January|February|March|April|May|June|July|August|September|October|November|December) \d{4}', '\d{4}-\d{2}-\d{2}']
+      caps:
+        id: []
+        en: []
 
   - id: PDP-LANG-01
     status: active
@@ -2594,3 +3024,13 @@ rules:
     example_wording:
       id: Kebijakan Privasi ini tersedia dalam Bahasa Indonesia dan bahasa Inggris.
       en: This Privacy Policy is available in Bahasa Indonesia and English.
+    signals:
+      topic:
+        id: ['Bahasa Indonesia']
+        en: ['Bahasa Indonesia', 'Indonesian (version|language|translation)']
+      complete:
+        - id: ['Bahasa Indonesia']
+          en: ['Bahasa Indonesia', 'Indonesian (version|language|translation)']
+      caps:
+        id: []
+        en: []

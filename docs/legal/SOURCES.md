@@ -1,8 +1,12 @@
 # Legal sources and verification log
 
-**Checked on:** 5 November 2026 · **Prepared by:** Claude (AI assistant), for review by the project owner · **This is research for a software tool, not legal advice.**
+**Verified on:** 5 November 2026 · **Status re-checked:** 9 November 2026 · **Prepared by:** Claude (AI assistant), for review by the project owner · **This is research for a software tool, not legal advice.**
 
 This log records where every legal reference in the CekPDP ruleset comes from, how it was verified, and what is still unverified. Update it whenever the ruleset changes (see the ruleset update process in `docs/plan/PLAN.md`, section 11).
+
+**Used by:** ruleset 1.0.0 (`resources/rulesets/uu-pdp-27-2022/1.0.0.yaml`). Its provision texts are byte-identical to the reviewed draft verified here.
+
+**Re-check on 9 November 2026:** a news search found no new MK decision on UU 27/2022, and no report that the Perpres establishing the PDP institution has been signed (most recent: [Bisnis.com, 13 September 2026](https://teknologi.bisnis.com/read/20260913/84/2003698/pembentukan-badan-pdp-dipercepat-implementasi-uu-pdp-dinilai-belum-efektif)). PP 33/2026 is still not in force. Nothing in the ruleset changed.
 
 ---
 

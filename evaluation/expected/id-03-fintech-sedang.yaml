@@ -1,0 +1,55 @@
+fixture: id-03-fintech-sedang
+title: DompetCermat (e-wallet and paylater), medium-completeness Indonesian policy
+language: id
+ruleset_version: 1.0.0
+description: >-
+  Names the legal entity and identifies personal financial data as specific
+  data, but gives only a general legal basis, vague sharing and retention, no
+  processing period, no right to object to automated credit scoring, a 14
+  working-day response time, and changes that take effect when announced.
+
+context:
+  consent_basis: "yes"
+  specific_data: "yes"
+  children: "no"
+  international_transfer: "unsure"
+  automated_decisions: "yes"
+
+expected:
+  PDP-ID-01: addressed
+  PDP-ID-02: partially_addressed
+  PDP-DATA-01: addressed
+  PDP-DATA-02: partially_addressed
+  PDP-DATA-03: addressed
+  PDP-DATA-04: partially_addressed
+  PDP-PURP-01: addressed
+  PDP-BASIS-01: partially_addressed
+  PDP-RET-01: partially_addressed
+  PDP-RET-02:
+    status: not_found
+    acceptable: [partially_addressed]
+    note: >-
+      "Selama diperlukan untuk tujuan pemrosesan" describes storage, not when
+      processing ends, but a reviewer could read it as a vague processing
+      period.
+  PDP-SHARE-01: partially_addressed
+  PDP-XFER-01: not_found
+  PDP-XFER-02: not_found
+  PDP-RIGHT-01: addressed
+  PDP-RIGHT-02: addressed
+  PDP-RIGHT-03: partially_addressed
+  PDP-RIGHT-04: addressed
+  PDP-RIGHT-05: partially_addressed
+  PDP-RIGHT-06: not_found
+  PDP-RIGHT-07: not_found
+  PDP-RIGHT-08: not_found
+  PDP-RIGHT-09: partially_addressed
+  PDP-CHG-01: partially_addressed
+  PDP-CONSENT-01: addressed
+  PDP-SEC-01: addressed
+  PDP-BREACH-01: not_found
+  PDP-CHILD-01: not_applicable
+  PDP-DPO-01: not_found
+  PDP-CORP-01: not_found
+  PDP-META-01: addressed
+  PDP-LANG-01: addressed

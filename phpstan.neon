@@ -1,0 +1,13 @@
+includes:
+    - vendor/larastan/larastan/extension.neon
+
+parameters:
+    level: 8
+    # Read Eloquent casts from the array returned by casts(), so enum and
+    # encrypted casts are typed correctly.
+    parseModelCastsMethod: true
+    paths:
+        - app
+        - config
+        - database
+        - routes

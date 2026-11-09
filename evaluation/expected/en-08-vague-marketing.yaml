@@ -1,0 +1,70 @@
+fixture: en-08-vague-marketing
+title: Glowly (lifestyle social app), vague marketing-style English policy
+language: en
+ruleset_version: 1.0.0
+description: >-
+  Every context answer is "not sure", so every rule applies. The policy names
+  only a brand, uses vague data and purpose descriptions, mentions profiling
+  without a right to object, and treats continued use as acceptance of changes.
+
+context:
+  consent_basis: "unsure"
+  specific_data: "unsure"
+  children: "unsure"
+  international_transfer: "unsure"
+  automated_decisions: "unsure"
+
+expected:
+  PDP-ID-01: partially_addressed
+  PDP-ID-02: partially_addressed
+  PDP-DATA-01: partially_addressed
+  PDP-DATA-02:
+    status: not_found
+    acceptable: [partially_addressed]
+    note: >-
+      Data and purposes are both vague, so nothing explains why each kind of
+      data is needed; the purpose sentence could be read as a partial
+      explanation.
+  PDP-DATA-03:
+    status: not_found
+    acceptable: [partially_addressed]
+    note: >-
+      The policy only says it is not intended for children under 13; it never
+      names any specific personal data it processes.
+  PDP-DATA-04: partially_addressed
+  PDP-PURP-01: partially_addressed
+  PDP-BASIS-01:
+    status: not_found
+    acceptable: [partially_addressed]
+    note: >-
+      "By using Glowly, you agree to this Privacy Policy" is agreement to the
+      document, not a stated legal basis, but it could be read as a reference
+      to consent.
+  PDP-RET-01: partially_addressed
+  PDP-RET-02:
+    status: not_found
+    acceptable: [partially_addressed]
+    note: >-
+      "For as long as necessary" is about keeping information; a reviewer could
+      read it as a vague processing period.
+  PDP-SHARE-01: partially_addressed
+  PDP-XFER-01: partially_addressed
+  PDP-XFER-02: not_found
+  PDP-RIGHT-01: partially_addressed
+  PDP-RIGHT-02: not_found
+  PDP-RIGHT-03: partially_addressed
+  PDP-RIGHT-04: partially_addressed
+  PDP-RIGHT-05: partially_addressed
+  PDP-RIGHT-06: not_found
+  PDP-RIGHT-07: not_found
+  PDP-RIGHT-08: not_found
+  PDP-RIGHT-09: not_found
+  PDP-CHG-01: partially_addressed
+  PDP-CONSENT-01: partially_addressed
+  PDP-SEC-01: partially_addressed
+  PDP-BREACH-01: not_found
+  PDP-CHILD-01: partially_addressed
+  PDP-DPO-01: not_found
+  PDP-CORP-01: partially_addressed
+  PDP-META-01: addressed
+  PDP-LANG-01: not_found

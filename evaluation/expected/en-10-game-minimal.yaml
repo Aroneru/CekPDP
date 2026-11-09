@@ -1,0 +1,64 @@
+fixture: en-10-game-minimal
+title: Pixel Pals (free mobile game), minimal English notice
+language: en
+ruleset_version: 1.0.0
+description: >-
+  A short ad-funded game notice. It lists the data, purposes, advertising
+  partners and US storage, and sets an age limit, but has no parental consent
+  mechanism, no legal basis, no retention, and no rights beyond deleting a
+  child's data on request.
+
+context:
+  consent_basis: "unsure"
+  specific_data: "unsure"
+  children: "yes"
+  international_transfer: "yes"
+  automated_decisions: "no"
+
+expected:
+  PDP-ID-01:
+    status: partially_addressed
+    acceptable: [addressed]
+    note: >-
+      Names the studio that made the game but not its legal form, and doesn't
+      say it is responsible for the data.
+  PDP-ID-02: partially_addressed
+  PDP-DATA-01: addressed
+  PDP-DATA-02: partially_addressed
+  PDP-DATA-03:
+    status: not_found
+    acceptable: [partially_addressed]
+    note: >-
+      The only reference to specific data is that children's data isn't
+      knowingly collected; no specific data is named as processed.
+  PDP-DATA-04:
+    status: addressed
+    acceptable: [partially_addressed]
+    note: >-
+      All collection is automatic during play and the notice says so; there is
+      no other apparent source.
+  PDP-PURP-01: addressed
+  PDP-BASIS-01: not_found
+  PDP-RET-01: not_found
+  PDP-RET-02: not_found
+  PDP-SHARE-01: addressed
+  PDP-XFER-01: addressed
+  PDP-XFER-02: not_found
+  PDP-RIGHT-01: not_found
+  PDP-RIGHT-02: not_found
+  PDP-RIGHT-03: partially_addressed
+  PDP-RIGHT-04: not_found
+  PDP-RIGHT-05: not_applicable
+  PDP-RIGHT-06: not_found
+  PDP-RIGHT-07: not_found
+  PDP-RIGHT-08: not_found
+  PDP-RIGHT-09: not_found
+  PDP-CHG-01: not_found
+  PDP-CONSENT-01: not_found
+  PDP-SEC-01: not_found
+  PDP-BREACH-01: not_found
+  PDP-CHILD-01: partially_addressed
+  PDP-DPO-01: not_found
+  PDP-CORP-01: not_found
+  PDP-META-01: not_found
+  PDP-LANG-01: not_found

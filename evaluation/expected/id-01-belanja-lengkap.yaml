@@ -1,0 +1,49 @@
+fixture: id-01-belanja-lengkap
+title: LumbungBelanja (marketplace), comprehensive Indonesian policy
+language: id
+ruleset_version: 1.0.0
+description: >-
+  A comprehensive e-commerce policy written to address almost every rule:
+  data mapped to purposes and legal bases, retention per category, rights with
+  3 x 24 hour response times, overseas transfer with safeguards, breach
+  notification and prior notice of changes.
+
+context:
+  consent_basis: "yes"
+  specific_data: "no"
+  children: "no"
+  international_transfer: "yes"
+  automated_decisions: "no"
+
+expected:
+  PDP-ID-01: addressed
+  PDP-ID-02: addressed
+  PDP-DATA-01: addressed
+  PDP-DATA-02: addressed
+  PDP-DATA-03: not_applicable
+  PDP-DATA-04: addressed
+  PDP-PURP-01: addressed
+  PDP-BASIS-01: addressed
+  PDP-RET-01: addressed
+  PDP-RET-02: addressed
+  PDP-SHARE-01: addressed
+  PDP-XFER-01: addressed
+  PDP-XFER-02: addressed
+  PDP-RIGHT-01: addressed
+  PDP-RIGHT-02: addressed
+  PDP-RIGHT-03: addressed
+  PDP-RIGHT-04: addressed
+  PDP-RIGHT-05: not_applicable
+  PDP-RIGHT-06: addressed
+  PDP-RIGHT-07: addressed
+  PDP-RIGHT-08: addressed
+  PDP-RIGHT-09: addressed
+  PDP-CHG-01: addressed
+  PDP-CONSENT-01: addressed
+  PDP-SEC-01: addressed
+  PDP-BREACH-01: addressed
+  PDP-CHILD-01: not_applicable
+  PDP-DPO-01: addressed
+  PDP-CORP-01: addressed
+  PDP-META-01: addressed
+  PDP-LANG-01: addressed

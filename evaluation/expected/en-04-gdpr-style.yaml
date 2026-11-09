@@ -1,0 +1,55 @@
+fixture: en-04-gdpr-style
+title: Lingowave (language-learning app), GDPR-style English notice
+language: en
+ruleset_version: 1.0.0
+description: >-
+  A thorough GDPR-style notice that maps imperfectly onto UU PDP: retention is
+  only "as long as necessary", erasure is offered without ending processing,
+  the complaint right replaces the right to sue for compensation, requests take
+  a month, breach notice is "without undue delay" (72 hours only to the
+  authority, where required), and no Indonesian version is mentioned.
+
+context:
+  consent_basis: "yes"
+  specific_data: "no"
+  children: "no"
+  international_transfer: "yes"
+  automated_decisions: "unsure"
+
+expected:
+  PDP-ID-01: addressed
+  PDP-ID-02: addressed
+  PDP-DATA-01: addressed
+  PDP-DATA-02: addressed
+  PDP-DATA-03: not_applicable
+  PDP-DATA-04: addressed
+  PDP-PURP-01: addressed
+  PDP-BASIS-01: addressed
+  PDP-RET-01: partially_addressed
+  PDP-RET-02: addressed
+  PDP-SHARE-01: addressed
+  PDP-XFER-01: addressed
+  PDP-XFER-02: addressed
+  PDP-RIGHT-01: addressed
+  PDP-RIGHT-02: addressed
+  PDP-RIGHT-03:
+    status: partially_addressed
+    acceptable: [addressed]
+    note: >-
+      Offers erasure but not ending processing as such. Some reviewers would
+      treat the GDPR erasure right as covering both.
+  PDP-RIGHT-04: addressed
+  PDP-RIGHT-05: addressed
+  PDP-RIGHT-06: addressed
+  PDP-RIGHT-07: partially_addressed
+  PDP-RIGHT-08: addressed
+  PDP-RIGHT-09: partially_addressed
+  PDP-CHG-01: addressed
+  PDP-CONSENT-01: addressed
+  PDP-SEC-01: addressed
+  PDP-BREACH-01: partially_addressed
+  PDP-CHILD-01: not_applicable
+  PDP-DPO-01: addressed
+  PDP-CORP-01: partially_addressed
+  PDP-META-01: addressed
+  PDP-LANG-01: not_found

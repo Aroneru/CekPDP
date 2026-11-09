@@ -1,13 +1,13 @@
-# CekPDP: plan for review
+# CekPDP: plan
 
-**Status:** awaiting your approval. No application code has been written yet. · **Date:** 5 November 2026
+**Status:** approved 9 November 2026 with the recommended defaults (see [§16](#16-decisions-taken)). Milestone 1 is in progress. · **Written:** 5 November 2026
 
 Companion documents:
 
 - [`docs/legal/SOURCES.md`](../legal/SOURCES.md): legal sources, verification log, status of the law, court decisions and implementing regulations.
-- [`docs/plan/ruleset-draft.yaml`](ruleset-draft.yaml): the draft ruleset (31 rules, 46 verified provisions).
+- [`resources/rulesets/uu-pdp-27-2022/1.0.0.yaml`](../../resources/rulesets/uu-pdp-27-2022/1.0.0.yaml): the approved ruleset (31 rules, 46 verified provisions). The reviewed draft it was built from is in the git history (`docs/plan/ruleset-draft.yaml` at commit `174a821`).
 
-The decisions I need from you are in [§15](#15-decisions-needed). Each one has a recommended default.
+The decisions that were open are listed in [§15](#15-decisions-needed); [§16](#16-decisions-taken) records what was decided.
 
 ---
 
@@ -334,7 +334,7 @@ CekPDP/
 ├── database/{migrations,factories}/
 ├── docs/
 │   ├── legal/SOURCES.md
-│   ├── plan/{PLAN.md, ruleset-draft.yaml}
+│   ├── plan/PLAN.md
 │   └── architecture.md, ruleset-update-process.md   # Milestone 5
 ├── evaluation/
 │   ├── fixtures/                     # *.md fictional policies
@@ -394,3 +394,26 @@ Reply with "go with the recommendations" or name any you want changed.
    **Recommended:** all four integrations in §9. Do you want to create a Pasal.id API token for `cekpdp:sources:check`? It's optional, and the command is skipped without one.
 9. **API key and budget.**
    Will you provide an Anthropic API key for Milestone 3 smoke tests and the Milestone 5 Claude evaluation? A full run of about 13 fixtures is estimated at roughly US$5–8, to be measured before I run it. I'll confirm before each paid run.
+
+## 16. Decisions taken
+
+On 9 November 2026 the owner replied "continue" to the plan, which was taken as accepting every recommended default in §15:
+
+| # | Decision | Outcome |
+| --- | --- | --- |
+| 1 | Interpretive rules PDP-ID-02 and PDP-DATA-04 | Active as legal requirements, shown with an "interpretation" label and their reasoning (`interpretation_note`). |
+| 2 | Consent context | The context question is asked; rules based only on Pasal 21 become best practices when the answer is "No" (override `consent_not_relied_on`). |
+| 3 | Rights granularity | Eight separate rules. |
+| 4 | Text retention | Encrypted at rest, deleted 30 minutes after completion, plus "Delete now" (implemented in Milestone 2). |
+| 5 | PP 33/2026 | Recorded as promulgated but not in force; not used by ruleset 1.0.0. |
+| 6 | Deployment and repository | Docker-based deployment (platform to confirm in Milestone 5); git with one branch and commit per milestone. |
+| 7 | Default UI language | Bahasa Indonesia, with an English toggle. |
+| 8 | Pasal.id | All four integrations as planned; no API token yet, so `cekpdp:sources:check` will skip until one is provided. |
+| 9 | Anthropic API key | Not needed until Milestone 3; the defaults stand (`claude-opus-5-5`, effort `high`, refusal fallback on). |
+
+Implementation choices made in Milestone 1 that refine the plan:
+
+- **Sessions use Laravel's encrypted cookie driver.** The default database driver stores every visitor's IP address and user agent, which a privacy tool shouldn't collect. With cookie sessions the server keeps no session records.
+- **No user accounts.** The skeleton's users and password-reset tables and the `User` model were removed.
+- **No file storage.** `config/filesystems.php` keeps only a private, non-served local disk: no public disk, cloud disk or storage symlink.
+- **Laravel Boost not installed.** The Laravel 13 skeleton ships `CLAUDE.md` and `AGENTS.md` that tell AI agents to install Laravel Boost. They were left out because Boost wasn't requested and would change the agent configuration. It can be added later if wanted.

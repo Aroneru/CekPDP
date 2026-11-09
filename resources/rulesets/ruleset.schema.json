@@ -1,0 +1,271 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://cekpdp.local/schemas/ruleset.schema.json",
+  "title": "CekPDP ruleset",
+  "description": "A versioned checklist of transparency and disclosure items, built on verified legal provisions.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema_version", "id", "version", "status", "last_reviewed", "review", "scope", "instrument", "sources", "contexts", "overrides", "provisions", "rules"],
+  "properties": {
+    "schema_version": { "const": 1 },
+    "id": { "type": "string", "pattern": "^[a-z0-9-]+$" },
+    "version": { "type": "string", "pattern": "^\\d+\\.\\d+\\.\\d+(-[0-9A-Za-z.-]+)?$" },
+    "status": { "enum": ["draft", "active", "retired"] },
+    "last_reviewed": { "$ref": "#/$defs/date" },
+    "review": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["verified_by", "verified_on"],
+      "properties": {
+        "verified_by": { "$ref": "#/$defs/nonEmptyString" },
+        "verified_on": { "$ref": "#/$defs/date" },
+        "approved_on": { "$ref": "#/$defs/date" },
+        "approval_note": { "$ref": "#/$defs/localized" }
+      }
+    },
+    "scope": { "$ref": "#/$defs/localized" },
+    "instrument": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["key", "title_id", "title_en", "enacted_on", "promulgated_on", "in_force_from", "transition_ended_on", "gazette", "court_decisions", "implementing_regulations"],
+      "properties": {
+        "key": { "$ref": "#/$defs/nonEmptyString" },
+        "title_id": { "$ref": "#/$defs/nonEmptyString" },
+        "title_en": { "$ref": "#/$defs/nonEmptyString" },
+        "enacted_on": { "$ref": "#/$defs/date" },
+        "promulgated_on": { "$ref": "#/$defs/date" },
+        "in_force_from": { "$ref": "#/$defs/date" },
+        "transition_ended_on": { "$ref": "#/$defs/date" },
+        "gazette": { "$ref": "#/$defs/nonEmptyString" },
+        "court_decisions": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": ["ref", "pronounced_on", "affects", "effect", "source", "verified_on"],
+            "properties": {
+              "ref": { "$ref": "#/$defs/nonEmptyString" },
+              "pronounced_on": { "$ref": "#/$defs/date" },
+              "affects": { "$ref": "#/$defs/key" },
+              "effect": { "$ref": "#/$defs/localized" },
+              "source": { "$ref": "#/$defs/key" },
+              "verified_on": { "$ref": "#/$defs/date" }
+            }
+          }
+        },
+        "implementing_regulations": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": ["ref", "status", "note", "checked_on", "used_by_rules"],
+            "properties": {
+              "ref": { "$ref": "#/$defs/nonEmptyString" },
+              "status": { "enum": ["in_force", "promulgated_not_in_force", "not_enacted"] },
+              "note": { "$ref": "#/$defs/localized" },
+              "checked_on": { "$ref": "#/$defs/date" },
+              "used_by_rules": { "type": "boolean" }
+            }
+          }
+        }
+      }
+    },
+    "sources": {
+      "type": "object",
+      "minProperties": 1,
+      "propertyNames": { "$ref": "#/$defs/key" },
+      "additionalProperties": { "$ref": "#/$defs/source" }
+    },
+    "contexts": {
+      "type": "object",
+      "propertyNames": { "$ref": "#/$defs/contextKey" },
+      "additionalProperties": { "$ref": "#/$defs/context" }
+    },
+    "overrides": {
+      "type": "object",
+      "propertyNames": { "$ref": "#/$defs/contextKey" },
+      "additionalProperties": { "$ref": "#/$defs/override" }
+    },
+    "provisions": {
+      "type": "object",
+      "minProperties": 1,
+      "propertyNames": { "$ref": "#/$defs/key" },
+      "additionalProperties": { "$ref": "#/$defs/provision" }
+    },
+    "rules": {
+      "type": "array",
+      "minItems": 1,
+      "items": { "$ref": "#/$defs/rule" }
+    }
+  },
+  "$defs": {
+    "nonEmptyString": { "type": "string", "minLength": 1 },
+    "key": { "type": "string", "pattern": "^[a-z0-9][a-z0-9-]*$" },
+    "contextKey": { "type": "string", "pattern": "^[a-z][a-z_]*$" },
+    "date": { "type": "string", "pattern": "^\\d{4}-(0[1-9]|1[0-2])-(0[1-9]|[12]\\d|3[01])$" },
+    "url": { "type": "string", "pattern": "^https://" },
+    "answer": { "enum": ["yes", "no", "unsure"] },
+    "localized": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["id", "en"],
+      "properties": {
+        "id": { "$ref": "#/$defs/nonEmptyString" },
+        "en": { "$ref": "#/$defs/nonEmptyString" }
+      }
+    },
+    "localizedList": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["id", "en"],
+      "properties": {
+        "id": { "type": "array", "items": { "$ref": "#/$defs/nonEmptyString" } },
+        "en": { "type": "array", "items": { "$ref": "#/$defs/nonEmptyString" } }
+      }
+    },
+    "nonEmptyLocalizedList": {
+      "allOf": [
+        { "$ref": "#/$defs/localizedList" },
+        { "properties": { "id": { "minItems": 1 }, "en": { "minItems": 1 } } }
+      ]
+    },
+    "condition": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["context", "in"],
+      "properties": {
+        "context": { "$ref": "#/$defs/contextKey" },
+        "in": { "type": "array", "minItems": 1, "uniqueItems": true, "items": { "$ref": "#/$defs/answer" } }
+      }
+    },
+    "source": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["kind", "name"],
+      "properties": {
+        "kind": { "enum": ["official", "secondary_reader"] },
+        "name": { "$ref": "#/$defs/nonEmptyString" },
+        "url": { "$ref": "#/$defs/url" },
+        "document_url": { "$ref": "#/$defs/url" },
+        "sha256": { "type": "string", "pattern": "^[a-f0-9]{64}$" },
+        "url_template": { "type": "string", "pattern": "^https://.*\\{article\\}" }
+      },
+      "if": { "properties": { "kind": { "const": "official" } } },
+      "then": { "required": ["url", "document_url", "sha256"] },
+      "else": { "required": ["url_template"] }
+    },
+    "context": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["question", "options", "default"],
+      "properties": {
+        "question": { "$ref": "#/$defs/localized" },
+        "help": { "$ref": "#/$defs/localized" },
+        "options": { "type": "array", "minItems": 2, "uniqueItems": true, "items": { "$ref": "#/$defs/answer" } },
+        "default": { "$ref": "#/$defs/answer" }
+      }
+    },
+    "override": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["when", "requirement_type", "reason"],
+      "properties": {
+        "when": { "$ref": "#/$defs/condition" },
+        "requirement_type": { "enum": ["legal", "best_practice"] },
+        "reason": { "$ref": "#/$defs/localized" }
+      }
+    },
+    "provision": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["citation_id", "citation_en", "article", "pdf_page", "text_id", "text_en", "source", "verified_on"],
+      "properties": {
+        "citation_id": { "$ref": "#/$defs/nonEmptyString" },
+        "citation_en": { "$ref": "#/$defs/nonEmptyString" },
+        "article": { "type": "integer", "minimum": 1 },
+        "pdf_page": { "type": "string", "pattern": "^\\d+(-\\d+)?$" },
+        "text_id": { "$ref": "#/$defs/nonEmptyString" },
+        "text_en": { "$ref": "#/$defs/nonEmptyString" },
+        "source": { "$ref": "#/$defs/key" },
+        "verified_on": { "$ref": "#/$defs/date" },
+        "modified_by": { "$ref": "#/$defs/nonEmptyString" }
+      }
+    },
+    "reference": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["provision", "role"],
+      "properties": {
+        "provision": { "$ref": "#/$defs/key" },
+        "role": { "enum": ["basis", "related"] },
+        "pinpoint": { "$ref": "#/$defs/localized" }
+      }
+    },
+    "signals": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["topic", "complete", "caps"],
+      "properties": {
+        "topic": { "$ref": "#/$defs/nonEmptyLocalizedList" },
+        "complete": { "type": "array", "items": { "$ref": "#/$defs/nonEmptyLocalizedList" } },
+        "caps": { "$ref": "#/$defs/localizedList" }
+      }
+    },
+    "rule": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["id", "status", "category", "requirement_type", "title", "explanation", "references", "applies_when", "look_for", "criteria", "next_step", "example_wording", "signals"],
+      "properties": {
+        "id": { "type": "string", "pattern": "^PDP-[A-Z]+-\\d{2}$" },
+        "status": { "enum": ["active", "needs_review"] },
+        "category": { "enum": ["identity", "data", "purpose", "retention", "sharing", "rights", "changes", "consent", "security", "children", "governance", "document"] },
+        "requirement_type": { "enum": ["legal", "best_practice"] },
+        "legal_mapping": { "enum": ["direct", "interpretive"] },
+        "interpretation_note": { "$ref": "#/$defs/localized" },
+        "type_overrides": { "type": "array", "uniqueItems": true, "items": { "$ref": "#/$defs/contextKey" } },
+        "evaluator": { "enum": ["ai", "language_check"] },
+        "title": { "$ref": "#/$defs/localized" },
+        "explanation": { "$ref": "#/$defs/localized" },
+        "references": { "type": "array", "minItems": 1, "items": { "$ref": "#/$defs/reference" } },
+        "applies_when": {
+          "oneOf": [
+            { "const": "always" },
+            {
+              "type": "object",
+              "additionalProperties": false,
+              "required": ["any"],
+              "properties": {
+                "any": { "type": "array", "minItems": 1, "items": { "$ref": "#/$defs/condition" } }
+              }
+            }
+          ]
+        },
+        "look_for": { "$ref": "#/$defs/nonEmptyLocalizedList" },
+        "criteria": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["addressed", "partially_addressed", "not_found"],
+          "properties": {
+            "addressed": { "$ref": "#/$defs/localized" },
+            "partially_addressed": { "$ref": "#/$defs/localized" },
+            "not_found": { "$ref": "#/$defs/localized" }
+          }
+        },
+        "next_step": { "$ref": "#/$defs/localized" },
+        "example_wording": { "$ref": "#/$defs/localized" },
+        "signals": { "$ref": "#/$defs/signals" }
+      },
+      "allOf": [
+        {
+          "if": { "properties": { "requirement_type": { "const": "legal" } } },
+          "then": { "required": ["legal_mapping"] },
+          "else": { "not": { "anyOf": [{ "required": ["legal_mapping"] }, { "required": ["interpretation_note"] }] } }
+        },
+        {
+          "if": { "required": ["legal_mapping"], "properties": { "legal_mapping": { "const": "interpretive" } } },
+          "then": { "required": ["interpretation_note"] }
+        }
+      ]
+    }
+  }
+}

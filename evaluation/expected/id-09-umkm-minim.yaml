@@ -1,0 +1,58 @@
+fixture: id-09-umkm-minim
+title: Toko Roti Bu Sari (small bakery), minimal Indonesian notice
+language: id
+ruleset_version: 1.0.0
+description: >-
+  A four-sentence notice from a small business. It lists the data and its one
+  purpose and names the only recipient (the courier), but says nothing about
+  the legal basis, retention, rights, changes or security.
+
+context:
+  consent_basis: "yes"
+  specific_data: "no"
+  children: "no"
+  international_transfer: "no"
+  automated_decisions: "no"
+
+expected:
+  PDP-ID-01: partially_addressed
+  PDP-ID-02: partially_addressed
+  PDP-DATA-01: addressed
+  PDP-DATA-02:
+    status: addressed
+    acceptable: [partially_addressed]
+    note: >-
+      All three data items are tied to a single stated purpose. A stricter
+      reviewer could want the link spelled out per item.
+  PDP-DATA-03: not_applicable
+  PDP-DATA-04:
+    status: addressed
+    acceptable: [partially_addressed]
+    note: >-
+      Says the data is requested from the customer when ordering; no other
+      collection method is apparent, though a website could also use cookies.
+  PDP-PURP-01: addressed
+  PDP-BASIS-01: not_found
+  PDP-RET-01: not_found
+  PDP-RET-02: not_found
+  PDP-SHARE-01: addressed
+  PDP-XFER-01: not_applicable
+  PDP-XFER-02: not_applicable
+  PDP-RIGHT-01: not_found
+  PDP-RIGHT-02: not_found
+  PDP-RIGHT-03: not_found
+  PDP-RIGHT-04: not_found
+  PDP-RIGHT-05: not_applicable
+  PDP-RIGHT-06: not_found
+  PDP-RIGHT-07: not_found
+  PDP-RIGHT-08: not_found
+  PDP-RIGHT-09: not_found
+  PDP-CHG-01: not_found
+  PDP-CONSENT-01: not_found
+  PDP-SEC-01: not_found
+  PDP-BREACH-01: not_found
+  PDP-CHILD-01: not_applicable
+  PDP-DPO-01: not_found
+  PDP-CORP-01: not_found
+  PDP-META-01: not_found
+  PDP-LANG-01: addressed
