@@ -9,12 +9,14 @@ return [
 
     'language' => [
         'label' => 'Interface language',
+        'short' => 'Language',
         'id' => 'Bahasa Indonesia',
         'en' => 'English',
     ],
 
     'notice' => [
         'label' => 'Notice',
+        'short' => 'Not legal advice',
         'body' => 'This tool gives an automated initial review and is not legal advice. Consult a qualified professional before making compliance decisions.',
     ],
 

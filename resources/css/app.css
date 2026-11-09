@@ -4,33 +4,65 @@
 @source '../../storage/framework/views/*.php';
 
 /*
- * A calm, document-like look: neutral slate with one deep accent colour.
- * Fonts are self-hosted (downloaded at build time by the Vite plugin), so no
- * page makes a request to a third-party font service.
+ * CekPDP looks like an annotated legal document: warm paper, black ink, a
+ * serif for headings and a reviewer's red pen that marks gaps and legal
+ * references. Fonts are self-hosted (downloaded at build time).
+ *
+ * Statuses never rely on colour alone: each has its own glyph shape and is
+ * always written out.
  */
 @theme {
-    --font-sans: 'Instrument Sans', ui-sans-serif, system-ui, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji',
-        'Segoe UI Symbol', 'Noto Color Emoji';
+    --font-serif: 'Newsreader', ui-serif, Georgia, 'Times New Roman', serif;
+    --font-sans: 'IBM Plex Sans', ui-sans-serif, system-ui, -apple-system, 'Segoe UI', sans-serif;
+    --font-mono: 'IBM Plex Mono', ui-monospace, 'Cascadia Mono', Consolas, monospace;
 
-    --color-accent-50: #eef4fa;
-    --color-accent-100: #d8e5f2;
-    --color-accent-600: #1f5a8f;
-    --color-accent-700: #194b78;
-    --color-accent-800: #133a5d;
+    --color-paper: #f4f1e8;
+    --color-sheet: #fbfaf6;
+    --color-ink: #1c1a16;
+    --color-ink-soft: #3b3831;
+    --color-muted: #665f52;
+    --color-rule: #ddd6c5;
+    --color-rule-strong: #b8ae97;
+    --color-shade: #ebe6d9;
+
+    /* The reviewer's red pen: gaps, legal references, step numbers. */
+    --color-rubric: #a3341f;
+    --color-rubric-soft: #f4e2da;
+
+    --color-addressed: #2b6644;
+    --color-addressed-soft: #e1ecdf;
+    --color-partial: #855800;
+    --color-partial-soft: #f3e7c9;
+    --color-review: #2c4d85;
+    --color-review-soft: #e1e7f2;
 }
 
 @layer base {
     html {
         color-scheme: light;
+        -webkit-text-size-adjust: 100%;
     }
 
     body {
-        accent-color: var(--color-accent-700);
+        background: var(--color-paper);
+        color: var(--color-ink);
+        accent-color: var(--color-ink);
+        font-feature-settings: 'kern', 'liga';
+    }
+
+    ::selection {
+        background: var(--color-rubric-soft);
+        color: var(--color-ink);
     }
 
     :focus-visible {
-        outline: 3px solid var(--color-accent-600);
-        outline-offset: 2px;
+        outline: 2px solid var(--color-rubric);
+        outline-offset: 3px;
+    }
+
+    a {
+        text-underline-offset: 0.2em;
+        text-decoration-thickness: 1px;
     }
 
     @media (prefers-reduced-motion: reduce) {
@@ -51,10 +83,9 @@
         inset-inline-start: 1rem;
         inset-block-start: -10rem;
         z-index: 50;
-        border-radius: 0.5rem;
-        background: var(--color-accent-800);
+        background: var(--color-ink);
         padding: 0.75rem 1rem;
-        color: white;
+        color: var(--color-sheet);
         font-weight: 600;
     }
 
@@ -62,10 +93,328 @@
         inset-block-start: 1rem;
     }
 
+    /* Small uppercase labels, like the running heads of a report. */
+    .eyebrow {
+        font-family: var(--font-mono);
+        font-size: 0.75rem;
+        line-height: 1rem;
+        letter-spacing: 0.08em;
+        text-transform: uppercase;
+        color: var(--color-muted);
+    }
+
+    .link {
+        color: var(--color-ink);
+        text-decoration-line: underline;
+        text-decoration-color: var(--color-rule-strong);
+    }
+
+    .link:hover {
+        text-decoration-color: var(--color-rubric);
+    }
+
+    .btn {
+        display: inline-flex;
+        min-block-size: 3rem;
+        align-items: center;
+        justify-content: center;
+        gap: 0.625rem;
+        border: 1px solid var(--color-ink);
+        padding-inline: 1.25rem;
+        font-weight: 600;
+        transition: background-color 0.15s, color 0.15s;
+    }
+
+    .btn-primary {
+        background: var(--color-ink);
+        color: var(--color-sheet);
+    }
+
+    .btn-primary:hover {
+        background: var(--color-ink-soft);
+    }
+
+    .btn-primary:disabled {
+        cursor: progress;
+        opacity: 0.7;
+    }
+
+    .btn-quiet {
+        min-block-size: 2.75rem;
+        background: transparent;
+        border-color: var(--color-rule-strong);
+        color: var(--color-ink);
+        font-weight: 500;
+    }
+
+    .btn-quiet:hover {
+        border-color: var(--color-ink);
+        background: var(--color-sheet);
+    }
+
+    /*
+     * The paste box is a sheet of ruled paper with a red margin line. The
+     * lines scroll with the text (background-attachment: local).
+     */
+    .legal-pad {
+        --pad-line: 1.75rem;
+        --pad-margin: 1.25rem;
+        --pad-rule: color-mix(in srgb, var(--color-rule) 75%, var(--color-sheet));
+        display: block;
+        inline-size: 100%;
+        min-block-size: calc(var(--pad-line) * 14 + 1.5rem);
+        resize: vertical;
+        border: 1px solid var(--color-rule-strong);
+        padding: 0.75rem 1rem 0.75rem calc(var(--pad-margin) + 1rem);
+        font-family: var(--font-mono);
+        font-size: 0.875rem;
+        line-height: var(--pad-line);
+        color: var(--color-ink);
+        background-color: var(--color-sheet);
+        background-image:
+            linear-gradient(to right, transparent var(--pad-margin), var(--color-rubric) var(--pad-margin), var(--color-rubric) calc(var(--pad-margin) + 1px), transparent calc(var(--pad-margin) + 1px)),
+            repeating-linear-gradient(to bottom, transparent 0 calc(var(--pad-line) - 1px), var(--pad-rule) calc(var(--pad-line) - 1px) var(--pad-line));
+        /* Seat the text on the lines rather than between them. */
+        background-position: 0 0, 0 calc(0.75rem - 0.3125rem);
+        background-attachment: local;
+    }
+
+    @media (width >= 40rem) {
+        .legal-pad {
+            --pad-margin: 3rem;
+        }
+    }
+
+    .legal-pad::placeholder {
+        color: var(--color-muted);
+    }
+
+    .legal-pad:focus-visible {
+        outline-offset: 0;
+        border-color: var(--color-ink);
+    }
+
     /* Show field errors only after the visitor has interacted with the field. */
-    .field:user-invalid {
-        border-color: var(--color-rose-700);
-        box-shadow: 0 0 0 1px var(--color-rose-700);
+    .field:user-invalid,
+    .field[aria-invalid='true'] {
+        border-color: var(--color-rubric);
+        box-shadow: 0 0 0 1px var(--color-rubric);
+    }
+
+    /* Ya / Tidak / Tidak yakin as a segmented control built from real radios. */
+    .segmented {
+        display: inline-flex;
+        flex-wrap: wrap;
+        border: 1px solid var(--color-rule-strong);
+        background: var(--color-sheet);
+    }
+
+    .segmented label {
+        position: relative;
+        display: inline-flex;
+        min-block-size: 2.75rem;
+        min-inline-size: 4rem;
+        align-items: center;
+        justify-content: center;
+        padding-inline: 0.875rem;
+        cursor: pointer;
+        font-size: 0.9375rem;
+        color: var(--color-ink-soft);
+        transition: background-color 0.15s, color 0.15s;
+    }
+
+    .segmented label + label {
+        border-inline-start: 1px solid var(--color-rule-strong);
+    }
+
+    .segmented label:hover {
+        background: var(--color-shade);
+    }
+
+    .segmented label:has(:checked) {
+        background: var(--color-ink);
+        color: var(--color-sheet);
+        font-weight: 500;
+    }
+
+    .segmented label:has(:focus-visible) {
+        outline: 2px solid var(--color-rubric);
+        outline-offset: 2px;
+        z-index: 1;
+    }
+
+    .visually-hidden {
+        position: absolute;
+        clip-path: inset(50%);
+        overflow: hidden;
+        width: 1px;
+        height: 1px;
+        margin: -1px;
+        padding: 0;
+        border: 0;
+        white-space: nowrap;
+    }
+
+    /* A large, deliberate checkbox for the acknowledgement. */
+    .check {
+        appearance: none;
+        display: inline-grid;
+        place-content: center;
+        inline-size: 1.5rem;
+        block-size: 1.5rem;
+        flex-shrink: 0;
+        border: 1.5px solid var(--color-ink);
+        background: var(--color-sheet);
+        cursor: pointer;
+    }
+
+    .check::after {
+        content: '';
+        inline-size: 0.8rem;
+        block-size: 0.45rem;
+        border-inline-start: 2.5px solid var(--color-sheet);
+        border-block-end: 2.5px solid var(--color-sheet);
+        transform: translateY(-0.1rem) rotate(-45deg);
+        opacity: 0;
+    }
+
+    .check:checked {
+        background: var(--color-ink);
+    }
+
+    .check:checked::after {
+        opacity: 1;
+    }
+
+    /* Status text colours (always shown with a glyph and a label). */
+    .status-addressed {
+        color: var(--color-addressed);
+    }
+
+    .status-partially_addressed {
+        color: var(--color-partial);
+    }
+
+    .status-not_found {
+        color: var(--color-rubric);
+    }
+
+    .status-needs_human_review {
+        color: var(--color-review);
+    }
+
+    .status-not_applicable {
+        color: var(--color-muted);
+    }
+
+    /* One cell per rule in the coverage strip; the shape mirrors the glyph. */
+    .cell {
+        display: block;
+        inline-size: 1.25rem;
+        block-size: 1.25rem;
+        border: 1.5px solid currentColor;
+    }
+
+    .cell-addressed {
+        color: var(--color-addressed);
+        background: var(--color-addressed);
+    }
+
+    .cell-partially_addressed {
+        color: var(--color-partial);
+        background: linear-gradient(135deg, var(--color-partial) 50%, var(--color-sheet) 50%);
+    }
+
+    .cell-not_found {
+        color: var(--color-rubric);
+        background: var(--color-sheet);
+    }
+
+    .cell-needs_human_review {
+        color: var(--color-review);
+        border-style: dashed;
+        background: var(--color-review-soft);
+    }
+
+    a:hover > .cell,
+    a:focus-visible > .cell {
+        transform: translateY(-2px);
+        box-shadow: 0 2px 0 var(--color-ink);
+    }
+
+    /* Ledger rows: one rule per row, separated by hairlines rather than boxes. */
+    .ledger > li + li {
+        border-block-start: 1px solid var(--color-rule);
+    }
+
+    .ledger summary {
+        list-style: none;
+        cursor: pointer;
+    }
+
+    .ledger summary::-webkit-details-marker {
+        display: none;
+    }
+
+    .ledger summary:hover {
+        background: var(--color-shade);
+    }
+
+    .ledger details[open] > summary {
+        background: var(--color-sheet);
+    }
+
+    .ledger details[open] {
+        background: var(--color-sheet);
+        box-shadow: inset 3px 0 0 var(--color-ink);
+    }
+
+    .ledger details:target {
+        box-shadow: inset 3px 0 0 var(--color-rubric);
+    }
+
+    .chevron {
+        transition: transform 0.2s;
+    }
+
+    details[open] > summary .chevron {
+        transform: rotate(90deg);
+    }
+
+    /* A quoted excerpt from the policy, tagged with its section. */
+    .excerpt {
+        border-inline-start: 2px solid var(--color-rule-strong);
+        padding-inline-start: 1rem;
+        font-family: var(--font-serif);
+        font-size: 1.0625rem;
+        line-height: 1.6;
+        white-space: pre-wrap;
+        overflow-wrap: anywhere;
+    }
+
+    .excerpt-unverified {
+        border-inline-start-color: var(--color-review);
+        border-inline-start-style: dashed;
+    }
+
+    /* Suggested wording: clearly a draft. */
+    .draft {
+        border: 1px dashed var(--color-rule-strong);
+        background:
+            repeating-linear-gradient(-45deg, transparent 0 10px, color-mix(in srgb, var(--color-shade) 55%, transparent) 10px 11px),
+            var(--color-sheet);
+        padding: 1rem 1.25rem;
+    }
+
+    .stamp {
+        display: inline-block;
+        border: 1.5px solid var(--color-rubric);
+        padding: 0.125rem 0.5rem;
+        font-family: var(--font-mono);
+        font-size: 0.6875rem;
+        letter-spacing: 0.1em;
+        text-transform: uppercase;
+        color: var(--color-rubric);
     }
 
     /* Native <progress>, fully styled (WebKit/Blink and Firefox rules kept separate). */
@@ -74,9 +423,8 @@
         border: 0 solid;
         overflow: clip;
         inline-size: 100%;
-        block-size: 0.75rem;
-        border-radius: 1e5px;
-        background: var(--color-slate-200);
+        block-size: 0.375rem;
+        background: var(--color-rule);
     }
 
     .progress-bar::-webkit-progress-bar {
@@ -84,20 +432,21 @@
     }
 
     .progress-bar::-webkit-progress-value {
-        background: var(--color-accent-700);
-        border-radius: 1e5px;
-        transition: inline-size 0.3s;
+        background: var(--color-ink);
+        transition: inline-size 0.4s;
     }
 
     .progress-bar::-moz-progress-bar {
-        background: var(--color-accent-700);
-        border-radius: 1e5px;
+        background: var(--color-ink);
     }
 
-    .quote {
-        border-inline-start: 4px solid var(--color-slate-300);
-        padding-inline-start: 0.875rem;
-        white-space: pre-wrap;
-        overflow-wrap: anywhere;
+    .pulse {
+        animation: pulse 1.6s ease-in-out infinite;
+    }
+
+    @keyframes pulse {
+        50% {
+            opacity: 0.35;
+        }
     }
 }

@@ -9,12 +9,14 @@ return [
 
     'language' => [
         'label' => 'Bahasa antarmuka',
+        'short' => 'Bahasa',
         'id' => 'Bahasa Indonesia',
         'en' => 'English',
     ],
 
     'notice' => [
         'label' => 'Pemberitahuan',
+        'short' => 'Bukan nasihat hukum',
         'body' => 'Alat ini memberikan tinjauan awal otomatis dan bukan nasihat hukum. Konsultasikan dengan profesional yang berkualifikasi sebelum mengambil keputusan terkait kepatuhan.',
     ],
 

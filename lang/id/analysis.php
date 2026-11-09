@@ -35,6 +35,7 @@ return [
     ],
 
     'progress' => [
+        'eyebrow' => 'Analisis berjalan',
         'title' => 'Menganalisis kebijakan',
         'intro' => 'Analisis berjalan di latar belakang. Halaman ini diperbarui otomatis dan menampilkan hasil setelah selesai.',
         'label' => 'Kemajuan analisis',
@@ -44,6 +45,7 @@ return [
     ],
 
     'failed' => [
+        'eyebrow' => 'Tidak selesai',
         'title' => 'Analisis gagal',
         'retry' => 'Mulai analisis baru',
         'expires' => 'Teks kebijakan dihapus otomatis :time.',
@@ -67,7 +69,12 @@ return [
 
     'results' => [
         'title' => 'Hasil analisis',
+        'eyebrow' => 'Laporan analisis',
+        'offline_stamp' => 'Mode offline',
         'offline' => 'Hasil ini dibuat dalam mode offline dengan pencocokan kata kunci, bukan dengan AI. Anggap sebagai gambaran kasar saja.',
+        'counted' => 'Dihitung dalam skor',
+        'not_counted' => 'Tidak memengaruhi skor',
+        'strip' => ':group: status setiap butir',
         'retention' => 'Teks kebijakan dan hasil ini dihapus otomatis :time.',
         'summary_heading' => 'Ringkasan',
         'details' => [

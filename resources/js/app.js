@@ -37,6 +37,26 @@ document.addEventListener('submit', (event) => {
     }
 });
 
+// Jumping to a rule (from the coverage strip or the review list) opens its card.
+const openRule = (hash) => {
+    const target = hash ? document.getElementById(decodeURIComponent(hash.slice(1))) : null;
+
+    if (target instanceof HTMLDetailsElement) {
+        target.open = true;
+    }
+};
+
+document.addEventListener('click', (event) => {
+    const link = event.target instanceof Element ? event.target.closest('a[href^="#rule-"]') : null;
+
+    if (link instanceof HTMLAnchorElement) {
+        openRule(link.hash);
+    }
+});
+
+window.addEventListener('hashchange', () => openRule(location.hash));
+openRule(location.hash);
+
 // Re-enable the buttons when the page is restored from the back/forward cache.
 window.addEventListener('pageshow', () => {
     for (const button of document.querySelectorAll('form[data-submit-once] button[type="submit"]')) {

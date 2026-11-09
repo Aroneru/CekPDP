@@ -240,7 +240,7 @@ Policy Coverage = (Addressed + 0.5 × Partially addressed) ÷ (Addressed + Parti
   - "Show in policy" moves focus to the highlighted passage and "Back to result" returns it.
   - Visible focus styles, `prefers-reduced-motion` respected, and contrast checked.
 - **Mobile:** the side-by-side view becomes two tabs (Results | Policy). There's no horizontal scrolling and touch targets are at least 44px.
-- **Look:** a calm, document-like legal-tech style with neutral slate and one deep accent colour. Fonts are **self-hosted**, with no Google Fonts or other third-party requests (the app practises what it checks). Tailwind CSS v4 handles styling.
+- **Look:** an annotated legal document: warm paper, black ink, Newsreader for headings, IBM Plex Sans for text and IBM Plex Mono for citations and IDs, and a reviewer's red pen for gaps, legal references and step numbers. Statuses are square "ballot box" glyphs (filled, half, empty, dashed) with their names written out. Fonts are **self-hosted**, with no Google Fonts or other third-party requests (the app practises what it checks). Tailwind CSS v4 handles styling.
 
 ## 8. Privacy and security
 
@@ -428,3 +428,4 @@ Implementation choices made in Milestone 2:
 - **The mock reads list items together with the sentence that introduces them** ("Anda berhak:" followed by the rights). Against the dataset's expected labels it agrees on 288 of 340 applicable checks (84.7%), with 3 false positives and 23 false negatives. This is a preliminary baseline; `cekpdp:evaluate` in Milestone 5 will report it properly.
 - **PHP 8.4 is required.** The Symfony 8 components in the lock file need PHP 8.4.1, so the earlier "8.3+" note was wrong and `composer.json` now says `^8.4`.
 - **Persistence around the pipeline lives in `app/Services`** (`AnalysisRunner`, `AnalysisPurger`, `StoredProgress`). The pipeline in `app/Domain` stays free of HTTP, queue and database concerns.
+- **The interface was redesigned after the owner's review** (the first version looked like a generic template). It now follows the "annotated legal document" look in §7: the form is three numbered steps with a ruled paste box and Ya/Tidak/Tidak yakin segmented controls, and the results are a report with a large coverage figure, a strip with one square per rule (each links to its card) and the rules as a ledger, with the legal basis in a margin column.

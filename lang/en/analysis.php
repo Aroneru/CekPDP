@@ -35,6 +35,7 @@ return [
     ],
 
     'progress' => [
+        'eyebrow' => 'Analysis running',
         'title' => 'Analysing the policy',
         'intro' => 'The analysis runs in the background. This page updates by itself and shows the results when they are ready.',
         'label' => 'Analysis progress',
@@ -44,6 +45,7 @@ return [
     ],
 
     'failed' => [
+        'eyebrow' => 'Not finished',
         'title' => 'The analysis failed',
         'retry' => 'Start a new analysis',
         'expires' => 'The policy text is deleted automatically :time.',
@@ -67,7 +69,12 @@ return [
 
     'results' => [
         'title' => 'Analysis results',
+        'eyebrow' => 'Analysis report',
+        'offline_stamp' => 'Offline mode',
         'offline' => 'These results come from offline mode, which uses keyword matching rather than AI. Treat them as a rough indication only.',
+        'counted' => 'Counted in the score',
+        'not_counted' => 'Doesn\'t affect the score',
+        'strip' => ':group: status of each item',
         'retention' => 'The policy text and these results are deleted automatically :time.',
         'summary_heading' => 'Summary',
         'details' => [

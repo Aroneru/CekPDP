@@ -3,158 +3,176 @@
     /** @var string $policyLanguage 'id' or 'en': the language to show example wording in */
     $locale = app()->getLocale();
     $rule = $item->rule;
+    $basis = $item->basisReferences();
+    $related = $item->relatedReferences();
 @endphp
 
-<details id="rule-{{ $rule->id }}" class="group rounded-lg border border-slate-200 bg-white open:border-slate-300 open:shadow-sm">
-    <summary class="flex min-h-12 cursor-pointer list-none flex-wrap items-center gap-x-3 gap-y-2 rounded-lg p-4 hover:bg-slate-50 [&::-webkit-details-marker]:hidden">
-        <svg aria-hidden="true" viewBox="0 0 16 16" class="size-4 shrink-0 text-slate-500 transition-transform group-open:rotate-90" fill="currentColor"><path d="M6 3.5 10.5 8 6 12.5z"/></svg>
-        <x-status-badge :status="$item->status" />
-        <span class="min-w-0 flex-1 font-medium text-slate-900">{{ $rule->title->in($locale) }}</span>
-        <span class="flex flex-wrap items-center gap-2 text-sm text-slate-600">
+<details id="rule-{{ $rule->id }}" class="group scroll-mt-6">
+    <summary class="grid grid-cols-[1rem_minmax(0,1fr)] items-start gap-x-4 gap-y-1.5 px-3 py-4 sm:px-4 md:grid-cols-[1rem_13rem_minmax(0,1fr)_auto] md:items-center">
+        <svg aria-hidden="true" viewBox="0 0 16 16" class="chevron mt-1 size-4 text-muted md:mt-0" fill="none" stroke="currentColor" stroke-width="1.75"><path d="m6 3.5 4.5 4.5L6 12.5" /></svg>
+        <x-status-badge :status="$item->status" class="md:col-start-2" />
+        <span class="col-start-2 md:col-start-3">
+            <span class="font-serif text-lg leading-snug font-medium">{{ $rule->title->in($locale) }}</span>
             @if ($rule->isInterpretive())
-                <span class="rounded border border-slate-300 px-1.5 py-0.5">{{ __('analysis.interpretive') }}</span>
+                <span class="ml-2 inline-block border border-rule-strong px-1.5 align-middle font-mono text-[0.6875rem] tracking-wide text-muted uppercase">{{ __('analysis.interpretive') }}</span>
             @endif
-            <span class="font-mono">{{ $rule->id }}</span>
+        </span>
+        <span class="col-start-2 flex flex-wrap items-baseline gap-x-3 font-mono text-xs text-muted md:col-start-4 md:justify-end md:text-right">
+            @if ($basis !== [])
+                <span class="text-rubric">{{ $basis[0]->provision->citation->in($locale) }} @if (count($basis) > 1)<span class="text-muted">+{{ count($basis) - 1 }}</span>@endif</span>
+            @endif
+            <span>{{ $rule->id }}</span>
         </span>
     </summary>
 
-    <div class="space-y-6 border-t border-slate-200 p-4 sm:p-6">
-        <p class="text-slate-700">{{ $rule->explanation->in($locale) }}</p>
+    <div class="grid gap-x-12 gap-y-8 px-3 pt-2 pb-8 sm:px-4 md:pl-12 lg:grid-cols-[minmax(0,1fr)_17rem]">
+        {{-- Findings --}}
+        <div class="space-y-7">
+            <p class="max-w-prose text-ink-soft">{{ $rule->explanation->in($locale) }}</p>
 
-        @if ($item->notApplicableBecause !== [])
-            <div>
-                <h3 class="font-semibold text-slate-900">{{ __('analysis.item.not_applicable_because') }}</h3>
-                <ul class="mt-2 list-disc space-y-1 ps-5 text-slate-700">
-                    @foreach ($item->notApplicableBecause as $answer)
-                        <li>{{ __('analysis.item.answer', ['question' => $answer->question->question->in($locale), 'answer' => __('home.answers.'.$answer->answer->value)]) }}</li>
-                    @endforeach
-                </ul>
-            </div>
-        @endif
-
-        @if ($item->reason)
-            <div>
-                <h3 class="font-semibold text-slate-900">{{ __('analysis.item.reason') }}</h3>
-                <p class="mt-1 text-slate-800">{{ $item->reason->in($locale) }}</p>
-                @if ($item->source === \App\Enums\EvaluationSource::LanguageCheck)
-                    <p class="mt-1 text-sm text-slate-600">{{ __('analysis.item.language_check') }}</p>
-                @endif
-            </div>
-        @endif
-
-        @if ($item->wasDowngraded() && $item->modelStatus)
-            <p class="rounded-md border border-violet-300 bg-violet-50 p-3 text-violet-900">
-                {{ __('analysis.item.downgraded.'.$item->verification->downgrade->value, ['status' => __('analysis.status.'.$item->modelStatus->value)]) }}
-            </p>
-        @endif
-
-        @if ($item->applicable && $item->source !== \App\Enums\EvaluationSource::LanguageCheck)
-            <div>
-                <h3 class="font-semibold text-slate-900">{{ __('analysis.item.evidence') }}</h3>
-                @forelse ($item->quotes as $quote)
-                    <figure class="mt-3">
-                        <blockquote class="quote text-slate-800" lang="{{ $policyLanguage }}">{{ $quote->quote }}</blockquote>
-                        <figcaption class="mt-1 text-sm text-slate-600">
-                            @if ($quote->verified)
-                                {{ __('analysis.item.section', ['section' => $quote->sectionId ?? $quote->citedSectionId]) }}
-                                @if ($quote->sectionWasCorrected())
-                                    · {{ __('analysis.item.section_corrected', ['actual' => $quote->sectionId, 'cited' => $quote->citedSectionId]) }}
-                                @endif
-                            @else
-                                <span class="font-medium text-violet-800">{{ __('analysis.item.unverified') }}</span>
-                            @endif
-                        </figcaption>
-                    </figure>
-                @empty
-                    <p class="mt-1 text-slate-600">{{ __('analysis.item.no_evidence') }}</p>
-                @endforelse
-            </div>
-        @endif
-
-        <div>
-            <h3 class="font-semibold text-slate-900">{{ __('analysis.item.look_for') }}</h3>
-            <ul class="mt-2 list-disc space-y-1 ps-5 text-slate-700">
-                @foreach ($rule->lookFor->in($locale) as $point)
-                    <li>{{ $point }}</li>
-                @endforeach
-            </ul>
-        </div>
-
-        @if ($item->hasGap())
-            <div>
-                <h3 class="font-semibold text-slate-900">{{ __('analysis.item.next_step') }}</h3>
-                <p class="mt-1 text-slate-800">{{ $rule->nextStep->in($locale) }}</p>
-            </div>
-
-            <div class="rounded-md border border-dashed border-slate-400 bg-slate-50 p-4">
-                <h3 class="flex flex-wrap items-center gap-2 font-semibold text-slate-900">
-                    {{ __('analysis.item.example') }}
-                    <span class="rounded bg-amber-100 px-2 py-0.5 text-sm font-medium text-amber-900">{{ __('analysis.item.example_label') }}</span>
-                </h3>
-                <p class="mt-2 text-slate-800" lang="{{ $policyLanguage }}">{{ $rule->exampleWording->in($policyLanguage) }}</p>
-            </div>
-        @endif
-
-        @if ($rule->interpretationNote)
-            <div>
-                <h3 class="font-semibold text-slate-900">{{ __('analysis.item.interpretation') }}</h3>
-                <p class="mt-1 text-slate-700">{{ $rule->interpretationNote->in($locale) }}</p>
-            </div>
-        @endif
-
-        @if ($item->override)
-            <div>
-                <h3 class="font-semibold text-slate-900">{{ __('analysis.item.override') }}</h3>
-                <p class="mt-1 text-slate-700">{{ $item->override->reason->in($locale) }}</p>
-            </div>
-        @endif
-
-        @foreach (['basis' => $item->basisReferences(), 'related' => $item->relatedReferences()] as $role => $references)
-            @if ($references !== [])
+            @if ($item->notApplicableBecause !== [])
                 <div>
-                    <h3 class="font-semibold text-slate-900">{{ __('analysis.item.'.$role) }}</h3>
-                    <ul class="mt-2 space-y-3">
-                        @foreach ($references as $reference)
-                            <li class="text-slate-800">
-                                <span class="font-medium">{{ $reference->provision->citation->in($locale) }}</span>
-                                @if ($reference->pinpoint)
-                                    <span>({{ $reference->pinpoint->in($locale) }})</span>
-                                @endif
-                                @if ($reference->provision->modifiedBy)
-                                    <span class="text-sm text-slate-600">{{ __('analysis.item.modified_by', ['reference' => $reference->provision->modifiedBy]) }}</span>
-                                @endif
-                                <span class="mt-1 flex flex-wrap gap-x-4 gap-y-1 text-sm">
-                                    @if ($reference->officialUrl)
-                                        <a href="{{ $reference->officialUrl }}" rel="noopener noreferrer" class="text-accent-700 underline hover:text-accent-800">{{ __('analysis.item.official_text', ['page' => $reference->page()]) }}</a>
-                                    @endif
-                                    @if ($reference->readerUrl)
-                                        <a href="{{ $reference->readerUrl }}" rel="noopener noreferrer" class="text-accent-700 underline hover:text-accent-800">{{ __('analysis.item.reader') }}</a>
-                                    @endif
-                                </span>
-                                <details class="mt-2">
-                                    <summary class="min-h-11 cursor-pointer text-sm font-medium text-slate-700 underline">{{ __('analysis.item.provision_text') }}</summary>
-                                    <blockquote class="quote mt-2 text-sm text-slate-800" lang="id">{{ $reference->provision->text->id }}</blockquote>
-                                    @if ($locale !== 'id')
-                                        <p class="mt-2 text-sm text-slate-600">{{ __('analysis.item.unofficial_translation') }} {{ $reference->provision->text->en }}</p>
-                                    @endif
-                                </details>
-                            </li>
+                    <h3 class="eyebrow">{{ __('analysis.item.not_applicable_because') }}</h3>
+                    <ul class="mt-2 space-y-1">
+                        @foreach ($item->notApplicableBecause as $answer)
+                            <li>{{ __('analysis.item.answer', ['question' => $answer->question->question->in($locale), 'answer' => __('home.answers.'.$answer->answer->value)]) }}</li>
                         @endforeach
                     </ul>
                 </div>
             @endif
-        @endforeach
 
-        <details>
-            <summary class="min-h-11 cursor-pointer text-sm font-medium text-slate-700 underline">{{ __('analysis.item.criteria') }}</summary>
-            <dl class="mt-2 space-y-2 text-sm">
-                @foreach ([\App\Enums\RuleStatus::Addressed, \App\Enums\RuleStatus::PartiallyAddressed, \App\Enums\RuleStatus::NotFound] as $status)
+            @if ($item->reason)
+                <div>
+                    <h3 class="eyebrow">{{ __('analysis.item.reason') }}</h3>
+                    <p class="mt-2 max-w-prose">{{ $item->reason->in($locale) }}</p>
+                    @if ($item->source === \App\Enums\EvaluationSource::LanguageCheck)
+                        <p class="mt-1 font-mono text-xs text-muted">{{ __('analysis.item.language_check') }}</p>
+                    @endif
+                </div>
+            @endif
+
+            @if ($item->wasDowngraded() && $item->modelStatus)
+                <p class="max-w-prose border-l-4 border-review bg-review-soft px-4 py-3 text-sm">
+                    {{ __('analysis.item.downgraded.'.$item->verification->downgrade->value, ['status' => __('analysis.status.'.$item->modelStatus->value)]) }}
+                </p>
+            @endif
+
+            @if ($item->applicable && $item->source !== \App\Enums\EvaluationSource::LanguageCheck)
+                <div>
+                    <h3 class="eyebrow">{{ __('analysis.item.evidence') }}</h3>
+                    @forelse ($item->quotes as $quote)
+                        <figure class="mt-3 grid gap-1 sm:grid-cols-[3.5rem_minmax(0,1fr)] sm:gap-4">
+                            <figcaption class="pt-1 font-mono text-xs text-muted sm:order-first">
+                                @if ($quote->verified)
+                                    <span title="{{ __('analysis.item.section', ['section' => $quote->sectionId ?? $quote->citedSectionId]) }}">§ {{ $quote->sectionId ?? $quote->citedSectionId }}</span>
+                                    @if ($quote->sectionWasCorrected())
+                                        <span class="block">{{ __('analysis.item.section_corrected', ['actual' => $quote->sectionId, 'cited' => $quote->citedSectionId]) }}</span>
+                                    @endif
+                                @else
+                                    <span class="text-review">{{ __('analysis.item.unverified') }}</span>
+                                @endif
+                            </figcaption>
+                            <blockquote @class(['excerpt max-w-prose', 'excerpt-unverified' => ! $quote->verified]) lang="{{ $policyLanguage }}">{{ $quote->quote }}</blockquote>
+                        </figure>
+                    @empty
+                        <p class="mt-2 text-muted">{{ __('analysis.item.no_evidence') }}</p>
+                    @endforelse
+                </div>
+            @endif
+
+            <div>
+                <h3 class="eyebrow">{{ __('analysis.item.look_for') }}</h3>
+                <ul class="mt-2 max-w-prose space-y-1.5">
+                    @foreach ($rule->lookFor->in($locale) as $point)
+                        <li class="grid grid-cols-[1rem_minmax(0,1fr)] gap-2 text-ink-soft">
+                            <span aria-hidden="true" class="mt-2 size-1.5 bg-rule-strong"></span>
+                            <span>{{ $point }}</span>
+                        </li>
+                    @endforeach
+                </ul>
+            </div>
+
+            @if ($item->hasGap())
+                <div>
+                    <h3 class="eyebrow text-rubric">{{ __('analysis.item.next_step') }}</h3>
+                    <p class="mt-2 max-w-prose">{{ $rule->nextStep->in($locale) }}</p>
+                </div>
+
+                <div class="draft max-w-prose">
+                    <h3 class="flex flex-wrap items-center gap-3">
+                        <span class="eyebrow text-ink">{{ __('analysis.item.example') }}</span>
+                        <span class="stamp">{{ __('analysis.item.example_label') }}</span>
+                    </h3>
+                    <p class="mt-3 font-serif text-lg leading-relaxed" lang="{{ $policyLanguage }}">{{ $rule->exampleWording->in($policyLanguage) }}</p>
+                </div>
+            @endif
+        </div>
+
+        {{-- Margin: legal basis and notes --}}
+        <div class="space-y-7 text-sm lg:border-l lg:border-rule lg:pl-6">
+            @foreach (['basis' => $basis, 'related' => $related] as $role => $references)
+                @if ($references !== [])
                     <div>
-                        <dt class="font-medium text-slate-900">{{ __('analysis.status.'.$status->value) }}</dt>
-                        <dd class="text-slate-700">{{ $rule->criteria->for($status)?->in($locale) }}</dd>
+                        <h3 class="eyebrow">{{ __('analysis.item.'.$role) }}</h3>
+                        <ul class="mt-3 space-y-4">
+                            @foreach ($references as $reference)
+                                <li>
+                                    <p class="font-serif text-base leading-snug font-medium">
+                                        <span @class(['text-rubric' => $role === 'basis'])>{{ $reference->provision->citation->in($locale) }}</span>
+                                        @if ($reference->pinpoint)
+                                            <span class="font-normal text-ink-soft">{{ $reference->pinpoint->in($locale) }}</span>
+                                        @endif
+                                    </p>
+                                    @if ($reference->provision->modifiedBy)
+                                        <p class="mt-0.5 text-xs text-muted">{{ __('analysis.item.modified_by', ['reference' => $reference->provision->modifiedBy]) }}</p>
+                                    @endif
+                                    <p class="mt-1 flex flex-col gap-0.5">
+                                        @if ($reference->officialUrl)
+                                            <a href="{{ $reference->officialUrl }}" rel="noopener noreferrer" class="link">{{ __('analysis.item.official_text', ['page' => $reference->page()]) }} <span aria-hidden="true">↗</span></a>
+                                        @endif
+                                        @if ($reference->readerUrl)
+                                            <a href="{{ $reference->readerUrl }}" rel="noopener noreferrer" class="link text-muted">{{ __('analysis.item.reader') }} <span aria-hidden="true">↗</span></a>
+                                        @endif
+                                    </p>
+                                    <details class="mt-1.5">
+                                        <summary class="inline-flex min-h-11 cursor-pointer items-center font-mono text-xs text-muted uppercase underline decoration-rule-strong underline-offset-4 hover:text-ink">{{ __('analysis.item.provision_text') }}</summary>
+                                        <blockquote class="excerpt mt-1 text-base" lang="id">{{ $reference->provision->text->id }}</blockquote>
+                                        @if ($locale !== 'id')
+                                            <p class="mt-2 text-xs text-muted">{{ __('analysis.item.unofficial_translation') }} {{ $reference->provision->text->en }}</p>
+                                        @endif
+                                    </details>
+                                </li>
+                            @endforeach
+                        </ul>
                     </div>
-                @endforeach
-            </dl>
-        </details>
+                @endif
+            @endforeach
+
+            @if ($rule->interpretationNote)
+                <div>
+                    <h3 class="eyebrow">{{ __('analysis.item.interpretation') }}</h3>
+                    <p class="mt-2 font-serif text-base leading-snug text-ink-soft italic">{{ $rule->interpretationNote->in($locale) }}</p>
+                </div>
+            @endif
+
+            @if ($item->override)
+                <div>
+                    <h3 class="eyebrow">{{ __('analysis.item.override') }}</h3>
+                    <p class="mt-2 font-serif text-base leading-snug text-ink-soft italic">{{ $item->override->reason->in($locale) }}</p>
+                </div>
+            @endif
+
+            <details>
+                <summary class="inline-flex min-h-11 cursor-pointer items-center font-mono text-xs text-muted uppercase underline decoration-rule-strong underline-offset-4 hover:text-ink">{{ __('analysis.item.criteria') }}</summary>
+                <dl class="mt-2 space-y-3">
+                    @foreach ([\App\Enums\RuleStatus::Addressed, \App\Enums\RuleStatus::PartiallyAddressed, \App\Enums\RuleStatus::NotFound] as $status)
+                        <div>
+                            <dt><x-status-badge :status="$status" /></dt>
+                            <dd class="mt-1 text-ink-soft">{{ $rule->criteria->for($status)?->in($locale) }}</dd>
+                        </div>
+                    @endforeach
+                </dl>
+            </details>
+        </div>
     </div>
 </details>
